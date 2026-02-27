@@ -16,7 +16,7 @@ class MeteorPlusPlusAddon : MeteorAddon() {
     
     companion object {
         val LOG: Logger = LoggerFactory.getLogger("Meteor++")
-        val PACKETMINE_CATEGORY: Category = Category("PacketMine", Items.DIAMOND_PICKAXE.defaultStack)
+        val PACKETMINE_CATEGORY: Category = Category("Meteor++", Items.AIR.defaultStack)
     }
 
     override fun onInitialize() {

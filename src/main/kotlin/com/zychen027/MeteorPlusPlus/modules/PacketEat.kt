@@ -1,10 +1,10 @@
 package com.zychen027.MeteorPlusPlus.modules
 
+import com.zychen027.MeteorPlusPlus.MeteorPlusPlusAddon
 import meteordevelopment.meteorclient.events.packets.PacketEvent
 import meteordevelopment.meteorclient.events.world.TickEvent
 import meteordevelopment.meteorclient.settings.BoolSetting
 import meteordevelopment.meteorclient.settings.SettingGroup
-import meteordevelopment.meteorclient.systems.modules.Categories
 import meteordevelopment.meteorclient.systems.modules.Module
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.component.DataComponentTypes
@@ -13,7 +13,7 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket
 import net.minecraft.util.Hand
 
 class PacketEat : Module(
-    Categories.Player,
+    MeteorPlusPlusAddon.PACKETMINE_CATEGORY,  // 改这里
     "PacketEat",
     "Allows you to eat without interrupting other actions."
 ) {
@@ -42,7 +42,6 @@ class PacketEat : Module(
             
             if (activeStack.get(DataComponentTypes.FOOD) != null) {
                 val hand = player.activeHand
-                // 使用正确的方式发送sequenced packet
                 mc.player!!.networkHandler.sendPacket(
                     PlayerInteractItemC2SPacket(hand, 0, player.yaw, player.pitch)
                 )
