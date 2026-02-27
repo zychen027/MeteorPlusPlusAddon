@@ -17,15 +17,17 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import com.zychen027.MeteorPlusPlus.MeteorPlusPlusAddon
 import com.zychen027.MeteorPlusPlus.utils.MineTarget
+import kotlin.random.Random
 
 class PacketMineModule : Module(
     MeteorPlusPlusAddon.PACKETMINE_CATEGORY,
     "PacketMine",
-    "PacketMine module ported from LiquidBounce",
+    "PacketMine module ported from LiquidBounce with enhanced anti-cheat bypass",
     *emptyArray<String>()
 ) {
 
     private val sgGeneral = settings.getDefaultGroup()
+    private val sgBypass = settings.createGroup("Bypass")
 
     private val range = sgGeneral.add(DoubleSetting.Builder()
         .name("range")
@@ -43,10 +45,53 @@ class PacketMineModule : Module(
         .build()
     )
 
+    // Bypass settings
+    private val slotSwitchDelay = sgBypass.add(IntSetting.Builder()
+        .name("slot-switch-delay")
+        .description("Delay between slot switch packets (ticks).")
+        .defaultValue(1)
+        .min(0)
+        .max(5)
+        .build()
+    )
+
+    private val randomDelay = sgBypass.add(BoolSetting.Builder()
+        .name("random-delay")
+        .description("Add random delay to appear more human.")
+        .defaultValue(true)
+        .build()
+    )
+
+    private val swingHand = sgBypass.add(BoolSetting.Builder()
+        .name("swing-hand")
+        .description("Swing hand when mining.")
+        .defaultValue(true)
+        .build()
+    )
+
+    private val abortOnSwitch = sgBypass.add(BoolSetting.Builder()
+        .name("abort-on-switch")
+        .description("Send abort packet before switching slots.")
+        .defaultValue(true)
+        .build()
+    )
+
+    private val spoofRotation = sgBypass.add(BoolSetting.Builder()
+        .name("spoof-rotation")
+        .description("Spoof rotation towards the block.")
+        .defaultValue(false)
+        .build()
+    )
+
     private var currentTarget: MineTarget? = null
+    private var ghostHandPhase = 0
+    private var ghostHandDelay = 0
+    private var ghostHandSlot = -1
 
     override fun onActivate() {
         currentTarget = null
+        ghostHandPhase = 0
+        ghostHandDelay = 0
     }
 
     override fun onDeactivate() {
@@ -55,6 +100,12 @@ class PacketMineModule : Module(
 
     @EventHandler
     private fun onTick(event: TickEvent.Pre) {
+        // Handle GhostHand phase delays
+        if (ghostHandDelay > 0) {
+            ghostHandDelay--
+            return
+        }
+
         if (mc.options.attackKey.wasPressed()) {
             handleInput()
         }
@@ -63,12 +114,14 @@ class PacketMineModule : Module(
 
         if (target.isInvalidOrOutOfRange(range.get())) {
             currentTarget = null
+            ghostHandPhase = 0
             return
         }
 
         target.updateBlockState()
         if (target.blockState.isAir) {
             currentTarget = null
+            ghostHandPhase = 0
             return
         }
 
@@ -76,14 +129,20 @@ class PacketMineModule : Module(
             startBreaking(target)
         }
 
+        // Handle GhostHand phases
+        if (mineMode.get() == MineModeEnum.GhostHand && ghostHandPhase > 0) {
+            handleGhostHandPhase(target)
+            return
+        }
+
         target.updateProgress()
         
         if (target.finished) {
-            // GhostHand模式下不需要切换回来，因为没有实际切换客户端槽位
             if (mineMode.get() != MineModeEnum.GhostHand) {
                 InvUtils.swapBack()
             }
             currentTarget = null
+            ghostHandPhase = 0
         }
     }
 
@@ -101,8 +160,10 @@ class PacketMineModule : Module(
             if (currentTarget?.targetPos == pos) {
                 currentTarget?.abort()
                 currentTarget = null
+                ghostHandPhase = 0
             } else {
                 currentTarget = MineTarget(pos)
+                ghostHandPhase = 0
             }
         }
     }
@@ -111,10 +172,11 @@ class PacketMineModule : Module(
         target.direction = Direction.UP
         val bestSlot = findBestToolSlot(target.blockState)
 
-        if (mineMode.get() == MineModeEnum.GhostHand && bestSlot != -1) {
-            handleGhostHandStart(target, bestSlot)
-        } else {
-            handleNormalStart(target, bestSlot)
+        when (mineMode.get()) {
+            MineModeEnum.GhostHand -> handleGhostHandStart(target, bestSlot)
+            MineModeEnum.Immediate -> handleImmediateStart(target, bestSlot)
+            MineModeEnum.Civ -> handleCivStart(target, bestSlot)
+            else -> handleNormalStart(target, bestSlot)
         }
     }
 
@@ -131,18 +193,15 @@ class PacketMineModule : Module(
             )
         )
 
-        mc.player?.swingHand(Hand.MAIN_HAND)
+        if (swingHand.get()) mc.player?.swingHand(Hand.MAIN_HAND)
         target.started = true
     }
 
-    private fun handleGhostHandStart(target: MineTarget, bestSlot: Int) {
-        val player = mc.player ?: return
-        val currentSlot = player.inventory.selectedSlot
+    private fun handleImmediateStart(target: MineTarget, bestSlot: Int) {
+        if (bestSlot != -1) {
+            InvUtils.swap(bestSlot, false)
+        }
 
-        // 1. 发送数据包告诉服务器我们切换到了最佳工具槽位
-        mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(bestSlot))
-
-        // 2. 发送开始挖掘数据包 (服务器此刻认为我们拿着最佳工具)
         mc.networkHandler?.sendPacket(
             PlayerActionC2SPacket(
                 PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
@@ -151,12 +210,145 @@ class PacketMineModule : Module(
             )
         )
 
-        // 3. 发送数据包告诉服务器我们切换回了原来的槽位 (客户端视觉从未改变)
-        mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(currentSlot))
+        mc.networkHandler?.sendPacket(
+            PlayerActionC2SPacket(
+                PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK,
+                target.targetPos,
+                target.direction
+            )
+        )
 
-        // 挥手动画 (客户端本地)
-        player.swingHand(Hand.MAIN_HAND)
+        if (swingHand.get()) mc.player?.swingHand(Hand.MAIN_HAND)
         target.started = true
+        target.finished = true
+    }
+
+    private fun handleCivStart(target: MineTarget, bestSlot: Int) {
+        // Civ mode: dig nearby block first to bypass some anti-cheats
+        val nearbyPos = findNearbyBlock(target.targetPos)
+        
+        if (nearbyPos != null && bestSlot != -1) {
+            InvUtils.swap(bestSlot, false)
+            
+            mc.networkHandler?.sendPacket(
+                PlayerActionC2SPacket(
+                    PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
+                    nearbyPos,
+                    Direction.UP
+                )
+            )
+            mc.networkHandler?.sendPacket(
+                PlayerActionC2SPacket(
+                    PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK,
+                    nearbyPos,
+                    Direction.UP
+                )
+            )
+        }
+
+        mc.networkHandler?.sendPacket(
+            PlayerActionC2SPacket(
+                PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
+                target.targetPos,
+                target.direction
+            )
+        )
+
+        if (swingHand.get()) mc.player?.swingHand(Hand.MAIN_HAND)
+        target.started = true
+    }
+
+    private fun handleGhostHandStart(target: MineTarget, bestSlot: Int) {
+        val player = mc.player ?: return
+        
+        if (bestSlot == -1) {
+            handleNormalStart(target, -1)
+            return
+        }
+
+        ghostHandSlot = bestSlot
+        ghostHandPhase = 1
+        ghostHandDelay = calculateDelay()
+        target.started = true
+    }
+
+    private fun handleGhostHandPhase(target: MineTarget) {
+        val player = mc.player ?: return
+        val currentSlot = player.inventory.selectedSlot
+
+        when (ghostHandPhase) {
+            1 -> {
+                // Phase 1: Send abort if enabled
+                if (abortOnSwitch.get()) {
+                    mc.networkHandler?.sendPacket(
+                        PlayerActionC2SPacket(
+                            PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK,
+                            target.targetPos,
+                            target.direction
+                        )
+                    )
+                }
+                
+                // Switch to tool slot
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(ghostHandSlot))
+                ghostHandPhase = 2
+                ghostHandDelay = calculateDelay()
+            }
+            2 -> {
+                // Phase 2: Start breaking
+                mc.networkHandler?.sendPacket(
+                    PlayerActionC2SPacket(
+                        PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
+                        target.targetPos,
+                        target.direction
+                    )
+                )
+                
+                if (swingHand.get()) player.swingHand(Hand.MAIN_HAND)
+                ghostHandPhase = 3
+                ghostHandDelay = calculateDelay()
+            }
+            3 -> {
+                // Phase 3: Switch back to original slot
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(currentSlot))
+                
+                // Continue breaking in background
+                target.updateProgress()
+                
+                if (target.finished) {
+                    // Send stop packet
+                    mc.networkHandler?.sendPacket(
+                        PlayerActionC2SPacket(
+                            PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK,
+                            target.targetPos,
+                            target.direction
+                        )
+                    )
+                    currentTarget = null
+                    ghostHandPhase = 0
+                }
+            }
+        }
+    }
+
+    private fun calculateDelay(): Int {
+        val baseDelay = slotSwitchDelay.get()
+        return if (randomDelay.get()) {
+            baseDelay + Random.nextInt(0, 3)
+        } else {
+            baseDelay
+        }
+    }
+
+    private fun findNearbyBlock(center: BlockPos): BlockPos? {
+        for (direction in Direction.entries) {
+            val pos = center.offset(direction)
+            val state = mc.world?.getBlockState(pos) ?: continue
+            if (!state.isAir && state.fluidState.isEmpty) {
+                return pos
+            }
+        }
+        return null
     }
 
     private fun findBestToolSlot(state: BlockState): Int {
