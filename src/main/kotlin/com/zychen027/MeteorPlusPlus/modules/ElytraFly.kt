@@ -1,4 +1,4 @@
-package com.zychen027.MeteorPlusPlus.modules
+package com.zychen027.meteorplusplus.modules
 
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent
 import meteordevelopment.meteorclient.events.packets.PacketEvent
@@ -7,8 +7,6 @@ import meteordevelopment.meteorclient.settings.*
 import meteordevelopment.meteorclient.systems.modules.Module
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.entity.EquipmentSlot
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.data.TrackedData
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket
@@ -16,20 +14,20 @@ import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.util.Hand
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
-import com.zychen027.MeteorPlusPlus.MeteorPlusPlusAddon
+import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
 import kotlin.math.*
 
 class ElytraFly : Module(
-    MeteorPlusPlusAddon.PACKETMINE_CATEGORY,
+    MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
     "ElytraFly",
-    "Elytra flight with all modes."
+    "鞘翅飞行，支持多种模式。"
 ) {
     private val sgGeneral = settings.getDefaultGroup()
-    private val sgControl = settings.createGroup("Control")
-    private val sgBoost = settings.createGroup("Boost")
-    private val sgBounce = settings.createGroup("Bounce")
-    private val sgPitch = settings.createGroup("Pitch")
-    private val sgRotation = settings.createGroup("Rotation")
+    private val sgControl = settings.createGroup("控制")
+    private val sgBoost = settings.createGroup("加速")
+    private val sgBounce = settings.createGroup("弹跳")
+    private val sgPitch = settings.createGroup("俯仰")
+    private val sgRotation = settings.createGroup("旋转")
     private val sgFirework = settings.createGroup("Firework")
     private val sgPacket = settings.createGroup("Packet")
 
@@ -293,38 +291,9 @@ class ElytraFly : Module(
     private var infinitePitch = 0f
     private var pitchDirection = false
     private var packetDelayCounter = 0
-    
-    // LIVING_FLAGS TrackedData 缓存
-    private var livingFlagsTrackedData: TrackedData<Byte>? = null
 
     enum class Mode {
         Control, Boost, Bounce, Freeze, Rotation, Pitch
-    }
-
-    init {
-        // 尝试通过反射获取 LIVING_FLAGS
-        try {
-            val field = LivingEntity::class.java.getDeclaredField("LIVING_FLAGS")
-            field.isAccessible = true
-            @Suppress("UNCHECKED_CAST")
-            livingFlagsTrackedData = field.get(null) as TrackedData<Byte>
-        } catch (e: Exception) {
-            // 映射可能不同，尝试其他名称
-            try {
-                for (f in LivingEntity::class.java.declaredFields) {
-                    if (f.type == TrackedData::class.java) {
-                        f.isAccessible = true
-                        val data = f.get(null)
-                        if (data is TrackedData<*>) {
-                            livingFlagsTrackedData = data as TrackedData<Byte>
-                            break
-                        }
-                    }
-                }
-            } catch (e2: Exception) {
-                // 忽略
-            }
-        }
     }
 
     override fun onActivate() {
@@ -347,7 +316,7 @@ class ElytraFly : Module(
     @EventHandler
     private fun onTickPre(event: TickEvent.Pre) {
         val player = mc.player ?: return
-        
+
         hasElytra = checkForElytra()
         if (!hasElytra && !packetMode.get()) return
 
@@ -405,14 +374,16 @@ class ElytraFly : Module(
     @EventHandler
     private fun onMove(event: PlayerMoveEvent) {
         val player = mc.player ?: return
-        
+
         if (!hasElytra && !packetMode.get()) return
         if (!isPlayerFallFlying()) return
 
         if (autoStop.get()) {
             val chunkX = (player.x / 16.0).toInt()
             val chunkZ = (player.z / 16.0).toInt()
-            if (!mc.world!!.chunkManager.isChunkLoaded(chunkX, chunkZ)) {
+
+            val world = mc.world ?: return
+            if (!world.chunkManager.isChunkLoaded(chunkX, chunkZ)) {
                 return
             }
         }
@@ -429,7 +400,7 @@ class ElytraFly : Module(
     @EventHandler
     private fun onPacketSend(event: PacketEvent.Send) {
         val player = mc.player ?: return
-        
+
         if (mode.get() == Mode.Bounce && hasElytra) {
             if (event.packet is ClientCommandC2SPacket) {
                 val packet = event.packet as ClientCommandC2SPacket
@@ -457,7 +428,7 @@ class ElytraFly : Module(
         val player = mc.player ?: return
 
         val yawRad = Math.toRadians(player.yaw.toDouble())
-        
+
         var motionX = 0.0
         var motionY = 0.0
         var motionZ = 0.0
@@ -467,7 +438,7 @@ class ElytraFly : Module(
 
         if (forward != 0f || sideways != 0f) {
             val speedVal = speed.get()
-            
+
             if (forward != 0f) {
                 motionX += -MathHelper.sin(yawRad.toFloat()) * forward * speedVal
                 motionZ += MathHelper.cos(yawRad.toFloat()) * forward * speedVal
@@ -504,7 +475,7 @@ class ElytraFly : Module(
         val player = mc.player ?: return
 
         val yawRad = Math.toRadians(player.yaw.toDouble()).toFloat()
-        
+
         if (mc.options.forwardKey.isPressed) {
             val boost = boostSpeed.get().toFloat() / 10.0f
             player.addVelocity(
@@ -517,7 +488,7 @@ class ElytraFly : Module(
 
     private fun handleFreezeMode() {
         val player = mc.player ?: return
-        
+
         if (!isMoving() && !mc.options.jumpKey.isPressed && !mc.options.sneakKey.isPressed) {
             player.velocity = Vec3d(0.0, 0.0, 0.0)
         } else {
@@ -540,7 +511,7 @@ class ElytraFly : Module(
 
         val yawRad = Math.toRadians(player.yaw.toDouble())
         val forward = getMovementInput()
-        
+
         if (forward != 0f) {
             player.velocity = Vec3d(
                 -MathHelper.sin(yawRad.toFloat()) * forward * speed.get(),
@@ -556,12 +527,12 @@ class ElytraFly : Module(
         val lookVec = getRotationVector(infinitePitch, player.yaw)
         val motionX = player.velocity.x + lookVec.x * 0.1
         val motionZ = player.velocity.z + lookVec.z * 0.1
-        
+
         player.velocity = Vec3d(motionX, player.velocity.y, motionZ)
     }
 
     // ==================== Packet Mode Handler ====================
-    
+
     private fun handlePacketMode() {
         val player = mc.player ?: return
         if (player.isOnGround) return
@@ -598,7 +569,7 @@ class ElytraFly : Module(
 
     private fun doClickSlot(slot: Int, button: Int, action: SlotActionType) {
         val player = mc.player ?: return
-        mc.interactionManager!!.clickSlot(
+        mc.interactionManager?.clickSlot(
             player.currentScreenHandler.syncId,
             slot,
             button,
@@ -613,23 +584,11 @@ class ElytraFly : Module(
         return chestStack.item == Items.ELYTRA && chestStack.damage < chestStack.maxDamage - 1
     }
 
-    private fun isPlayerFallFlying(): Boolean {
-        val player = mc.player ?: return false
-        
-        // 方法1: 使用 TrackedData 检查
-        livingFlagsTrackedData?.let { trackedData ->
-            try {
-                val flags = player.dataTracker.get(trackedData)
-                // 第 7 位 (0x80) 是 fall flying 标志
-                if ((flags.toInt() and 0x80) != 0) return true
-            } catch (e: Exception) {
-                // 忽略
-            }
-        }
-        
-        // 方法2: 使用内部状态
-        return flying
-    }
+    // 使用 LivingEntity.isFallFlying() 方法检查滑翔状态
+	private fun isPlayerFallFlying(): Boolean {
+		val player = mc.player ?: return false
+		return player.isGliding
+	}
 
     private fun sendStartFlyPacket() {
         val player = mc.player ?: return
@@ -647,9 +606,9 @@ class ElytraFly : Module(
 
     private fun updateInfinitePitch() {
         val player = mc.player ?: return
-        
+
         val currentSpeed = sqrt(
-            (player.x - player.lastRenderX).pow(2.0) + 
+            (player.x - player.lastRenderX).pow(2.0) +
             (player.z - player.lastRenderZ).pow(2.0)
         ) * 72.0
 
@@ -670,28 +629,28 @@ class ElytraFly : Module(
 
     private fun handleFirework() {
         if (!shouldUseFirework()) return
-        
+
         val now = System.currentTimeMillis()
         if (now - lastFireworkTime < fireworkDelay.get()) return
-        
+
         useFirework()
         lastFireworkTime = now
     }
 
     private fun shouldUseFirework(): Boolean {
         val player = mc.player ?: return false
-        
+
         if (fireworkCheckSpeed.get()) {
             val spd = sqrt(player.velocity.x.pow(2.0) + player.velocity.z.pow(2.0)) * 72.0
             if (spd > fireworkMinSpeed.get()) return false
         }
-        
+
         return true
     }
 
     private fun useFirework() {
         val player = mc.player ?: return
-        
+
         var fireworkSlot = -1
         for (i in 0..8) {
             if (player.inventory.getStack(i).item == Items.FIREWORK_ROCKET) {
@@ -703,8 +662,7 @@ class ElytraFly : Module(
         if (fireworkSlot != -1) {
             val oldSlot = player.inventory.selectedSlot
             player.inventory.selectedSlot = fireworkSlot
-            // interactItem 需要传入 World 参数
-            mc.interactionManager!!.interactItem(player, Hand.MAIN_HAND)
+            mc.interactionManager?.interactItem(player, Hand.MAIN_HAND)
             player.inventory.selectedSlot = oldSlot
         } else if (fireworkInventorySwap.get()) {
             val invSlot = findItemInInventory(Items.FIREWORK_ROCKET)
@@ -712,7 +670,7 @@ class ElytraFly : Module(
                 val oldSlot = player.inventory.selectedSlot
                 val hotbarIndex = 36 + oldSlot
                 doClickSlot(invSlot, hotbarIndex, SlotActionType.SWAP)
-                mc.interactionManager!!.interactItem(player, Hand.MAIN_HAND)
+                mc.interactionManager?.interactItem(player, Hand.MAIN_HAND)
                 doClickSlot(invSlot, hotbarIndex, SlotActionType.SWAP)
             }
         }
@@ -763,9 +721,9 @@ class ElytraFly : Module(
     }
 
     private fun isMoving(): Boolean {
-        return mc.options.forwardKey.isPressed || 
-               mc.options.backKey.isPressed || 
-               mc.options.leftKey.isPressed || 
+        return mc.options.forwardKey.isPressed ||
+               mc.options.backKey.isPressed ||
+               mc.options.leftKey.isPressed ||
                mc.options.rightKey.isPressed
     }
 

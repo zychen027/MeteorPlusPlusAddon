@@ -16,4 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "meteor-packetmine"
+// Bug 4 修复：项目名称统一为 meteor-plusplus
+rootProject.name = "meteor-plusplus"

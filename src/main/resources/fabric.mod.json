@@ -5,30 +5,27 @@
   "name": "Meteor++",
   "description": "Meteor Client addon with extra features",
   "authors": [
-    "zychen027"
+    "zychen027",
+    "Benjamin"
   ],
   "contact": {
     "homepage": "https://github.com/zychen027/MeteorPlusPlus",
     "sources": "https://github.com/zychen027/MeteorPlusPlus"
   },
   "license": "MIT",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "meteor": [
-      {
-        "adapter": "kotlin",
-        "value": "com.zychen027.MeteorPlusPlus.MeteorPlusPlusAddon"
-      }
+      "com.zychen027.meteorplusplus.MeteorPlusPlusAddon"
     ]
   },
-  "mixins": [],
-  "custom": {
-    "meteor-client:addon": true
-  },
+  "mixins": [
+    "meteor-plusplus.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.16.0",
-    "fabric-language-kotlin": ">=1.13.0",
-    "minecraft": "~1.21.8",
-    "meteor-client": "*"
+    "minecraft": "1.21.8",
+    "meteor-client": "*",
+    "fabric-language-kotlin": ">=1.13.7"
   }
 }

@@ -1,4 +1,4 @@
-package com.zychen027.MeteorPlusPlus.modules
+package com.zychen027.meteorplusplus.modules
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent
 import meteordevelopment.meteorclient.events.world.TickEvent
@@ -10,11 +10,11 @@ import meteordevelopment.meteorclient.utils.render.color.SettingColor
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.entity.TntEntity
 import net.minecraft.util.math.MathHelper
-import com.zychen027.MeteorPlusPlus.MeteorPlusPlusAddon
+import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
 import kotlin.math.sin
 
 class TNTTimer : Module(
-    MeteorPlusPlusAddon.PACKETMINE_CATEGORY,
+    MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
     "TNTTimer",
     "Shows countdown timers on active TNT."
 ) {
@@ -52,7 +52,7 @@ class TNTTimer : Module(
     @EventHandler
     private fun onTick(event: TickEvent.Post) {
         tntEntities.clear()
-        
+
         val world = mc.world ?: return
         for (entity in world.entities) {
             if (entity is TntEntity && entity.fuse > 0) {

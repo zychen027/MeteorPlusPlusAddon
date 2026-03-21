@@ -1,6 +1,7 @@
-package com.zychen027.MeteorPlusPlus.utils
+package com.zychen027.meteorplusplus.utils
 
 import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket
 import net.minecraft.util.Hand
@@ -14,7 +15,10 @@ class MineTarget(val targetPos: BlockPos) {
     var progress = 0f
     var started = false
     var direction: Direction? = null
-    var blockState: BlockState = mc.world?.getBlockState(targetPos)!!
+
+    // Bug 1 修复：使用 Elvis 运算符提供默认值，避免 NPE
+    var blockState: BlockState = mc.world?.getBlockState(targetPos)
+        ?: Blocks.AIR.defaultState
 
     fun updateBlockState() {
         mc.world?.getBlockState(targetPos)?.let { blockState = it }
@@ -42,11 +46,11 @@ class MineTarget(val targetPos: BlockPos) {
         if (!started) return
 
         val delta = blockState.calcBlockBreakingDelta(player, world, targetPos)
-        
+
         progress += delta
 
         val stage = (progress * 10.0f).toInt()
-        
+
         mc.worldRenderer?.setBlockBreakingInfo(player.id, targetPos, stage)
 
         if (progress >= 1.0f) {
@@ -65,7 +69,7 @@ class MineTarget(val targetPos: BlockPos) {
 
         mc.player?.swingHand(Hand.MAIN_HAND)
         finished = true
-        
+
         mc.worldRenderer?.setBlockBreakingInfo(mc.player?.id ?: -1, targetPos, -1)
     }
 
@@ -82,7 +86,7 @@ class MineTarget(val targetPos: BlockPos) {
                 dir
             )
         )
-        
+
         mc.worldRenderer?.setBlockBreakingInfo(mc.player?.id ?: -1, targetPos, -1)
     }
 }

@@ -1,30 +1,25 @@
-package com.zychen027.MeteorPlusPlus.modules
+package com.zychen027.meteorplusplus.modules
 
-import meteordevelopment.meteorclient.events.render.Render3DEvent
+import meteordevelopment.meteorclient.events.render.Render2DEvent
 import meteordevelopment.meteorclient.events.world.TickEvent
 import meteordevelopment.meteorclient.settings.*
 import meteordevelopment.meteorclient.systems.modules.Module
 import meteordevelopment.meteorclient.utils.player.InvUtils
-import meteordevelopment.meteorclient.utils.render.NametagUtils
-import meteordevelopment.meteorclient.utils.render.color.Color
-import meteordevelopment.meteorclient.renderer.text.TextRenderer
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.block.BlockState
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
-import org.joml.Vector3d
-import com.zychen027.MeteorPlusPlus.MeteorPlusPlusAddon
-import com.zychen027.MeteorPlusPlus.utils.MineTarget
+import com.zychen027.meteorplusplus.utils.MineTarget
+import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
 import kotlin.random.Random
 
 class PacketMineModule : Module(
-    MeteorPlusPlusAddon.PACKETMINE_CATEGORY,
+    MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
     "PacketMine",
-    "Advanced packet mining with GrimAC bypass"
+    "高级数据包挖矿，支持 GrimAC 绕过"
 ) {
 
     private val sgGeneral = settings.getDefaultGroup()
@@ -47,12 +42,10 @@ class PacketMineModule : Module(
         .build()
     )
 
-    private val textScale = sgGeneral.add(DoubleSetting.Builder()
-        .name("text-scale")
-        .description("Scale of the progress text.")
-        .defaultValue(1.0)
-        .min(0.5)
-        .max(2.0)
+    private val showProgress = sgGeneral.add(BoolSetting.Builder()
+        .name("show-progress")
+        .description("Show mining progress at crosshair.")
+        .defaultValue(true)
         .build()
     )
 
@@ -115,10 +108,12 @@ class PacketMineModule : Module(
     private var ghostHandTargetSlot = -1
     private var originalSlot = 0
     private var lastSwingTime = 0L
+    private var renderProgress = 0.0
 
     override fun onActivate() {
         currentTarget = null
         ghostHandState = GhostHandState.IDLE
+        renderProgress = 0.0
         originalSlot = mc.player?.inventory?.selectedSlot ?: 0
     }
 
@@ -128,6 +123,10 @@ class PacketMineModule : Module(
 
     @EventHandler
     private fun onTick(event: TickEvent.Pre) {
+        currentTarget?.let { target ->
+            renderProgress = target.progress.toDouble().coerceIn(0.0, 1.0)
+        }
+
         when (mineMode.get()) {
             MineModeEnum.GhostHand -> handleGhostHandTick()
             else -> handleNormalTick()
@@ -135,46 +134,68 @@ class PacketMineModule : Module(
     }
 
     @EventHandler
-    private fun onRender(event: Render3DEvent) {
-        renderProgress()
-    }
+    private fun onRender2D(event: Render2DEvent) {
+        if (!showProgress.get() || currentTarget == null) return
+        if (mc.player == null || mc.world == null) return
 
-    private fun renderProgress() {
-        val target = currentTarget ?: return
+        val scaledWidth = event.screenWidth
+        val scaledHeight = event.screenHeight
 
-        val percentage = (target.progress.toDouble().coerceIn(0.0, 1.0) * 100).toInt()
+        // 准星位置（屏幕中心）
+        val centerX = scaledWidth / 2
+        val centerY = scaledHeight / 2
+
+        val percentage = (renderProgress * 100).toInt()
         val text = "$percentage%"
 
-        val scale: Double = textScale.get()
-
-        val pos = Vector3d(
-            target.targetPos.x.toDouble() + 0.5,
-            target.targetPos.y.toDouble() + 1.2,
-            target.targetPos.z.toDouble() + 0.5
-        )
-
-        // to2D expects (Vector3d, Double)
-        if (!NametagUtils.to2D(pos, scale)) return
-
-        val color = when {
-            percentage < 30 -> Color(255, 80, 80)
-            percentage < 70 -> Color(255, 220, 50)
-            else -> Color(80, 255, 80)
+        // 根据进度选择颜色 (RGBA)
+        val r: Int
+        val g: Int
+        val b: Int
+        when {
+            percentage < 30 -> { r = 255; g = 80; b = 80 }
+            percentage < 70 -> { r = 255; g = 220; b = 50 }
+            else -> { r = 80; g = 255; b = 80 }
         }
 
-        val tr = TextRenderer.get()
-        // begin expects (Double, Boolean, Boolean)
-        tr.begin(scale, false, true)
+        // 获取文本渲染器
+        val textRenderer = mc.textRenderer
 
-        // getWidth/getHeight return Float — cast to Double for render()
-        val width = tr.getWidth(text, false).toDouble()
-        val height = tr.getHeight(false).toDouble()
+        // 文本偏移位置（准星右侧）
+        val textX = centerX + 10
+        val textY = centerY - 4
 
-        // render expects (String, Double, Double, Color, Boolean)
-        tr.render(text, -width / 2.0, -height / 2.0, color, true)
+        // 绘制背景框
+        val padding = 4
+        val boxX = textX - padding
+        val boxY = textY - padding
+        val boxWidth = textRenderer.getWidth(text) + padding * 2
+        val boxHeight = textRenderer.fontHeight + padding * 2
 
-        tr.end()
-        NametagUtils.end()
+        // 绘制半透明黑色背景 (ARGB: 0x80000000)
+        event.drawContext.fill(boxX, boxY, boxX + boxWidth, boxY + boxHeight, 0x80000000.toInt())
+
+        // 绘制边框 (ARGB: 0xFFRRGGBB)
+        val borderColor = (0xFF shl 24) or (r shl 16) or (g shl 8) or b
+        event.drawContext.drawBorder(boxX, boxY, boxWidth, boxHeight, borderColor)
+
+        // 绘制进度条背景
+        val barX = boxX + padding
+        val barY = boxY + boxHeight + 2
+        val barWidth = boxWidth - padding * 2
+        val barHeight = 3
+
+        event.drawContext.fill(barX, barY, barX + barWidth, barY + barHeight, 0x80000000.toInt())
+
+        // 绘制进度条填充
+        val fillWidth = (barWidth * renderProgress).toInt()
+        if (fillWidth > 0) {
+            val fillColor = (0xFF shl 24) or (r shl 16) or (g shl 8) or b
+            event.drawContext.fill(barX, barY, barX + fillWidth, barY + barHeight, fillColor)
+        }
+
+        // 绘制文本
+        event.drawContext.drawText(textRenderer, text, textX, textY, borderColor, true)
     }
 
     private fun handleNormalTick() {
@@ -270,6 +291,7 @@ class PacketMineModule : Module(
         val target = currentTarget ?: return run { resetTarget(abort = true) }
 
         target.updateProgress()
+        renderProgress = target.progress.toDouble().coerceIn(0.0, 1.0)
 
         if (target.finished) {
             ghostHandState = GhostHandState.FINISHING
@@ -413,6 +435,7 @@ class PacketMineModule : Module(
     private fun resetTarget(abort: Boolean) {
         if (abort) currentTarget?.abort()
         currentTarget = null
+        renderProgress = 0.0
         if (mineMode.get() == MineModeEnum.GhostHand) ghostHandState = GhostHandState.IDLE
     }
 
