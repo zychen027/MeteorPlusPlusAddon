@@ -15,8 +15,8 @@ import kotlin.math.sin
 
 class TNTTimer : Module(
     MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "TNTTimer",
-    "Shows countdown timers on active TNT."
+    "TNT爆炸计时",
+    "根据TNT爆炸时间显示一个ESP在激活的TNT上"
 ) {
     private val sgGeneral = settings.getDefaultGroup()
 

@@ -13,7 +13,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class MeteorPlusPlusAddon : MeteorAddon() {
-
     companion object {
         val LOG: Logger = LoggerFactory.getLogger("Meteor++")
         val METEORPLUSPLUS_CATEGORY: Category = Category("Meteor++", Items.AIR.defaultStack)
@@ -21,7 +20,6 @@ class MeteorPlusPlusAddon : MeteorAddon() {
 
     override fun onInitialize() {
         LOG.info("Initializing Meteor++ Addon")
-
         val modules = Modules.get()
 
         // ==================== 战斗模块 ====================
@@ -31,6 +29,7 @@ class MeteorPlusPlusAddon : MeteorAddon() {
         modules.add(ElytraFly())
         modules.add(ElytraReplace())
         modules.add(ElytraAutoPilot())
+        modules.add(ElytraAndArmor()) // <--- 新增注册
 
         // ==================== 世界模块 ====================
         modules.add(PacketMineModule())
@@ -53,7 +52,7 @@ class MeteorPlusPlusAddon : MeteorAddon() {
     }
 
     override fun getWebsite(): String {
-        return "https://github.com/zychen027/MeteorPlusPlus"
+        return "https://github.com/zychen027/MeteorPlusPlusAddon"
     }
 
     override fun getPackage(): String {

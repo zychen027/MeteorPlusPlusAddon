@@ -18,7 +18,7 @@ import kotlin.random.Random
 
 class PacketMineModule : Module(
     MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "PacketMine",
+    "发包挖掘",
     "高级数据包挖矿，支持 GrimAC 绕过"
 ) {
 

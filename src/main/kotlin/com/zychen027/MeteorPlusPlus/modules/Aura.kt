@@ -38,8 +38,8 @@ import java.util.*
  */
 class KillAura : Module(
     MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "Aura",
-    "Auto-attack entities around you. (Ported from LeavesHack)"
+    "杀戮光环",
+    "自动攻击范围内的敌人"
 ) {
     private val sgGeneral = settings.getDefaultGroup()
 

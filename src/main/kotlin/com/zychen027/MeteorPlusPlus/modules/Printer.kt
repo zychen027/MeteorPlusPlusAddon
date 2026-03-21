@@ -29,7 +29,7 @@ import net.minecraft.util.math.Vec3d
  */
 class Printer : Module(
     MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "Printer",
+    "投影打印机",
     "根据 Litematica 投影自动放置方块。"
 ) {
     private val sgGeneral = settings.getDefaultGroup()

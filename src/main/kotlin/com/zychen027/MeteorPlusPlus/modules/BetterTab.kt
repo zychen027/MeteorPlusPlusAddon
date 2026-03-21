@@ -15,7 +15,7 @@ import java.util.*
  */
 class BetterTab : Module(
     MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "BetterTab",
+    "更好的Tab菜单",
     "将指定玩家在 Tab 菜单中置顶显示。"
 ) {
     private val sgGeneral = settings.getDefaultGroup()

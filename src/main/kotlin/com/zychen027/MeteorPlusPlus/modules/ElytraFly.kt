@@ -19,7 +19,7 @@ import kotlin.math.*
 
 class ElytraFly : Module(
     MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "ElytraFly",
+    "鞘翅飞行",
     "鞘翅飞行，支持多种模式。"
 ) {
     private val sgGeneral = settings.getDefaultGroup()

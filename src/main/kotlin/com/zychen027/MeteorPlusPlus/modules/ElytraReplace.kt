@@ -17,7 +17,7 @@ import net.minecraft.screen.slot.SlotActionType
  */
 class ElytraReplace : Module(
 	MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "Elytra Replace",
+    "鞘翅替换",
     "自动替换耐久度过低的鞘翅"
 ) {
     private val sg = settings.defaultGroup
