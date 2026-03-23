@@ -1,2 +1,1 @@
-[doing]ElytraAutoPilot
-[waiting]移植yizhi/rust目录下的所有文件至meteor++，保留工具类，他们来自mod：rustelytraclient，是优化baritone在下界飞行体验的一个mod
+[waiting]根据/errorlogs/*.log解决导致mc崩溃的问题，修复模块.

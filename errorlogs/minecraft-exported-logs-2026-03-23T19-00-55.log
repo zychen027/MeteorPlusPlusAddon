@@ -1,0 +1,1380 @@
+[18:57:54] [main/INFO]: Loading Minecraft 1.21.8 with Fabric Loader 0.18.4
+[18:57:55] [ForkJoinPool-1-worker-1/WARN]: Mod org_cloudburstmc_netty_netty-transport-raknet uses the version 1.0.0.CR3-SNAPSHOT which isn't compatible with Loader's extended semantic version format (Could not parse version number component 'CR3'!), SemVer is recommended for reliably evaluating dependencies and prioritizing newer version
+[18:57:56] [ForkJoinPool-1-worker-4/WARN]: Mod com_github_oryxel_cubeconverter uses the version 916cadb12a which isn't compatible with Loader's extended semantic version format (Could not parse version number component '916cadb12a'!), SemVer is recommended for reliably evaluating dependencies and prioritizing newer version
+[18:57:57] [main/INFO]: Loading 120 mods:
+	- appleskin 3.0.6+mc1.21.6
+	- baritone-meteor 1.21.8-SNAPSHOT
+	   \-- dev_babbaj_nether-pathfinder 1.4.1
+	- blackout 1.3.0
+	- cloth-config 19.0.147
+	   \-- cloth-basic-math 0.6.1
+	- entityculling 1.9.5
+	   |-- transition 1.0.11
+	   \-- trender 1.0.10
+	- fabric-api 0.136.1+1.21.8
+	   |-- fabric-api-base 0.5.0+cd8c0daa2c
+	   |-- fabric-api-lookup-api-v1 1.6.101+946bf4c32c
+	   |-- fabric-biome-api-v1 16.1.0+c21d71cc2c
+	   |-- fabric-block-api-v1 1.1.3+946bf4c32c
+	   |-- fabric-block-view-api-v2 1.0.31+946bf4c32c
+	   |-- fabric-command-api-v2 2.3.1+52fff9ec2c
+	   |-- fabric-content-registries-v0 10.1.0+c75de69d2c
+	   |-- fabric-convention-tags-v1 2.1.41+7f945d5b2c
+	   |-- fabric-convention-tags-v2 2.15.6+eb5df52f2c
+	   |-- fabric-crash-report-info-v1 0.3.15+946bf4c32c
+	   |-- fabric-data-attachment-api-v1 1.8.14+97214db32c
+	   |-- fabric-data-generation-api-v1 23.2.8+2e1c6d322c
+	   |-- fabric-dimensions-v1 4.0.20+948fc79a2c
+	   |-- fabric-entity-events-v1 2.1.2+c9e472732c
+	   |-- fabric-events-interaction-v0 4.0.26+946bf4c32c
+	   |-- fabric-game-rule-api-v1 1.0.73+c64c9c5b2c
+	   |-- fabric-item-api-v1 11.5.0+02ce13f42c
+	   |-- fabric-item-group-api-v1 4.2.14+c5f9bbc12c
+	   |-- fabric-key-binding-api-v1 1.0.65+946bf4c32c
+	   |-- fabric-lifecycle-events-v1 2.6.4+db4dfd852c
+	   |-- fabric-loot-api-v2 3.0.56+3f89f5a52c
+	   |-- fabric-loot-api-v3 2.0.3+946bf4c32c
+	   |-- fabric-message-api-v1 6.1.2+946bf4c32c
+	   |-- fabric-model-loading-api-v1 5.2.8+946bf4c32c
+	   |-- fabric-networking-api-v1 5.1.0+57cb96dd2c
+	   |-- fabric-object-builder-api-v1 21.1.10+946bf4c32c
+	   |-- fabric-particles-v1 4.1.10+946bf4c32c
+	   |-- fabric-recipe-api-v1 8.1.17+946bf4c32c
+	   |-- fabric-registry-sync-v0 6.1.30+946bf4c32c
+	   |-- fabric-renderer-api-v1 7.0.5+208eed172c
+	   |-- fabric-renderer-indigo 4.0.5+946bf4c32c
+	   |-- fabric-rendering-fluids-v1 3.1.31+fa6cb72b2c
+	   |-- fabric-rendering-v1 12.6.0+486b7ff72c
+	   |-- fabric-resource-conditions-api-v1 5.0.25+98e6d6db2c
+	   |-- fabric-resource-loader-v0 3.1.12+020423442c
+	   |-- fabric-screen-api-v1 2.2.0+e0cb65d02c
+	   |-- fabric-screen-handler-api-v1 1.3.139+946bf4c32c
+	   |-- fabric-serialization-api-v1 1.0.0+fc0e5aba2c
+	   |-- fabric-sound-api-v1 1.0.42+946bf4c32c
+	   |-- fabric-tag-api-v1 1.2.2+946bf4c32c
+	   |-- fabric-transfer-api-v1 6.0.6+946bf4c32c
+	   \-- fabric-transitive-access-wideners-v1 6.5.0+c847ce762c
+	- fabric-language-kotlin 1.13.9+kotlin.2.3.10
+	   |-- org_jetbrains_kotlin_kotlin-reflect 2.3.10
+	   |-- org_jetbrains_kotlin_kotlin-stdlib 2.3.10
+	   |-- org_jetbrains_kotlin_kotlin-stdlib-jdk7 2.3.10
+	   |-- org_jetbrains_kotlin_kotlin-stdlib-jdk8 2.3.10
+	   |-- org_jetbrains_kotlinx_atomicfu-jvm 0.31.0
+	   |-- org_jetbrains_kotlinx_kotlinx-coroutines-core-jvm 1.10.2
+	   |-- org_jetbrains_kotlinx_kotlinx-coroutines-jdk8 1.10.2
+	   |-- org_jetbrains_kotlinx_kotlinx-datetime-jvm 0.7.1
+	   |-- org_jetbrains_kotlinx_kotlinx-io-bytestring-jvm 0.8.2
+	   |-- org_jetbrains_kotlinx_kotlinx-io-core-jvm 0.8.2
+	   |-- org_jetbrains_kotlinx_kotlinx-serialization-cbor-jvm 1.10.0
+	   |-- org_jetbrains_kotlinx_kotlinx-serialization-core-jvm 1.10.0
+	   \-- org_jetbrains_kotlinx_kotlinx-serialization-json-jvm 1.10.0
+	- fabricloader 0.18.4
+	   \-- mixinextras 0.5.0
+	- ferritecore 8.0.4
+	- jade 19.3.2+fabric
+	- java 21
+	- jefffmod 0.16.6
+	- krypton 0.2.9
+	   \-- com_velocitypowered_velocity-native 3.4.0-SNAPSHOT
+	- litematica 0.23.6
+	- lithium 0.18.1+mc1.21.8
+	- malilib 0.25.7
+	- meteor-client 1.21.8-69
+	- meteor-miku 9.1.0
+	- meteor-plusplus 1.0.0
+	- meteor-translation-addon 0.7.0
+	- minecraft 1.21.8
+	- minihud 0.36.7
+	- moreculling 1.4.0-beta.2
+	   |-- conditional-mixin 0.6.3
+	   \-- mixinsquared 0.2.0
+	- sodium 0.7.3+mc1.21.8
+	- viafabricplus 4.2.5
+	   |-- com_github_oryxel_cubeconverter 916cadb12a
+	   |-- com_vdurmont_semver4j 3.1.0
+	   |-- com_viaversion_mcstructs_dialog 5-3.2.0-SNAPSHOT
+	   |-- com_viaversion_mcstructs_registry 5-3.2.0-SNAPSHOT
+	   |-- com_viaversion_viaaprilfools-common 4.0.4
+	   |-- com_viaversion_viabackwards-common 5.5.1-20251003.194311-1
+	   |-- com_viaversion_vialoader 4.0.5
+	   |-- com_viaversion_viaversion-common 5.5.1-20251003.180311-1
+	   |-- de_florianmichael_classic4j 2.1.0
+	   |-- io_jsonwebtoken_jjwt-api 0.13.0
+	   |-- io_jsonwebtoken_jjwt-gson 0.13.0
+	   |-- io_jsonwebtoken_jjwt-impl 0.13.0
+	   |-- io_netty_netty-codec-compression 4.2.6
+	   |-- io_netty_netty-codec-http 4.2.6
+	   |-- net_jodah_expiringmap 0.5.10
+	   |-- net_lenni0451_commons_httpclient 1.7.1
+	   |-- net_lenni0451_mcstructs-bedrock_forms 2.0.1
+	   |-- net_lenni0451_mcstructs-bedrock_text 2.0.1
+	   |-- net_lenni0451_reflect 1.5.0
+	   |-- net_raphimc_minecraftauth 4.1.2
+	   |-- net_raphimc_viabedrock 0.0.22-20251003.200622-1
+	   |-- net_raphimc_vialegacy 3.0.11
+	   |-- org_cloudburstmc_netty_netty-transport-raknet 1.0.0.CR3-SNAPSHOT
+	   |-- org_lz4_lz4-pure-java 1.8.0
+	   |-- team_unnamed_mocha 3.0.1
+	   |-- viafabricplus-api 4.2.5
+	   \-- viafabricplus-visuals 4.2.5
+	- xaerominimap 25.3.10
+	   \-- xaerolib 1.1.0
+	- xaeroplus 2.30.9
+	- xaeroworldmap 1.40.11
+	   \-- xaerolib 1.1.0
+	- xiaohe66-meteor-lotus 1.21.8-1.14.0
+[18:58:09] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/C:/Users/TEST/HMCL/.minecraft/libraries/net/fabricmc/sponge-mixin/0.17.0+mixin.0.8.7/sponge-mixin-0.17.0+mixin.0.8.7.jar Service=Knot/Fabric Env=CLIENT
+[18:58:09] [main/INFO]: Compatibility level set to JAVA_21
+[18:58:10] [main/INFO]: Loaded configuration file for Lithium: 164 options available, 1 override(s) found.
+[18:58:10] [main/INFO]: Loaded configuration file for Sodium: 42 options available, 0 override(s) found
+[18:58:12] [main/INFO]: Force-disabling mixin 'chunk.palette.PalettedContainer$StrategyMixin' as rule 'mixin.chunk.palette' (added by mods [xaeroplus]) disables it and children
+[18:58:14] [main/INFO]: Searching for graphics cards...
+[18:58:15] [main/INFO]: Found graphics adapter: AdapterInfo{vendor=INTEL, description='Intel(R) HD Graphics 4400', adapterType=0x0000202B, openglIcdFilePath='ig75icd64.dll', openglIcdVersion=20.19.15.4531}
+[18:58:15] [main/WARN]: Sodium has applied one or more workarounds to prevent crashes or other issues on your system: [INTEL_FRAMEBUFFER_BLIT_CRASH_WHEN_UNFOCUSED, INTEL_DEPTH_BUFFER_COMPARISON_UNRELIABLE]
+[18:58:15] [main/WARN]: This is not necessarily an issue, but it may result in certain features or optimizations being disabled. You can sometimes fix these issues by upgrading your graphics driver.
+[18:58:15] [main/INFO]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[18:58:21] [Datafixer Bootstrap/INFO]: 269 Datafixer optimizations took 2839 milliseconds
+[18:58:36] [main/INFO]: Sodium: [0.7.3+mc1.21.8], Iris: [N/F]
+[18:58:37] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[18:58:37] [Render thread/INFO]: Setting user: zt3927
+[18:58:37] [Yggdrasil Key Fetcher/ERROR]: Failed to request yggdrasil public key
+com.mojang.authlib.exceptions.MinecraftClientException: Failed to read from https://api.minecraftservices.com/publickeys due to api.minecraftservices.com
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:111) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:56) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo.fetch(YggdrasilServicesKeyInfo.java:114) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo$1.run(YggdrasilServicesKeyInfo.java:89) ~[authlib-6.0.58.jar:?]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[?:?]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+Caused by: java.net.UnknownHostException: api.minecraftservices.com
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[?:?]
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:178) ~[?:?]
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:531) ~[?:?]
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:636) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:377) ~[?:?]
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:193) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1302) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1143) ~[?:?]
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:179) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1705) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1629) ~[?:?]
+	at java.base/java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:531) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:307) ~[?:?]
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:82) ~[authlib-6.0.58.jar:?]
+	... 9 more
+[18:58:37] [Download-2/ERROR]: Failed to fetch user properties
+com.mojang.authlib.exceptions.AuthenticationUnavailableException: null
+	at knot/com.mojang.authlib.exceptions.MinecraftClientException.toAuthenticationException(MinecraftClientException.java:29) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:154) ~[authlib-6.0.58.jar:?]
+	at knot/net.minecraft.class_310.method_55608(class_310.java:463) ~[client-intermediary.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+[18:58:37] [Download-1/WARN]: Couldn't look up profile properties for 2b5cd121-f2bf-44dc-8cc4-f73ae882e562
+com.mojang.authlib.exceptions.MinecraftClientException: Failed to read from https://sessionserver.mojang.com/session/minecraft/profile/2b5cd121f2bf44dc8cc4f73ae882e562?unsigned=false due to sessionserver.mojang.com
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:111) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:56) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fetchProfileUncached(YggdrasilMinecraftSessionService.java:201) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fetchProfile(YggdrasilMinecraftSessionService.java:171) ~[authlib-6.0.58.jar:?]
+	at knot/net.minecraft.class_310.method_53464(class_310.java:459) ~[client-intermediary.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+Caused by: java.net.UnknownHostException: sessionserver.mojang.com
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[?:?]
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:178) ~[?:?]
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:531) ~[?:?]
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:636) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:377) ~[?:?]
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:193) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1302) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1143) ~[?:?]
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:179) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1705) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1629) ~[?:?]
+	at java.base/java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:531) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:307) ~[?:?]
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:82) ~[authlib-6.0.58.jar:?]
+	... 8 more
+[18:58:38] [Render thread/INFO]: Compression will use Java, encryption will use Java
+[18:58:38] [Via-Mappingloader-0/INFO]: Loading block connection mappings ...
+[18:58:39] [Via-Mappingloader-0/INFO]: Using FastUtil Long2ObjectOpenHashMap for block connections
+[18:58:39] [Render thread/INFO]: [Indigo] Different rendering plugin detected; not applying Indigo.
+[18:58:39] [Render thread/INFO]: Krypton is now accelerating your Minecraft client's networking stack ?
+[18:58:39] [Render thread/INFO]: Note that Krypton is most effective on servers, not the client.
+[18:58:40] [Worker-Main-1/INFO]: Loading translations...
+[18:58:40] [Worker-Main-1/INFO]: Registering protocols...
+[18:58:40] [Render thread/INFO]: [STDOUT]: [LibGui] Initializing Client...
+[18:58:40] [Render thread/INFO]: Registering common data for channel xaerolib:main!
+[18:58:40] [Render thread/INFO]: Registering client data for channel xaerolib:main!
+[18:58:40] [Render thread/INFO]: Loading primary common config for channel xaerolib:main!
+[18:58:40] [Render thread/INFO]: Loading server config profiles for channel xaerolib:main!
+[18:58:40] [Render thread/INFO]: Loading primary client config for channel xaerolib:main!
+[18:58:40] [Render thread/INFO]: Loading client config profiles for channel xaerolib:main!
+[18:58:41] [Render thread/INFO]: Loading XaeroLib common 1/2!
+[18:58:41] [Render thread/INFO]: Loading XaeroLib client 1/2!
+[18:58:41] [Render thread/WARN]: io exception while checking patreon: data.chocolateminecraft.com
+[18:58:41] [Render thread/INFO]: Registering common data for channel xaerominimap:main!
+[18:58:41] [Render thread/INFO]: Registering client data for channel xaerominimap:main!
+[18:58:41] [Render thread/INFO]: Loading primary common config for channel xaerominimap:main!
+[18:58:41] [Render thread/INFO]: Loading server config profiles for channel xaerominimap:main!
+[18:58:41] [Render thread/INFO]: Loading primary client config for channel xaerominimap:main!
+[18:58:41] [Render thread/INFO]: Loading client config profiles for channel xaerominimap:main!
+[18:58:42] [Render thread/INFO]: Initializing XaeroPlus
+[18:58:42] [Render thread/INFO]: WorldTools not found. Disabling WorldTools support.
+[18:58:42] [Render thread/INFO]: Waystones not found. Disabling Waystones support.
+[18:58:42] [Render thread/INFO]: Fabric Waystones not found. Disabling Fabric Waystones support.
+[18:58:43] [Render thread/INFO]: [STDOUT]: [nether-pathfinder] Created temp file at C:\Users\ZT3927\AppData\Local\Temp\nether_pathfinder-x86_645697808970164505675.dll
+[18:58:43] [Render thread/INFO]: [STDERR]: [nether-pathfinder] Failed to delete temp file
+[18:58:43] [Render thread/INFO]: [STDOUT]: [nether-pathfinder] Loaded shared library
+[18:58:43] [Render thread/INFO]: Found Baritone API. Enabling Baritone support.
+[18:58:43] [Render thread/INFO]: Loading Xaero's Minimap - Stage 1/2
+[18:58:44] [Render thread/INFO]: Registering common data for channel xaeroworldmap:main!
+[18:58:44] [Render thread/INFO]: Registering client data for channel xaeroworldmap:main!
+[18:58:44] [Render thread/INFO]: Loading primary common config for channel xaeroworldmap:main!
+[18:58:44] [Worker-Main-1/INFO]: Started resource pack HTTP server on http://127.0.0.1:61123/
+[18:58:44] [Render thread/INFO]: Loading server config profiles for channel xaeroworldmap:main!
+[18:58:44] [Render thread/INFO]: Loading primary client config for channel xaeroworldmap:main!
+[18:58:44] [Render thread/INFO]: Loading client config profiles for channel xaeroworldmap:main!
+[18:58:44] [Render thread/INFO]: Loading Xaero's World Map - Stage 1/2
+[18:58:46] [Worker-Main-1/INFO]: ViaVersion detected lowest supported version by the proxy: c0.0.15a-1 (0)
+[18:58:46] [Worker-Main-1/INFO]: Highest supported version by the proxy: 1.21.9 (773)
+[18:58:46] [Worker-Main-1/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[18:58:46] [Yggdrasil Key Fetcher/ERROR]: Failed to request yggdrasil public key
+com.mojang.authlib.exceptions.MinecraftClientException: Failed to read from https://api.minecraftservices.com/publickeys due to api.minecraftservices.com
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:111) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:56) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo.fetch(YggdrasilServicesKeyInfo.java:114) ~[authlib-6.0.58.jar:?]
+	at knot/com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo$1.run(YggdrasilServicesKeyInfo.java:89) ~[authlib-6.0.58.jar:?]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[?:?]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+Caused by: java.net.UnknownHostException: api.minecraftservices.com
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[?:?]
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:178) ~[?:?]
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:531) ~[?:?]
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:636) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:377) ~[?:?]
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:193) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1302) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1143) ~[?:?]
+	at java.base/sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:179) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1705) ~[?:?]
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1629) ~[?:?]
+	at java.base/java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:531) ~[?:?]
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:307) ~[?:?]
+	at knot/com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:82) ~[authlib-6.0.58.jar:?]
+	... 9 more
+[18:58:47] [Render thread/INFO]: Backend library: LWJGL version 3.3.3-snapshot
+[18:58:49] [Render thread/INFO]: OpenGL Vendor: Intel
+[18:58:49] [Render thread/INFO]: OpenGL Renderer: Intel(R) HD Graphics 4400
+[18:58:49] [Render thread/INFO]: OpenGL Version: 3.2.0 - Build 20.19.15.4531
+[18:58:49] [Render thread/INFO]: Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding
+[18:58:50] [Via Async Scheduler 0/INFO]: Finished mapping loading, shutting down loader executor.
+[18:58:51] [Render thread/WARN]: onRegisterSpecialGuiRenderer():
+[18:58:51] [Download-1/ERROR]: Failed to fetch Realms feature flags
+net.minecraft.class_4355: Realms service error (500) with message 'Could not connect to Realms: pc.realms.minecraft.net'
+	at knot/net.minecraft.class_4341.method_20998(class_4341.java:551) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_4341.method_68466(class_4341.java:191) ~[client-intermediary.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+[18:58:51] [Render thread/INFO]: Reloading ResourceManager: vanilla, fabric, appleskin, blackout, cloth-config, com_viaversion_viaaprilfools-common, com_viaversion_viabackwards-common, com_viaversion_viaversion-common, conditional-mixin, entityculling, fabric-api, fabric-api-base, fabric-api-lookup-api-v1, fabric-biome-api-v1, fabric-block-api-v1, fabric-block-view-api-v2, fabric-command-api-v2, fabric-content-registries-v0, fabric-convention-tags-v1, fabric-convention-tags-v2, fabric-crash-report-info-v1, fabric-data-attachment-api-v1, fabric-data-generation-api-v1, fabric-dimensions-v1, fabric-entity-events-v1, fabric-events-interaction-v0, fabric-game-rule-api-v1, fabric-item-api-v1, fabric-item-group-api-v1, fabric-key-binding-api-v1, fabric-language-kotlin, fabric-lifecycle-events-v1, fabric-loot-api-v2, fabric-loot-api-v3, fabric-message-api-v1, fabric-model-loading-api-v1, fabric-networking-api-v1, fabric-object-builder-api-v1, fabric-particles-v1, fabric-recipe-api-v1, fabric-registry-sync-v0, fabric-renderer-api-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-rendering-v1, fabric-resource-conditions-api-v1, fabric-resource-loader-v0, fabric-screen-api-v1, fabric-screen-handler-api-v1, fabric-serialization-api-v1, fabric-sound-api-v1, fabric-tag-api-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabricloader, jade, jefffmod, krypton, litematica, lithium, malilib, meteor-client, meteor-miku, meteor-plusplus, meteor-translation-addon, minihud, moreculling, net_raphimc_viabedrock, net_raphimc_vialegacy, sodium, trender, viafabricplus, viafabricplus-visuals, xaerolib, xaerominimap, xaeroplus, xaeroworldmap, xiaohe66-meteor-lotus, file/xaeros-map-chinese.zip, file/Sodium(?)?????7.1.zip, file/?????1.21.2_v3b.zip, file/XeKr??3.6forMC1.20.2~1.21.5.zip, file/????????.zip, file/Misans???(Bye Pixel Font~).zip, file/zt3927???.zip, file/2B2T.zip
+[18:58:52] [Render thread/WARN]: Invalid path in datapack: minecraft:font/???default.json.txt, ignoring
+[18:58:52] [Worker-Main-1/INFO]: Found unifont_pua-16.0.03.hex, loading
+[18:58:52] [Worker-Main-2/INFO]: Found unifont_all_no_pua-16.0.03.hex, loading
+[18:58:53] [Render thread/INFO]: Cached all modded block culling states
+[18:58:54] [Worker-Main-2/INFO]: Found unifont_jp_patch-16.0.03.hex, loading
+[18:58:54] [Worker-Main-3/WARN]: Invalid path in datapack: minecraft:models/block/pressure_plate_down x.json, ignoring
+[18:58:55] [Render thread/INFO]: Initializing Meteor Client
+[18:58:56] [Worker-Main-1/WARN]: Exception loading blockstate definition: 'minecraft:scaffolding/file/XeKr??3.6forMC1.20.2~1.21.5.zip' for variant: 'bottom=true,1': Unknown blockstate property: '1'
+[18:58:56] [Worker-Main-1/WARN]: Exception loading blockstate definition: 'minecraft:scaffolding/file/XeKr??3.6forMC1.20.2~1.21.5.zip' for variant: 'bottom=false,1': Unknown blockstate property: '1'
+[18:58:57] [Render thread/INFO]: Reflections took 1609 ms to scan 1 urls, producing 24 keys and 973 values
+[18:58:57] [Render thread/INFO]: Reflections took 186 ms to scan 1 urls, producing 10 keys and 148 values
+[18:58:57] [Render thread/INFO]: Reflections took 44 ms to scan 1 urls, producing 4 keys and 41 values
+[18:58:57] [Worker-Main-3/WARN]: Texture minecraft:block/sculk_sensor_tendril_active with size 8x8 limits mip level from 4 to 3
+[18:58:57] [Worker-Main-3/WARN]: minecraft:textures/atlas/blocks.png: dropping miplevel from 4 to 3, because of minimum power of two: 8
+[18:58:58] [Render thread/INFO]: Reflections took 569 ms to scan 1 urls, producing 11 keys and 199 values
+[18:58:58] [Render thread/INFO]: Reflections took 16 ms to scan 1 urls, producing 5 keys and 76 values
+[18:58:58] [Render thread/INFO]: Reflections took 7 ms to scan 1 urls, producing 4 keys and 16 values
+[18:58:58] [Render thread/INFO]: Reflections took 95 ms to scan 1 urls, producing 8 keys and 52 values
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_occupied_slot_bottom_right:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_occupied_slot_top_left:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_empty_slot_top_right:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_occupied_slot_bottom_mid:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_occupied_slot_top_mid:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_empty_slot_top_mid:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_empty_slot_bottom_mid:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_occupied_slot_bottom_left:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_occupied_slot_top_right:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_empty_slot_bottom_left:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_empty_slot_top_left:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/redstone_dust_up:
+    particle
+[18:58:59] [Worker-Main-1/WARN]: Missing texture references in model minecraft:block/chiseled_bookshelf_empty_slot_bottom_right:
+    particle
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arial.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arialbd.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arialbd_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arialbd_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arialbi.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arialbi_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arialbi_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ariali.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ariali_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ariali_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arial_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\arial_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Black Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ariblk.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Black Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ariblk_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Arial Black Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ariblk_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Bahnschrift Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\bahnschrift.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Bahnschrift Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\bahnschrift_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibri.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibrib.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibrib_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibrii.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibrii_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibril.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibrili.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibrili_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibril_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibriz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibriz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Calibri Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\calibri_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cambria Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cambriab.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cambria Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cambriab_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cambria Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cambriai.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cambria Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cambriai_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cambria Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cambriaz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cambria Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cambriaz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candara.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candarab.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candarab_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candarai.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candarai_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candaral.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candarali.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candarali_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candaral_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candaraz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candaraz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Candara Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Candara_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cascadia Code Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\CascadiaCode_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Cascadia Mono Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\CascadiaMono_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comic.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comicbd.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comicbd_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comicbd_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comici.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comici_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comici_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comicz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comicz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comicz_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comic_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Comic Sans MS Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\comic_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consola.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolab.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolab_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolab_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolai.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolai_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolai_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolaz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolaz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consolaz_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consola_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Consolas Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\consola_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constan.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constanb.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constanb_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constanb_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constani.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constani_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constani_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constanz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constanz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constanz_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constan_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Constantia Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\constan_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbel.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelb.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelb_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelb_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbeli.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbeli_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbeli_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbell.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelli.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelli_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelli_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbell_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbell_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelz.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelz_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbelz_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbel_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Corbel Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\corbel_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cour.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\courbd.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\courbd_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\courbd_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\courbi.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\courbi_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\courbi_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\couri.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\couri_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cour_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font Courier New Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\cour_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font DengXian Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Deng.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font DengXian Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Dengb.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font DengXian Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Dengb_0.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font DengXian Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Dengb_1.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font DengXian Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Dengl.ttf)
+[18:59:02] [Render thread/WARN]: Failed to load system font DengXian Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Dengl_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font DengXian Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Dengl_1.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font DengXian Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Deng_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font DengXian Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Deng_1.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Ebrima Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ebrima.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Ebrima Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ebrimabd.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Ebrima Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ebrimabd_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Ebrima Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ebrima_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Franklin Gothic Medium Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\framd.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Franklin Gothic Medium Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\framdit.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Franklin Gothic Medium Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\framdit_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Franklin Gothic Medium Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\framd_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Gabriola Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Gabriola.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Gabriola Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Gabriola_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Gadugi Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\gadugi.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Gadugi Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\gadugib.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Gadugi Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\gadugib_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Gadugi Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\gadugi_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgia.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgiab.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgiab_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgiai.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgiai_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgiaz.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgiaz_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Georgia Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\georgia_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Microsoft Himalaya Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\himalaya.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Microsoft Himalaya Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\himalaya_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Impact Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\impact.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Impact Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\impact_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Ink Free Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Inkfree.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Ink Free Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Inkfree_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Javanese Text Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\javatext.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Javanese Text Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\javatext_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Lucida Sans Unicode Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\l.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Leelawadee UI Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\LeelaUIb.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Leelawadee UI Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\LeelaUIb_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Leelawadee UI Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\LeelawUI.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Leelawadee UI Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\LeelawUI_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Leelawadee UI Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\LeelUIsl.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Leelawadee UI Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\LeelUIsl_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Lucida Console Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\lucon.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Lucida Console Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\lucon_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Lucida Sans Unicode Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\l_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgun.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgunbd.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgunbd_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgunbd_1.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgunsl.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgunsl_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgun_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Malgun Gothic Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\malgun_1.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Microsoft Sans Serif Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\micross.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Microsoft Sans Serif Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\micross_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Myanmar Text Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\mmrtext.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Myanmar Text Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\mmrtextb.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Myanmar Text Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\mmrtextb_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Myanmar Text Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\mmrtext_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Mongolian Baiti Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\monbaiti.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Mongolian Baiti Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\monbaiti_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Microsoft Yi Baiti Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\msyi.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Microsoft Yi Baiti Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\msyi_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font MV Boli Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\mvboli.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font MV Boli Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\mvboli_0.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Nirmala UI Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\Nirmala.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Nirmala UI Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\NirmalaB.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Nirmala UI Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\NirmalaS.ttf)
+[18:59:03] [Render thread/WARN]: Failed to load system font Noto Sans SC Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\NotoSansSC-VF_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Noto Serif SC Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\NotoSerifSC-VF_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft New Tai Lue Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ntailu.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft New Tai Lue Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ntailub.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft New Tai Lue Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ntailub_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft New Tai Lue Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\ntailu_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\pala.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\palab.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\palabi.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\palabi_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\palab_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\palai.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\palai_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Palatino Linotype Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\pala_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft PhagsPa Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\phagspa.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft PhagsPa Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\phagspab.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft PhagsPa Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\phagspab_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Microsoft PhagsPa Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\phagspa_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Sans Serif Collection Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SansSerifCollection.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Sans Serif Collection Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SansSerifCollection_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe MDL2 Assets Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segmdl2.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe MDL2 Assets Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segmdl2_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Fluent Icons Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SegoeIcons.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Fluent Icons Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SegoeIcons_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Print Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoepr.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Print Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeprb.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Print Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeprb_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Print Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoepr_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Script Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoesc.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Script Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoescb.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Script Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoescb_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe Script Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoesc_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeui.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuib.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuib_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuib_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuii.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuii_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuii_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuil.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuil_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Light Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuil_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuisl.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuisl_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semilight Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuisl_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuiz.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuiz_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeuiz_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeui_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\segoeui_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Black Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguibl.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Black Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguibli.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Black Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguibli_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Black Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguibli_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Black Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguibl_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Black Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguibl_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Emoji Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguiemj.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Emoji Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguiemj_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Historic Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguihis.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Historic Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguihis_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguili.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguili_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Light Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguili_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semibold Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisb.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semibold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisbi.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semibold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisbi_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semibold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisbi_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semibold Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisb_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semibold Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisb_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semilight Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisli.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semilight Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisli_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Semilight Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisli_1.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Symbol Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisym.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Symbol Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\seguisym_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Variable Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SegUIVar.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font Segoe UI Variable Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SegUIVar_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font FangSong Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simfang.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font FangSong Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simfang_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font SimHei Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simhei.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font SimHei Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simhei_0.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font KaiTi Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simkai.ttf)
+[18:59:04] [Render thread/WARN]: Failed to load system font KaiTi Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simkai_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font SimSun-ExtB Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simsunb.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font SimSun-ExtB Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simsunb_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font SimSun-ExtB Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simsunb_1.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font SimSun-ExtB Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\simsunb_2.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font SimSun-ExtG Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SimsunExtG_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Sitka Text Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SitkaVF-Italic.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Sitka Text Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SitkaVF-Italic_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Sitka Text Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SitkaVF.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Sitka Text Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\SitkaVF_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Sylfaen Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\sylfaen.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Sylfaen Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\sylfaen_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Tahoma Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\tahoma.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Tahoma Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\tahomabd.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Tahoma Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\tahomabd_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Tahoma Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\tahoma_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Microsoft Tai Le Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\taile.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Microsoft Tai Le Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\taileb.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Microsoft Tai Le Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\taileb_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Microsoft Tai Le Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\taile_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\times.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\timesbd.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\timesbd_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\timesbi.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\timesbi_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\timesi.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\timesi_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Times New Roman Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\times_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebuc.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebucbd.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebucbd_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebucbi.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebucbi_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebucit.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebucit_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Trebuchet MS Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\trebuc_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdana.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdanab.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Bold (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdanab_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdanai.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdanai_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdanaz.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Bold Italic (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdanaz_0.ttf)
+[18:59:05] [Render thread/WARN]: Failed to load system font Verdana Regular (C:\Users\ZT3927\AppData\Local\Microsoft\Windows\Fonts\verdana_0.ttf)
+[18:59:05] [Render thread/INFO]: Found 76 font families.
+[18:59:05] [Render thread/WARN]: @Final field mesh:Lmeteordevelopment/meteorclient/renderer/MeshBuilder; in addon-translation.mixins.json:CustomTextRendererMixin from mod meteor-translation-addon should be final
+[18:59:06] [Render thread/INFO]: Path Manager: Baritone
+[18:59:06] [Meteor-Executor-1/ERROR]: Could not load capes: null
+[18:59:07] [Render thread/INFO]: Initializing Blackout
+[18:59:07] [Render thread/WARN]: Module 'Anchor Aura+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Andrew Tate' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Anti Aim' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Anti Crawl' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Crafting Table' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Crystal+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto EZ' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Mend' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Mine' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Moan' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Pearl' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto CC' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Auto Trap+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Custom FOV' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Elytra Fly+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Fast XP' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Feet ESP' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Force Sneak' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Hole Fill Rewrite' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Hole Fill+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Hole Snap' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Kill Aura+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Lights Out' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Mine ESP,' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Packet Fly' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Ping Spoof' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Piston Crystal' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Piston Push' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Portal God Mode' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Self Trap+' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Sound Modifier' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Strict No Slow' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Swing Modifier' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Tick Shift' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:07] [Render thread/WARN]: Module 'Weak Alert' contains invalid characters in its name making it incompatible with Meteor Client commands.
+[18:59:08] [Render thread/INFO]: Initializing Jefff Mod
+[18:59:08] [Render thread/INFO]: Initializing Meteor Addon Miku
+[18:59:08] [Render thread/INFO]: Initializing Meteor++ Addon
+[18:59:08] [Render thread/INFO]: Initializing MeteorTransaction
+[18:59:08] [Render thread/INFO]: Initializing xiaohe66-meteor-lotus
+[18:59:08] [Render thread/INFO]: Loading
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend '00011152'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend '00011152'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend '_Xiaozhen_'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend '_Xiaozhen_'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'Ai_yinsi_tan'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'Ai_yinsi_tan'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'Allsion'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'Allsion'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'anxihedong'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'Echo1'
+[18:59:08] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'Echo1'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'Marlowww'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'Marlowww'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'nq3'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'nq3'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'QianLongawa'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'QianLongawa'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'RSTminecraft'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'RSTminecraft'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'Steve'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'Steve'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'suipian_QAQ'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'suipian_QAQ'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to connect session server for friend 'zt3927'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'zt3927'
+[18:59:09] [Meteor-Executor-1/ERROR]: Error while trying to update info for friend 'zt_1'
+[18:59:09] [Render thread/INFO]: Loaded in 680 milliseconds
+[18:59:09] [Render thread/INFO]: Start loading plugin from Jade: snownee.jade.addon.core.CorePlugin
+[18:59:09] [Render thread/INFO]: Start loading plugin from Jade: snownee.jade.addon.vanilla.VanillaPlugin
+[18:59:09] [Render thread/INFO]: Start loading plugin from Jade: snownee.jade.addon.universal.UniversalPlugin
+[18:59:09] [Render thread/INFO]: Start loading plugin from Jade: snownee.jade.addon.access.AccessibilityPlugin
+[18:59:09] [Render thread/INFO]: Start loading plugin from Jade: snownee.jade.addon.debug.DebugPlugin
+[18:59:09] [Render thread/INFO]: Loading Xaero's World Map - Stage 2/2
+[18:59:09] [Render thread/INFO]: New world map region cache hash code: -1316773108
+[18:59:09] [Render thread/ERROR]: io exception while checking versions: data.chocolateminecraft.com
+[18:59:09] [Render thread/INFO]: Registered player tracker system: map_synced
+[18:59:09] [Render thread/INFO]: Xaero's WorldMap Mod: Xaero's minimap found!
+[18:59:09] [Render thread/INFO]: Registered player tracker system: minimap_synced
+[18:59:09] [Render thread/INFO]: No Optifine!
+[18:59:09] [Render thread/INFO]: Xaero's World Map: No Vivecraft!
+[18:59:10] [Render thread/WARN]: Unable to read property: level with value: "0" for blockstate: {Name:"minecraft:water_cauldron",Properties:{level:"0"}}
+[18:59:11] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on Speaker/HP (Realtek High Definition Audio)
+[18:59:11] [Render thread/INFO]: Sound engine started
+[18:59:11] [Render thread/INFO]: Created: 1024x1024x3 minecraft:textures/atlas/blocks.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[18:59:11] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[18:59:11] [Render thread/INFO]: Loading Xaero's Minimap - Stage 2/2
+[18:59:11] [Render thread/WARN]: io exception while checking versions: data.chocolateminecraft.com
+[18:59:11] [Render thread/INFO]: Registered player tracker system: minimap_synced
+[18:59:11] [Render thread/INFO]: Xaero's Minimap: World Map found!
+[18:59:11] [Render thread/INFO]: No Optifine!
+[18:59:11] [Render thread/INFO]: Xaero's Minimap: No Vivecraft!
+[18:59:11] [Render thread/INFO]: Loading XaeroLib common 2/2!
+[18:59:11] [Render thread/INFO]: Loading XaeroLib client 2/2!
+[18:59:12] [Render thread/INFO]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[18:59:12] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[18:59:12] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[18:59:12] [Render thread/INFO]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[18:59:13] [IO-Worker-1/ERROR]: Couldn't connect to realms
+net.minecraft.class_4355: Realms service error (500) with message '?????Realm?pc.realms.minecraft.net'
+	at knot/net.minecraft.class_4341.method_20998(class_4341.java:551) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_4341.method_21027(class_4341.java:318) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_8647.method_52627(class_8647.java:51) ~[client-intermediary.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+[18:59:14] [Meteor-Executor-1/ERROR]: Could not fetch repository information for addon 'Meteor Client'.
+javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:960) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133) ~[java.net.http:?]
+	at knot/meteordevelopment.meteorclient.utils.network.Http$Request._sendResponse(Http.java:118) ~[meteor-client-1.21.8-69.jar:?]
+	at knot/meteordevelopment.meteorclient.utils.network.Http$Request.sendJsonResponse(Http.java:172) ~[meteor-client-1.21.8-69.jar:?]
+	at knot/meteordevelopment.meteorclient.utils.player.TitleScreenCredits.lambda$init$2(TitleScreenCredits.java:53) ~[meteor-client-1.21.8-69.jar:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+Caused by: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:130) ~[?:?]
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:383) ~[?:?]
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:326) ~[?:?]
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1287) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1164) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1107) ~[?:?]
+	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:393) ~[?:?]
+	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:477) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1273) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1260) ~[?:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask.run(SSLEngineImpl.java:1205) ~[?:?]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[?:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.lambda$executeTasks$3(SSLFlowDelegate.java:1148) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.HttpClientImpl$DelegatingExecutor.execute(HttpClientImpl.java:177) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.executeTasks(SSLFlowDelegate.java:1143) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.doHandshake(SSLFlowDelegate.java:1109) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader.processData(SSLFlowDelegate.java:508) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader$ReaderDownstreamPusher.run(SSLFlowDelegate.java:283) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run(SequentialScheduler.java:182) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:149) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$TryEndDeferredCompleter.complete(SequentialScheduler.java:324) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:151) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run(SequentialScheduler.java:207) ~[java.net.http:?]
+	... 3 more
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:388) ~[?:?]
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:271) ~[?:?]
+	at java.base/sun.security.validator.Validator.validate(Validator.java:256) ~[?:?]
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:284) ~[?:?]
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:144) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1265) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1164) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1107) ~[?:?]
+	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:393) ~[?:?]
+	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:477) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1273) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1260) ~[?:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask.run(SSLEngineImpl.java:1205) ~[?:?]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[?:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.lambda$executeTasks$3(SSLFlowDelegate.java:1148) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.HttpClientImpl$DelegatingExecutor.execute(HttpClientImpl.java:177) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.executeTasks(SSLFlowDelegate.java:1143) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.doHandshake(SSLFlowDelegate.java:1109) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader.processData(SSLFlowDelegate.java:508) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader$ReaderDownstreamPusher.run(SSLFlowDelegate.java:283) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run(SequentialScheduler.java:182) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:149) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$TryEndDeferredCompleter.complete(SequentialScheduler.java:324) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:151) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run(SequentialScheduler.java:207) ~[java.net.http:?]
+	... 3 more
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:148) ~[?:?]
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:129) ~[?:?]
+	at java.base/java.security.cert.CertPathBuilder.build(CertPathBuilder.java:297) ~[?:?]
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:383) ~[?:?]
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:271) ~[?:?]
+	at java.base/sun.security.validator.Validator.validate(Validator.java:256) ~[?:?]
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:284) ~[?:?]
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:144) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1265) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1164) ~[?:?]
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1107) ~[?:?]
+	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:393) ~[?:?]
+	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:477) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1273) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1260) ~[?:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714) ~[?:?]
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask.run(SSLEngineImpl.java:1205) ~[?:?]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[?:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.lambda$executeTasks$3(SSLFlowDelegate.java:1148) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.HttpClientImpl$DelegatingExecutor.execute(HttpClientImpl.java:177) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.executeTasks(SSLFlowDelegate.java:1143) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.doHandshake(SSLFlowDelegate.java:1109) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader.processData(SSLFlowDelegate.java:508) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader$ReaderDownstreamPusher.run(SSLFlowDelegate.java:283) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run(SequentialScheduler.java:182) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:149) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$TryEndDeferredCompleter.complete(SequentialScheduler.java:324) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:151) ~[java.net.http:?]
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run(SequentialScheduler.java:207) ~[java.net.http:?]
+	... 3 more
+[18:59:45] [Render thread/INFO]: Loaded 1407 recipes
+[18:59:45] [Render thread/INFO]: Loaded 1520 advancements
+[18:59:45] [Render thread/INFO]: Applied 0 biome modifications to 0 of 65 new biomes in 3.717 ms
+[18:59:46] [Server thread/INFO]: Starting integrated minecraft server version 1.21.8
+[18:59:46] [Server thread/INFO]: Generating keypair
+[18:59:47] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[18:59:47] [Render thread/INFO]: ????????0%
+[18:59:47] [Render thread/INFO]: ????????0%
+[18:59:48] [Render thread/INFO]: Time elapsed: 912 ms
+[18:59:48] [Server thread/INFO]: Changing view distance to 2, from 10
+[18:59:48] [Server thread/INFO]: Changing simulation distance to 5, from 0
+[18:59:51] [Server thread/INFO]: zt3927[local:E:6b00d6a0] logged in with entity id 17 at (157.86057911078996, 107.875, -1234.967590290847)
+[18:59:51] [Server thread/INFO]: zt3927?????
+[18:59:53] [Render thread/INFO]: Minimap required item set to nothing.
+[18:59:53] [Render thread/INFO]: New Xaero hud session initialized!
+[18:59:54] [Render thread/INFO]: Fullscreen map required item set to nothing.
+[18:59:54] [Render thread/INFO]: New world map session initialized!
+[18:59:54] [Render thread/INFO]: Started 1 worker threads
+[18:59:54] [Render thread/INFO]: [STDOUT]: Baritone world data dir: C:\Users\TEST\HMCL\.minecraft\versions\1.21.8-Fabric\saves\????\.\baritone\minecraft\the_end_256
+[18:59:54] [Render thread/INFO]: [STDOUT]: Cached world directory: C:\Users\TEST\HMCL\.minecraft\versions\1.21.8-Fabric\saves\????\.\baritone\minecraft\the_end_256\cache
+[18:59:54] [Render thread/INFO]: [STDOUT]: Would save waypoints to C:\Users\TEST\HMCL\.minecraft\versions\1.21.8-Fabric\saves\????\.\baritone\minecraft\the_end_256\waypoints
+[18:59:54] [Render thread/INFO]: Using 3 total BufferAllocator caches
+[18:59:55] [Render thread/WARN]: Unable to read property: west with value: "false" for blockstate: {Name:"minecraft:cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: east with value: "false" for blockstate: {Name:"minecraft:cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: south with value: "false" for blockstate: {Name:"minecraft:cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: north with value: "false" for blockstate: {Name:"minecraft:cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: west with value: "false" for blockstate: {Name:"minecraft:mossy_cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: east with value: "false" for blockstate: {Name:"minecraft:mossy_cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: south with value: "false" for blockstate: {Name:"minecraft:mossy_cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/WARN]: Unable to read property: north with value: "false" for blockstate: {Name:"minecraft:mossy_cobblestone_wall",Properties:{east:"false",north:"false",south:"false",up:"false",west:"false"}}
+[18:59:55] [Render thread/INFO]: [STDOUT]: ws
+[18:59:55] [Render thread/INFO]: [System] [CHAT] <18:59:55> [MikuMiku] ????? Via ???1.20.6?????
+[18:59:55] [Render thread/INFO]: [System] [CHAT] <18:59:55> [Meteor] ????????????????? ?????????????????
+[18:59:55] [Render thread/INFO]: [System] [CHAT] <18:59:55> [Meteor] ????????? ???????
+[18:59:55] [Render thread/INFO]: [STDOUT]: ws
+[18:59:55] [Render thread/INFO]: [STDOUT]: ws
+[18:59:55] [Render thread/INFO]: [System] [CHAT] <18:59:55> [Meteor] ??? xiaohe66-meteor-lotus, ?????
+[18:59:55] [Render thread/WARN]: Ignoring chat session from zt3927 due to missing Services public key
+[18:59:55] [Render thread/INFO]: Minimap updated server level id: -148885380 for world ResourceKey[minecraft:dimension / minecraft:the_end]
+[18:59:55] [Render thread/INFO]: Loaded 177 advancements
+[18:59:55] [Render thread/INFO]: Received config from the server: {}
+[18:59:55] [pool-13-thread-1/INFO]: [STDOUT]: Loading region 0,-3 from disk C:\Users\TEST\HMCL\.minecraft\versions\1.21.8-Fabric\saves\????\.\baritone\minecraft\the_end_256\cache
+[18:59:55] [Thread-5/INFO]: Firing world change event: ENTER_WORLD from null to ResourceKey[minecraft:dimension / minecraft:the_end]
+[18:59:56] [XaeroPlusBreadcrumbs-Manager/INFO]: [XaeroPlusBreadcrumbs] Running 654 queued tasks
+[18:59:56] [pool-13-thread-1/INFO]: [STDOUT]: Loaded region successfully in 933ms
+[18:59:56] [Render thread/ERROR]: Unreported exception thrown!
+java.lang.NoSuchMethodException: fi.dy.masa.litematica.world.WorldSchematic.getBlockState(net.minecraft.class_2338)
+	at java.base/java.lang.Class.getMethod(Class.java:2397) ~[?:?]
+	at knot/com.zychen027.meteorplusplus.modules.Printer.onRender3D(Printer.kt:129) ~[meteor-meteorplusplus-1.0.0.jar:?]
+	at knot/meteordevelopment.orbit.listeners.LambdaListener.call(LambdaListener.java:83) ~[meteor-client-1.21.8-69.jar:?]
+	at knot/meteordevelopment.orbit.EventBus.post(EventBus.java:53) ~[meteor-client-1.21.8-69.jar:?]
+	at knot/net.minecraft.class_757.handler$cco000$meteor-client$onRenderWorld(class_757.java:3017) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_757.method_3188(class_757.java:740) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_757.method_3192(class_757.java:506) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1523(class_310.java:1361) ~[client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1514(class_310.java:947) [client-intermediary.jar:?]
+	at knot/net.minecraft.client.main.Main.main(Main.java:265) [client-intermediary.jar:?]
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.18.4.jar:?]
+[18:59:59] [Server thread/WARN]: Can't keep up! Is the server overloaded? Running 2442ms or 48 ticks behind
+[18:59:59] [Server thread/INFO]: Stopping server
+[18:59:59] [Server thread/INFO]: Saving players
+[18:59:59] [Server thread/INFO]: Saving worlds
+[18:59:59] [Server thread/INFO]: Saving chunks for level 'ServerLevel[????]'/minecraft:overworld
+[18:59:59] [Server thread/INFO]: Saving chunks for level 'ServerLevel[????]'/minecraft:the_nether
+[18:59:59] [Server thread/INFO]: Saving chunks for level 'ServerLevel[????]'/minecraft:the_end
+[18:59:59] [Server thread/INFO]: ThreadedAnvilChunkStorage (????): All chunks are saved
+[18:59:59] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[18:59:59] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[18:59:59] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[18:59:59] [Render thread/INFO]: Saving
+[18:59:59] [Thread-5/INFO]: Firing world change event: EXIT_WORLD from ResourceKey[minecraft:dimension / minecraft:the_end] to null
+[18:59:59] [Render thread/INFO]: Saved in 73 milliseconds.
+[18:59:59] [Render thread/INFO]: Xaero hud session finalized.
+[18:59:59] [Render thread/INFO]: Finalizing world map session...
+[18:59:59] [Thread-5/INFO]: World map force-cleaned!
+[19:00:00] [Render thread/INFO]: World map session finalized.
+[19:00:00] [Render thread/ERROR]: Failed getting current dimension id
+java.lang.NullPointerException: Cannot invoke "xaero.map.WorldMapSession.getMapProcessor()" because "xaero.map.core.XaeroWorldMapCore.currentSession" is null
+	at knot/xaeroplus.Globals.getCurrentDimensionId(Globals.java:46) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.feature.drawing.DrawingCache.loadHighlightsInViewedDimension(DrawingCache.java:490) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.feature.drawing.DrawingCache.lambda$handleWorldChange$7(DrawingCache.java:181) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.lambda$wrap$3(TickTaskExecutor.java:93) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.lambda$submit$1(TickTaskExecutor.java:68) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.onRenderTick(TickTaskExecutor.java:36) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.handler.ConsumerHandler.call(ConsumerHandler.java:39) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.LambdaManager.call(LambdaManager.java:168) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.LambdaManager.call(LambdaManager.java:132) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.minecraft.class_310.handler$eep000$xaeroplus$renderTickHead(class_310.java:3076) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1523(class_310.java) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_18098(class_310.java:2286) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_18096(class_310.java:2217) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_72099(class_310.java:2184) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1519(class_310.java:1513) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_54580(class_310.java:1017) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1514(class_310.java:971) [client-intermediary.jar:?]
+	at knot/net.minecraft.client.main.Main.main(Main.java:265) [client-intermediary.jar:?]
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.18.4.jar:?]
+[19:00:00] [Render thread/ERROR]: Failed getting current dimension id
+java.lang.NullPointerException: Cannot invoke "xaero.map.WorldMapSession.getMapProcessor()" because "xaero.map.core.XaeroWorldMapCore.currentSession" is null
+	at knot/xaeroplus.Globals.getCurrentDimensionId(Globals.java:46) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.feature.drawing.DrawingCache.loadLinesInViewedDimension(DrawingCache.java:512) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.feature.drawing.DrawingCache.lambda$handleWorldChange$7(DrawingCache.java:182) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.lambda$wrap$3(TickTaskExecutor.java:93) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.lambda$submit$1(TickTaskExecutor.java:68) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.onRenderTick(TickTaskExecutor.java:36) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.handler.ConsumerHandler.call(ConsumerHandler.java:39) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.LambdaManager.call(LambdaManager.java:168) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.LambdaManager.call(LambdaManager.java:132) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.minecraft.class_310.handler$eep000$xaeroplus$renderTickHead(class_310.java:3076) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1523(class_310.java) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_18098(class_310.java:2286) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_18096(class_310.java:2217) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_72099(class_310.java:2184) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1519(class_310.java:1513) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_54580(class_310.java:1017) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1514(class_310.java:971) [client-intermediary.jar:?]
+	at knot/net.minecraft.client.main.Main.main(Main.java:265) [client-intermediary.jar:?]
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.18.4.jar:?]
+[19:00:00] [Render thread/ERROR]: Failed getting current dimension id
+java.lang.NullPointerException: Cannot invoke "xaero.map.WorldMapSession.getMapProcessor()" because "xaero.map.core.XaeroWorldMapCore.currentSession" is null
+	at knot/xaeroplus.Globals.getCurrentDimensionId(Globals.java:46) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.feature.drawing.DrawingCache.loadTextsInViewedDimension(DrawingCache.java:533) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.feature.drawing.DrawingCache.lambda$handleWorldChange$7(DrawingCache.java:183) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.lambda$wrap$3(TickTaskExecutor.java:93) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.lambda$submit$1(TickTaskExecutor.java:68) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/xaeroplus.module.impl.TickTaskExecutor.onRenderTick(TickTaskExecutor.java:36) ~[XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.handler.ConsumerHandler.call(ConsumerHandler.java:39) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.LambdaManager.call(LambdaManager.java:168) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.lenni0451.lambdaevents.LambdaManager.call(LambdaManager.java:132) [XaeroPlus-2.30.9+fabric-1.21.8-WM1.40.11-MM25.3.10.jar:?]
+	at knot/net.minecraft.class_310.handler$eep000$xaeroplus$renderTickHead(class_310.java:3076) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1523(class_310.java) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_18098(class_310.java:2286) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_18096(class_310.java:2217) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_72099(class_310.java:2184) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1519(class_310.java:1513) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_54580(class_310.java:1017) [client-intermediary.jar:?]
+	at knot/net.minecraft.class_310.method_1514(class_310.java:971) [client-intermediary.jar:?]
+	at knot/net.minecraft.client.main.Main.main(Main.java:265) [client-intermediary.jar:?]
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72) [fabric-loader-0.18.4.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.18.4.jar:?]
+[19:00:00] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[19:00:00] [Render thread/INFO]: Stopping worker threads
+---- Minecraft Crash Report ----
+// This doesn't make any sense!
+
+Time: 2026-03-23 19:00:01
+Description: Unexpected error
+
+java.lang.NoSuchMethodException: fi.dy.masa.litematica.world.WorldSchematic.getBlockState(net.minecraft.class_2338)
+	at java.base/java.lang.Class.getMethod(Class.java:2397)
+	at knot//com.zychen027.meteorplusplus.modules.Printer.onRender3D(Printer.kt:129)
+	at knot//meteordevelopment.orbit.listeners.LambdaListener.call(LambdaListener.java:83)
+	at knot//meteordevelopment.orbit.EventBus.post(EventBus.java:53)
+	at knot//net.minecraft.class_757.handler$cco000$meteor-client$onRenderWorld(class_757.java:3017)
+	at knot//net.minecraft.class_757.method_3188(class_757.java:740)
+	at knot//net.minecraft.class_757.method_3192(class_757.java:506)
+	at knot//net.minecraft.class_310.method_1523(class_310.java:1361)
+	at knot//net.minecraft.class_310.method_1514(class_310.java:947)
+	at knot//net.minecraft.client.main.Main.main(Main.java:265)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at java.base/java.lang.Class.getMethod(Class.java:2397)
+	at knot//com.zychen027.meteorplusplus.modules.Printer.onRender3D(Printer.kt:129)
+	at knot//meteordevelopment.orbit.listeners.LambdaListener.call(LambdaListener.java:83)
+	at knot//meteordevelopment.orbit.EventBus.post(EventBus.java:53)
+	at knot//net.minecraft.class_757.handler$cco000$meteor-client$onRenderWorld(class_757.java:3017)
+	at knot//net.minecraft.class_757.method_3188(class_757.java:740)
+
+-- Uptime --
+Details:
+	JVM uptime: 127.496s
+	Wall uptime: 82.602s
+	High-res time: 71.859s
+	Client ticks: 654 ticks / 32.700s
+Stacktrace:
+	at knot//net.minecraft.class_310.method_1587(class_310.java:2411)
+	at knot//net.minecraft.class_310.method_54580(class_310.java:1016)
+	at knot//net.minecraft.class_310.method_1514(class_310.java:971)
+	at knot//net.minecraft.client.main.Main.main(Main.java:265)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+
+-- Affected level --
+Details:
+	All players: 1 total; class_746{name=zt3927, id=17, pos=(157.86057911078996, 107.875, -1234.967590290847), mode=ADVENTURE, permission=4}
+	Chunk stats: 121, 49
+	Level dimension: minecraft:the_end
+	Level spawn location: World: (0,-60,0), Section: (at 0,4,0 in 0,-4,0; chunk contains blocks 0,0,0 to 15,255,15), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Level time: 120254 game time, 120254 day time
+	Server brand: fabric
+	Server type: Integrated singleplayer server
+	Tracked entity count: 1
+
+-- Last reload --
+Details:
+	Reload number: 1
+	Reload reason: initial
+	Finished: Yes
+	Packs: vanilla, fabric, appleskin, blackout, cloth-config, com_viaversion_viaaprilfools-common, com_viaversion_viabackwards-common, com_viaversion_viaversion-common, conditional-mixin, entityculling, fabric-api, fabric-api-base, fabric-api-lookup-api-v1, fabric-biome-api-v1, fabric-block-api-v1, fabric-block-view-api-v2, fabric-command-api-v2, fabric-content-registries-v0, fabric-convention-tags-v1, fabric-convention-tags-v2, fabric-crash-report-info-v1, fabric-data-attachment-api-v1, fabric-data-generation-api-v1, fabric-dimensions-v1, fabric-entity-events-v1, fabric-events-interaction-v0, fabric-game-rule-api-v1, fabric-item-api-v1, fabric-item-group-api-v1, fabric-key-binding-api-v1, fabric-language-kotlin, fabric-lifecycle-events-v1, fabric-loot-api-v2, fabric-loot-api-v3, fabric-message-api-v1, fabric-model-loading-api-v1, fabric-networking-api-v1, fabric-object-builder-api-v1, fabric-particles-v1, fabric-recipe-api-v1, fabric-registry-sync-v0, fabric-renderer-api-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-rendering-v1, fabric-resource-conditions-api-v1, fabric-resource-loader-v0, fabric-screen-api-v1, fabric-screen-handler-api-v1, fabric-serialization-api-v1, fabric-sound-api-v1, fabric-tag-api-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabricloader, jade, jefffmod, krypton, litematica, lithium, malilib, meteor-client, meteor-miku, meteor-plusplus, meteor-translation-addon, minihud, moreculling, net_raphimc_viabedrock, net_raphimc_vialegacy, sodium, trender, viafabricplus, viafabricplus-visuals, xaerolib, xaerominimap, xaeroplus, xaeroworldmap, xiaohe66-meteor-lotus, file/xaeros-map-chinese.zip, file/Sodium(?)?????7.1.zip, file/?????1.21.2_v3b.zip, file/XeKr??3.6forMC1.20.2~1.21.5.zip, file/????????.zip, file/Misans???(Bye Pixel Font~).zip, file/zt3927???.zip, file/2B2T.zip
+
+-- System Details --
+Details:
+	Minecraft Version: 1.21.8
+	Minecraft Version ID: 1.21.8
+	Operating System: Windows 11 (amd64) version 10.0
+	Java Version: 21.0.9, Microsoft
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Microsoft
+	Memory: 412463008 bytes (393 MiB) / 1040187392 bytes (992 MiB) up to 4160749568 bytes (3968 MiB)
+	CPUs: 4
+	Processor Vendor: GenuineIntel
+	Processor Name: Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz
+	Identifier: Intel64 Family 6 Model 69 Stepping 1
+	Microarchitecture: Haswell (Client)
+	Frequency (GHz): 2.49
+	Number of physical packages: 1
+	Number of physical CPUs: 2
+	Number of logical CPUs: 4
+	Graphics card #0 name: Intel(R) HD Graphics Family
+	Graphics card #0 vendor: Intel Corporation
+	Graphics card #0 VRAM (MiB): 1024.00
+	Graphics card #0 deviceId: VideoController1
+	Graphics card #0 versionInfo: 20.19.15.4531
+	Memory slot #0 capacity (MiB): 8192.00
+	Memory slot #0 clockSpeed (GHz): 1.60
+	Memory slot #0 type: DDR3
+	Virtual memory max (MiB): 11667.60
+	Virtual memory used (MiB): 6766.72
+	Swap memory total (MiB): 3595.76
+	Swap memory used (MiB): 337.40
+	Space in storage for jna.tmpdir (MiB): available: 8579.38, total: 12287.00
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): available: 8579.38, total: 12287.00
+	Space in storage for io.netty.native.workdir (MiB): available: 8579.38, total: 12287.00
+	Space in storage for java.io.tmpdir (MiB): available: 5303.93, total: 38980.00
+	Space in storage for workdir (MiB): available: 8579.38, total: 12287.00
+	JVM Flags: 19 total; -Xmx3947m -XX:+UnlockExperimentalVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+UseG1GC -XX:G1MixedGCCountTarget=5 -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32m -XX:-OmitStackTraceInFastThrow -XX:-DontCompileHugeMethods -XX:MaxNodeLimit=240000 -XX:NodeLimitFudgeFactor=8000 -XX:TieredCompileTaskTimeout=10000 -XX:ReservedCodeCacheSize=400M -XX:NonNMethodCodeHeapSize=12M -XX:ProfiledCodeHeapSize=194M -XX:NmethodSweepActivity=1 -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	Fabric Mods: 
+		appleskin: AppleSkin 3.0.6+mc1.21.6
+		baritone-meteor: Baritone 1.21.8-SNAPSHOT
+			dev_babbaj_nether-pathfinder: nether-pathfinder 1.4.1
+		blackout: Blackout 1.3.0
+		cloth-config: Cloth Config v19 19.0.147
+			cloth-basic-math: cloth-basic-math 0.6.1
+		entityculling: EntityCulling 1.9.5
+			transition: TRansition 1.0.11
+			trender: TRender 1.0.10
+		fabric-api: Fabric API 0.136.1+1.21.8
+			fabric-api-base: Fabric API Base 0.5.0+cd8c0daa2c
+			fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 1.6.101+946bf4c32c
+			fabric-biome-api-v1: Fabric Biome API (v1) 16.1.0+c21d71cc2c
+			fabric-block-api-v1: Fabric Block API (v1) 1.1.3+946bf4c32c
+			fabric-block-view-api-v2: Fabric BlockView API (v2) 1.0.31+946bf4c32c
+			fabric-command-api-v2: Fabric Command API (v2) 2.3.1+52fff9ec2c
+			fabric-content-registries-v0: Fabric Content Registries (v0) 10.1.0+c75de69d2c
+			fabric-convention-tags-v1: Fabric Convention Tags 2.1.41+7f945d5b2c
+			fabric-convention-tags-v2: Fabric Convention Tags (v2) 2.15.6+eb5df52f2c
+			fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 0.3.15+946bf4c32c
+			fabric-data-attachment-api-v1: Fabric Data Attachment API (v1) 1.8.14+97214db32c
+			fabric-data-generation-api-v1: Fabric Data Generation API (v1) 23.2.8+2e1c6d322c
+			fabric-dimensions-v1: Fabric Dimensions API (v1) 4.0.20+948fc79a2c
+			fabric-entity-events-v1: Fabric Entity Events (v1) 2.1.2+c9e472732c
+			fabric-events-interaction-v0: Fabric Events Interaction (v0) 4.0.26+946bf4c32c
+			fabric-game-rule-api-v1: Fabric Game Rule API (v1) 1.0.73+c64c9c5b2c
+			fabric-item-api-v1: Fabric Item API (v1) 11.5.0+02ce13f42c
+			fabric-item-group-api-v1: Fabric Item Group API (v1) 4.2.14+c5f9bbc12c
+			fabric-key-binding-api-v1: Fabric Key Binding API (v1) 1.0.65+946bf4c32c
+			fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 2.6.4+db4dfd852c
+			fabric-loot-api-v2: Fabric Loot API (v2) 3.0.56+3f89f5a52c
+			fabric-loot-api-v3: Fabric Loot API (v3) 2.0.3+946bf4c32c
+			fabric-message-api-v1: Fabric Message API (v1) 6.1.2+946bf4c32c
+			fabric-model-loading-api-v1: Fabric Model Loading API (v1) 5.2.8+946bf4c32c
+			fabric-networking-api-v1: Fabric Networking API (v1) 5.1.0+57cb96dd2c
+			fabric-object-builder-api-v1: Fabric Object Builder API (v1) 21.1.10+946bf4c32c
+			fabric-particles-v1: Fabric Particles (v1) 4.1.10+946bf4c32c
+			fabric-recipe-api-v1: Fabric Recipe API (v1) 8.1.17+946bf4c32c
+			fabric-registry-sync-v0: Fabric Registry Sync (v0) 6.1.30+946bf4c32c
+			fabric-renderer-api-v1: Fabric Renderer API (v1) 7.0.5+208eed172c
+			fabric-renderer-indigo: Fabric Renderer - Indigo 4.0.5+946bf4c32c
+			fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 3.1.31+fa6cb72b2c
+			fabric-rendering-v1: Fabric Rendering (v1) 12.6.0+486b7ff72c
+			fabric-resource-conditions-api-v1: Fabric Resource Conditions API (v1) 5.0.25+98e6d6db2c
+			fabric-resource-loader-v0: Fabric Resource Loader (v0) 3.1.12+020423442c
+			fabric-screen-api-v1: Fabric Screen API (v1) 2.2.0+e0cb65d02c
+			fabric-screen-handler-api-v1: Fabric Screen Handler API (v1) 1.3.139+946bf4c32c
+			fabric-serialization-api-v1: Fabric Serialization API (v1) 1.0.0+fc0e5aba2c
+			fabric-sound-api-v1: Fabric Sound API (v1) 1.0.42+946bf4c32c
+			fabric-tag-api-v1: Fabric Tag API (v1) 1.2.2+946bf4c32c
+			fabric-transfer-api-v1: Fabric Transfer API (v1) 6.0.6+946bf4c32c
+			fabric-transitive-access-wideners-v1: Fabric Transitive Access Wideners (v1) 6.5.0+c847ce762c
+		fabric-language-kotlin: Fabric Language Kotlin 1.13.9+kotlin.2.3.10
+			org_jetbrains_kotlin_kotlin-reflect: kotlin-reflect 2.3.10
+			org_jetbrains_kotlin_kotlin-stdlib: kotlin-stdlib 2.3.10
+			org_jetbrains_kotlin_kotlin-stdlib-jdk7: kotlin-stdlib-jdk7 2.3.10
+			org_jetbrains_kotlin_kotlin-stdlib-jdk8: kotlin-stdlib-jdk8 2.3.10
+			org_jetbrains_kotlinx_atomicfu-jvm: atomicfu-jvm 0.31.0
+			org_jetbrains_kotlinx_kotlinx-coroutines-core-jvm: kotlinx-coroutines-core-jvm 1.10.2
+			org_jetbrains_kotlinx_kotlinx-coroutines-jdk8: kotlinx-coroutines-jdk8 1.10.2
+			org_jetbrains_kotlinx_kotlinx-datetime-jvm: kotlinx-datetime-jvm 0.7.1
+			org_jetbrains_kotlinx_kotlinx-io-bytestring-jvm: kotlinx-io-bytestring-jvm 0.8.2
+			org_jetbrains_kotlinx_kotlinx-io-core-jvm: kotlinx-io-core-jvm 0.8.2
+			org_jetbrains_kotlinx_kotlinx-serialization-cbor-jvm: kotlinx-serialization-cbor-jvm 1.10.0
+			org_jetbrains_kotlinx_kotlinx-serialization-core-jvm: kotlinx-serialization-core-jvm 1.10.0
+			org_jetbrains_kotlinx_kotlinx-serialization-json-jvm: kotlinx-serialization-json-jvm 1.10.0
+		fabricloader: Fabric Loader 0.18.4
+			mixinextras: MixinExtras 0.5.0
+		ferritecore: FerriteCore 8.0.4
+		jade: Jade 19.3.2+fabric
+		java: OpenJDK 64-Bit Server VM 21
+		jefffmod: Jefff's Mods 0.16.6
+		krypton: Krypton 0.2.9
+			com_velocitypowered_velocity-native: velocity-native 3.4.0-SNAPSHOT
+		litematica: Litematica 0.23.6
+		lithium: Lithium 0.18.1+mc1.21.8
+		malilib: MaLiLib 0.25.7
+		meteor-client: Meteor Client 1.21.8-69
+		meteor-miku: meteor-miku 9.1.0
+		meteor-plusplus: Meteor++ 1.0.0
+		meteor-translation-addon: Meteor Translation Addon 0.7.0
+		minecraft: Minecraft 1.21.8
+		minihud: MiniHUD 0.36.7
+		moreculling: More Culling 1.4.0-beta.2
+			conditional-mixin: conditional mixin 0.6.3
+			mixinsquared: MixinSquared 0.2.0
+		sodium: Sodium 0.7.3+mc1.21.8
+		viafabricplus: ViaFabricPlus 4.2.5
+			com_github_oryxel_cubeconverter: CubeConverter 916cadb12a
+			com_vdurmont_semver4j: semver4j 3.1.0
+			com_viaversion_mcstructs_dialog: dialog 5-3.2.0-SNAPSHOT
+			com_viaversion_mcstructs_registry: registry 5-3.2.0-SNAPSHOT
+			com_viaversion_viaaprilfools-common: viaaprilfools-common 4.0.4
+			com_viaversion_viabackwards-common: viabackwards-common 5.5.1-20251003.194311-1
+			com_viaversion_vialoader: vialoader 4.0.5
+			com_viaversion_viaversion-common: viaversion-common 5.5.1-20251003.180311-1
+			de_florianmichael_classic4j: Classic4J 2.1.0
+			io_jsonwebtoken_jjwt-api: jjwt-api 0.13.0
+			io_jsonwebtoken_jjwt-gson: jjwt-gson 0.13.0
+			io_jsonwebtoken_jjwt-impl: jjwt-impl 0.13.0
+			io_netty_netty-codec-compression: netty-codec-compression 4.2.6
+			io_netty_netty-codec-http: netty-codec-http 4.2.6
+			net_jodah_expiringmap: expiringmap 0.5.10
+			net_lenni0451_commons_httpclient: httpclient 1.7.1
+			net_lenni0451_mcstructs-bedrock_forms: forms 2.0.1
+			net_lenni0451_mcstructs-bedrock_text: text 2.0.1
+			net_lenni0451_reflect: Reflect 1.5.0
+			net_raphimc_minecraftauth: MinecraftAuth 4.1.2
+			net_raphimc_viabedrock: ViaBedrock 0.0.22-20251003.200622-1
+			net_raphimc_vialegacy: ViaLegacy 3.0.11
+			org_cloudburstmc_netty_netty-transport-raknet: netty-transport-raknet 1.0.0.CR3-SNAPSHOT
+			org_lz4_lz4-pure-java: lz4-pure-java 1.8.0
+			team_unnamed_mocha: mocha 3.0.1
+			viafabricplus-api: ViaFabricPlus API 4.2.5
+			viafabricplus-visuals: ViaFabricPlus Visuals 4.2.5
+		xaerominimap: Xaero's Minimap 25.3.10
+			xaerolib: XaeroLib 1.1.0
+		xaeroplus: XaeroPlus 2.30.9
+		xaeroworldmap: Xaero's World Map 1.40.11
+		xiaohe66-meteor-lotus: xiaohe66-meteor-lotus 1.21.8-1.14.0
+	Launched Version: 1.21.8-Fabric
+	Launcher name: HMCL
+	Backend library: LWJGL version 3.3.3-snapshot
+	Backend API: Intel(R) HD Graphics 4400 GL version 3.2.0 - Build 20.19.15.4531, Intel
+	Window size: 1366x697
+	GFLW Platform: win32
+	Render Extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding
+	GL debug messages: 
+	Is Modded: Definitely; Client brand changed to 'fabric'; Server brand changed to 'fabric'
+	Universe: 400921fb54442d18
+	Type: Integrated Server (map_client.txt)
+	Graphics mode: fast
+	Render Distance: 2/2 chunks
+	Resource Packs: vanilla, fabric, appleskin (incompatible), blackout, cloth-config, com_viaversion_viaaprilfools-common, com_viaversion_viabackwards-common, com_viaversion_viaversion-common, conditional-mixin, entityculling (incompatible), fabric-api, fabric-api-base, fabric-api-lookup-api-v1, fabric-biome-api-v1, fabric-block-api-v1, fabric-block-view-api-v2, fabric-command-api-v2, fabric-content-registries-v0, fabric-convention-tags-v1, fabric-convention-tags-v2, fabric-crash-report-info-v1, fabric-data-attachment-api-v1, fabric-data-generation-api-v1, fabric-dimensions-v1, fabric-entity-events-v1, fabric-events-interaction-v0, fabric-game-rule-api-v1, fabric-item-api-v1, fabric-item-group-api-v1, fabric-key-binding-api-v1, fabric-language-kotlin, fabric-lifecycle-events-v1, fabric-loot-api-v2, fabric-loot-api-v3, fabric-message-api-v1, fabric-model-loading-api-v1, fabric-networking-api-v1, fabric-object-builder-api-v1, fabric-particles-v1, fabric-recipe-api-v1, fabric-registry-sync-v0, fabric-renderer-api-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-rendering-v1, fabric-resource-conditions-api-v1, fabric-resource-loader-v0, fabric-screen-api-v1, fabric-screen-handler-api-v1, fabric-serialization-api-v1, fabric-sound-api-v1, fabric-tag-api-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabricloader, jade (incompatible), jefffmod, krypton, litematica, lithium, malilib, meteor-client, meteor-miku, meteor-plusplus, meteor-translation-addon, minihud, moreculling, net_raphimc_viabedrock, net_raphimc_vialegacy, sodium, trender (incompatible), viafabricplus, viafabricplus-visuals, xaerolib (incompatible), xaerominimap (incompatible), xaeroplus, xaeroworldmap (incompatible), xiaohe66-meteor-lotus, file/xaeros-map-chinese.zip (incompatible), file/Sodium(?)?????7.1.zip (incompatible), file/?????1.21.2_v3b.zip (incompatible), file/XeKr??3.6forMC1.20.2~1.21.5.zip, file/????????.zip, file/Misans???(Bye Pixel Font~).zip, file/zt3927???.zip (incompatible), file/2B2T.zip (incompatible)
+	Current Language: zh_cn
+	Locale: zh_CN
+	System encoding: Cp1252
+	File encoding: windows-1252
+	CPU: 4x Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz
+	Server Running: true
+	Player Count: 1 / 8; [class_3222['zt3927'/17, l='ServerLevel[????]', x=157.86, y=107.88, z=-1234.97]]
+	Active Data Packs: vanilla, fabric, fabric-convention-tags-v2, malilib
+	Available Data Packs: fabric, fabric-convention-tags-v2, malilib, minecart_improvements, redstone_experiments, trade_rebalance, vanilla
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
+	World Seed: 8654029477303239337
+	Suppressed Exceptions: ~~NONE~~
+
+-- Meteor Client --
+
+Version: 1.21.8
+Build: 69
+
+[[ Active Modules ]]
+
+[Combat]:
+auto-totem
+crystal-aura
+
+[Player]:
+auto-eat
+auto-replenish
+auto-respawn
+ghost-hand
+
+[Movement]:
+sprint
+
+[Render]:
+better-tab
+better-tooltips
+block-esp
+blur
+boss-stack
+break-indicators
+camera-tweaks
+entity-owner
+esp
+fullbright
+item-highlight
+light-overlay
+logout-spots
+nametags
+no-render
+pop-chams
+storage-esp
+tracers
+trajectories
+
+[Misc]:
+anti-packet-kick
+auto-reconnect
+better-chat
+inventory-tweaks
+notifier
+
+[Miku]:
+Grim???
+??????
+????
+
+[Miku ??]:
+Miku????
+
+[Meteor++]:
+?????
+????
+
+[MeteorTranslation]:
+meteor-trans
+
+[He]:
+????
+????+
+???
+
+[[ Active Hud Elements ]]
+Text
+{{meteor.name} #1{meteor.version}}
+Text
+{FPS: #1{fps}}
+Text
+{TPS: #1{round(server.tps, 1)}}
+Text
+{Ping: #1{ping}}
+Text
+{Speed: #1{round(player.speed, 1)}}
+Text
+{Pos: #1{floor(camera.pos.x)}, {floor(camera.pos.y)}, {floor(camera.pos.z)}}
+Text
+{{player.opposite_dimension != "End" ? player.opposite_dimension + ":" : ""} #1{player.opposite_dimension != "End" ? "" + floor(camera.opposite_dim_pos.x) + ", " + floor(camera.opposite_dim_pos.y) + ", " + floor(camera.opposite_dim_pos.z) : ""}}
+Text
+{{camera.direction} #1({round(camera.yaw, 1)}, {round(camera.pitch, 1)})}
+inventory
+player-model
+armor
+player-radar
+Text
+{Baritone: #1{baritone.process_name}}
+TargetHud
+Weather
+Welcomer
+Text
+{Miku????: {meteor.is_module_active("Miku????") ? #2 "ON" : #3 "OFF"}}
+Text
+{????: {meteor.is_module_active("Freecam") ? #2 "ON" : #3 "OFF"}}
+Text
+{Server: #1{server}}
+Text
+{Breaking progress: #1{round(player.breaking_progress * 100)}%}
+
+#@!@# Game crashed! Crash report saved to: #@!@# C:\Users\TEST\HMCL\.minecraft\versions\1.21.8-Fabric\crash-reports\crash-2026-03-23_19.00.01-client.txt
+[19:00:01] [Thread-16/INFO]: Saving
+[HMCL ProcessListener] Minecraft exit with code -1(0xffffffff), type is APPLICATION_ERROR.

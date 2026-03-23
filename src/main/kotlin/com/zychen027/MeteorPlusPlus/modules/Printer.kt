@@ -125,8 +125,32 @@ class Printer : Module(
         val sphere = BlockUtil.getSphere(printingRange.get().toFloat())
         var placed = 0
 
+        // 获取 getBlockState 方法（适配不同版本的 Litematica）
+        val getBlockStateMethod = try {
+            // 尝试新版本 API (BlockPos 参数)
+            schematic.javaClass.getMethod("getBlockState", net.minecraft.util.math.BlockPos::class.java)
+        } catch (e: Exception) {
+            try {
+                // 尝试旧版本 API (x, y, z 参数)
+                schematic.javaClass.getMethod("getBlockState", Int::class.javaPrimitiveType, Int::class.javaPrimitiveType, Int::class.javaPrimitiveType)
+            } catch (e2: Exception) {
+                return // 无法找到合适的方法，退出
+            }
+        }
+
         for (pos in sphere) {
-            val required = schematic::class.java.getMethod("getBlockState", BlockPos::class.java).invoke(schematic, pos) as net.minecraft.block.BlockState
+            // 调用 getBlockState 方法
+            val required = try {
+                if (getBlockStateMethod.parameterCount == 1) {
+                    // BlockPos 版本
+                    getBlockStateMethod.invoke(schematic, pos) as net.minecraft.block.BlockState
+                } else {
+                    // x, y, z 版本
+                    getBlockStateMethod.invoke(schematic, pos.x, pos.y, pos.z) as net.minecraft.block.BlockState
+                }
+            } catch (e: Exception) {
+                continue // 跳过无法获取的方块
+            }
 
             // 检查方块是否需要放置
             @Suppress("DEPRECATION")
