@@ -330,7 +330,9 @@ class ElytraAutoPilot : Module(
             ChatUtils.info("需要先鞘翅飞行！")
             return
         }
-        if (groundheight <= minHeight.get()) {
+        // 实时计算地面高度
+        val currentGroundHeight = getGroundHeight(player)
+        if (currentGroundHeight <= minHeight.get()) {
             ChatUtils.info("高度不足，需要 ${minHeight.get()} 格以上")
             return
         }
@@ -346,10 +348,21 @@ class ElytraAutoPilot : Module(
      * 飞往命名位置
      */
     fun flyTo(name: String): Boolean {
+        val player = mc.player ?: return false
+        if (!player.isGliding) {
+            ChatUtils.info("需要先鞘翅飞行！")
+            return false
+        }
+        // 实时计算地面高度
+        val currentGroundHeight = getGroundHeight(player)
         for (loc in savedLocations.get()) {
             try {
                 val location = FlyToLocation.convertStringToLocation(loc)
                 if (location.name.equals(name, ignoreCase = true)) {
+                    if (currentGroundHeight <= minHeight.get()) {
+                        ChatUtils.info("高度不足，需要 ${minHeight.get()} 格以上")
+                        return false
+                    }
                     flyTo(location.x, location.z)
                     ChatUtils.info("正在飞往：${location.name} (x=${location.x}, z=${location.z})")
                     return true
@@ -366,7 +379,7 @@ class ElytraAutoPilot : Module(
      */
     fun takeoff(name: String = ""): Boolean {
         val player = mc.player ?: return false
-        
+
         if (name.isNotEmpty()) {
             // 带位置名称的起飞
             for (loc in savedLocations.get()) {
@@ -392,7 +405,7 @@ class ElytraAutoPilot : Module(
 
     private fun startTakeoff() {
         val player = mc.player ?: return
-        
+
         // 检查鞘翅
         val chestplateSlot = ElytraManager.getChestplateSlot(player)
         if (chestplateSlot.item != Items.ELYTRA) {
@@ -406,9 +419,9 @@ class ElytraAutoPilot : Module(
             return
         }
 
-        val itemMain = player.mainHandStack
-        val itemOff = player.offHandStack
-        if (itemMain.item != Items.FIREWORK_ROCKET && itemOff.item != Items.FIREWORK_ROCKET) {
+        // 检查烟花（使用更可靠的检查方式）
+        val hasFirework = hasFireworkInInventory(player)
+        if (!hasFirework) {
             ChatUtils.info("需要烟花！")
             return
         }
@@ -429,6 +442,25 @@ class ElytraAutoPilot : Module(
 
         onTakeoff = true
         mc.options.jumpKey.isPressed = true
+    }
+
+    /**
+     * 检查玩家背包中是否有烟花
+     */
+    private fun hasFireworkInInventory(player: net.minecraft.entity.player.PlayerEntity): Boolean {
+        // 检查主手和副手
+        if (player.mainHandStack.item == Items.FIREWORK_ROCKET || 
+            player.offHandStack.item == Items.FIREWORK_ROCKET) {
+            return true
+        }
+        // 检查背包
+        for (i in 0 until player.inventory.size()) {
+            val stack = player.inventory.getStack(i)
+            if (stack.item == Items.FIREWORK_ROCKET) {
+                return true
+            }
+        }
+        return false
     }
 
     /**

@@ -197,8 +197,9 @@ object InventoryUtil {
      * 在快捷栏中查找指定方块
      */
     fun findBlock(block: Block): Int {
+        val player = mc.player ?: return -1
         for (i in 0..8) {
-            val stack = getStackInSlot(i)
+            val stack = player.inventory.getStack(i)
             if (stack.item is BlockItem) {
                 if ((stack.item as BlockItem).block == block) return i
             }
@@ -210,12 +211,20 @@ object InventoryUtil {
      * 在背包中查找指定方块 (包含背包所有槽位)
      */
     fun findBlockInventory(block: Block): Int {
-        for (i in 0 until 45) {
-            val stack = getStackInSlot(i)
-            if (stack.item is BlockItem) {
-                if ((stack.item as BlockItem).block == block) return if (i < 9) i + 36 else i
-            }
+        val player = mc.player ?: return -1
+        // 先检查快捷栏
+        for (i in 0..8) {
+            val stack = player.inventory.getStack(i)
+            if (stack.item is BlockItem && (stack.item as BlockItem).block == block) return i
         }
+        // 再检查主背包
+        for (i in 9 until 36) {
+            val stack = player.inventory.getStack(i)
+            if (stack.item is BlockItem && (stack.item as BlockItem).block == block) return i
+        }
+        // 最后检查副手
+        val offHandStack = player.inventory.getStack(40)
+        if (offHandStack.item is BlockItem && (offHandStack.item as BlockItem).block == block) return 40
         return -1
     }
 }

@@ -14,6 +14,8 @@ import meteordevelopment.orbit.EventHandler
 import net.minecraft.block.*
 import net.minecraft.block.enums.SlabType
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
+import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.state.property.Properties
 import net.minecraft.text.Text
 import net.minecraft.util.Hand
@@ -375,10 +377,37 @@ class Printer : Module(
      * 切换槽位
      */
     private fun doSwap(slot: Int) {
+        val player = mc.player ?: return
+        if (slot < 0 || slot > 44) return
+        
+        // 确保槽位在有效范围内
+        val networkSlot = if (slot < 9) slot + 36 else slot
+        
         if (!inventorySwap.get()) {
-            InventoryUtil.switchToSlot(slot)
+            // 直接切换到快捷栏槽位
+            if (slot in 0..8) {
+                player.inventory.selectedSlot = slot
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(slot))
+            }
         } else {
-            InventoryUtil.inventorySwap(slot, mc.player!!.inventory.selectedSlot)
+            // 使用 inventory swap 模式
+            val selectedSlot = player.inventory.selectedSlot
+            if (slot == selectedSlot) return
+            
+            // 如果物品在背包中，使用 SWAP 操作
+            if (slot >= 9) {
+                mc.interactionManager?.clickSlot(
+                    player.currentScreenHandler.syncId,
+                    slot,
+                    selectedSlot,
+                    SlotActionType.SWAP,
+                    player
+                )
+            } else {
+                // 如果物品在快捷栏中，直接切换
+                player.inventory.selectedSlot = slot
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(slot))
+            }
         }
     }
 }
