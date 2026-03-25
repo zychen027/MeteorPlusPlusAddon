@@ -70,55 +70,51 @@ class PacketMineModule : Module(
         .build()
     )
 
+    private val ghostHand = sgGhostHand.add(BoolSetting.Builder()
+        .name("GhostHand")
+        .description("Use GhostHand mode to bypass anti-cheat.")
+        .defaultValue(false)
+        .build())
+
     private val ghostHandDelay = sgGhostHand.add(IntSetting.Builder()
-        .name("switch-delay")
-        .description("Delay between slot switch packets (ticks).")
+        .name("SwitchDelay")
+        .description("Delay between slot switch (ticks).")
         .defaultValue(2)
         .min(0)
-        .max(5)
-        .build()
-    )
+        .max(10)
+        .build())
 
     private val ghostHandRandomize = sgGhostHand.add(BoolSetting.Builder()
-        .name("randomize-slot")
-        .description("Randomize slot selection to bypass GrimAC.")
+        .name("RandomizeSlot")
+        .description("Randomize slot selection.")
         .defaultValue(true)
-        .build()
-    )
+        .build())
 
-    private val ghostHandDecoyPackets = sgGhostHand.add(IntSetting.Builder()
-        .name("decoy-packets")
-        .description("Number of decoy packets to send.")
-        .defaultValue(2)
-        .min(0)
-        .max(5)
-        .build()
-    )
-
-    private val ghostHandSlotJitter = sgGhostHand.add(BoolSetting.Builder()
-        .name("slot-jitter")
-        .description("Add small random slot changes to bypass detection.")
-        .defaultValue(true)
-        .build()
-    )
-
-    private var currentTarget: MineTarget? = null
-    private var ghostHandState = GhostHandState.IDLE
-    private var ghostHandTimer = 0
-    private var ghostHandTargetSlot = -1
     private var originalSlot = 0
+    private var currentSlot = -1
+    private var switchTimer = 0
+    private var swapped = false
+    private var currentTarget: MineTarget? = null
     private var lastSwingTime = 0L
     private var renderProgress = 0.0
 
     override fun onActivate() {
         currentTarget = null
-        ghostHandState = GhostHandState.IDLE
-        renderProgress = 0.0
         originalSlot = mc.player?.inventory?.selectedSlot ?: 0
+        currentSlot = -1
+        switchTimer = 0
+        swapped = false
+        renderProgress = 0.0
     }
 
     override fun onDeactivate() {
+        // 恢复原始槽位
+        if (swapped && mc.player?.inventory?.selectedSlot != originalSlot) {
+            mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(originalSlot))
+            mc.player?.inventory?.selectedSlot = originalSlot
+        }
         resetTarget(abort = true)
+        swapped = false
     }
 
     @EventHandler
@@ -127,9 +123,60 @@ class PacketMineModule : Module(
             renderProgress = target.progress.toDouble().coerceIn(0.0, 1.0)
         }
 
+        // 处理 GhostHand 槽位切换
+        if (ghostHand.get()) {
+            handleGhostHand()
+        }
+
         when (mineMode.get()) {
-            MineModeEnum.GhostHand -> handleGhostHandTick()
+            MineModeEnum.GhostHand -> handleGhostHandMining()
             else -> handleNormalTick()
+        }
+    }
+
+    /**
+     * GhostHand 槽位切换逻辑（参考 Aura.kt 的 autoSwitch）
+     */
+    private fun handleGhostHand() {
+        if (switchTimer > 0) {
+            switchTimer--
+            return
+        }
+
+        val target = currentTarget ?: return
+        val player = mc.player ?: return
+
+        // 找到最佳工具槽位
+        val bestSlot = findBestToolSlot(target.blockState)
+        
+        if (bestSlot == -1) {
+            // 没有找到合适的工具，恢复原始槽位
+            if (swapped) {
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(originalSlot))
+                player.inventory.selectedSlot = originalSlot
+                swapped = false
+            }
+            return
+        }
+
+        // 随机化槽位选择
+        val targetSlot = if (ghostHandRandomize.get()) {
+            (bestSlot + Random.nextInt(-1, 2)).coerceIn(0, 8)
+        } else {
+            bestSlot
+        }
+
+        // 切换槽位（类似 Aura.kt 的 autoSwitch）
+        if (!swapped) {
+            originalSlot = player.inventory.selectedSlot
+            swapped = true
+        }
+
+        if (targetSlot != currentSlot) {
+            mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(targetSlot))
+            player.inventory.selectedSlot = targetSlot
+            currentSlot = targetSlot
+            switchTimer = ghostHandDelay.get()
         }
     }
 
@@ -228,119 +275,34 @@ class PacketMineModule : Module(
         }
     }
 
-    private fun handleGhostHandTick() {
-        if (ghostHandTimer > 0) {
-            ghostHandTimer--
-            return
-        }
-
-        when (ghostHandState) {
-            GhostHandState.IDLE -> {
-                if (mc.options.attackKey.wasPressed()) {
-                    handleInput()
-                }
-            }
-            GhostHandState.STARTING -> handleGhostHandStarting()
-            GhostHandState.MINING -> handleGhostHandMining()
-            GhostHandState.FINISHING -> handleGhostHandFinishing()
-        }
-    }
-
-    private fun handleGhostHandStarting() {
-        val target = currentTarget ?: return run { resetTarget(abort = true) }
-        val player = mc.player ?: return run { resetTarget(abort = true) }
-
-        when {
-            ghostHandTimer == 0 && ghostHandState == GhostHandState.STARTING -> {
-                repeat(ghostHandDecoyPackets.get()) { sendDecoyPacket() }
-                originalSlot = player.inventory.selectedSlot
-
-                ghostHandTargetSlot = findBestToolSlot(target.blockState).let { slot ->
-                    if (ghostHandRandomize.get() && slot != -1) {
-                        (slot + Random.nextInt(-1, 2)).coerceIn(0, 8)
-                    } else {
-                        slot
-                    }
-                }
-
-                ghostHandTimer = calculateDelay()
-                if (abortOnSwitch()) sendAbort(target)
-            }
-
-            ghostHandTimer == 0 -> {
-                if (ghostHandTargetSlot != -1) {
-                    val actualSlot = if (ghostHandSlotJitter.get()) {
-                        (ghostHandTargetSlot + Random.nextInt(-1, 2)).coerceIn(0, 8)
-                    } else {
-                        ghostHandTargetSlot
-                    }
-                    mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(actualSlot))
-                }
-
-                sendStart(target)
-                if (shouldSwing()) swingHand()
-
-                ghostHandState = GhostHandState.MINING
-                target.started = true
-                ghostHandTimer = calculateDelay()
-            }
-        }
-    }
-
+    /**
+     * GhostHand 挖掘处理（简化版）
+     */
     private fun handleGhostHandMining() {
-        val target = currentTarget ?: return run { resetTarget(abort = true) }
+        val target = currentTarget ?: return
 
+        // 更新挖掘进度
         target.updateProgress()
         renderProgress = target.progress.toDouble().coerceIn(0.0, 1.0)
 
+        // 挖掘完成
         if (target.finished) {
-            ghostHandState = GhostHandState.FINISHING
-            ghostHandTimer = calculateDelay()
-        } else if (shouldFakeSwing() && System.currentTimeMillis() - lastSwingTime > 200) {
+            sendStop(target)
+            // 恢复原始槽位
+            if (swapped) {
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(originalSlot))
+                mc.player?.inventory?.selectedSlot = originalSlot
+                swapped = false
+                currentSlot = -1
+            }
+            resetTarget(abort = false)
+            return
+        }
+
+        // 假挥动手臂
+        if (shouldFakeSwing() && System.currentTimeMillis() - lastSwingTime > 200) {
             swingHand()
             lastSwingTime = System.currentTimeMillis()
-        }
-    }
-
-    private fun handleGhostHandFinishing() {
-        val target = currentTarget ?: return run { resetTarget(abort = true) }
-
-        if (ghostHandTimer == 0 && ghostHandState == GhostHandState.FINISHING) {
-            sendStop(target)
-            ghostHandTimer = calculateDelay()
-        } else if (ghostHandTimer == 0) {
-            mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(originalSlot))
-            resetTarget(abort = false)
-        }
-    }
-
-    private fun sendDecoyPacket() {
-        val player = mc.player ?: return
-        val world = mc.world ?: return
-
-        val pos = player.blockPos.offset(
-            Direction.random(player.random),
-            Random.nextInt(2, 5)
-        )
-
-        if (world.getBlockState(pos).isAir) return
-
-        mc.networkHandler?.sendPacket(
-            PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
-                pos,
-                Direction.random(player.random)
-            )
-        )
-
-        if (Random.nextBoolean()) {
-            mc.networkHandler?.sendPacket(
-                PlayerActionC2SPacket(
-                    PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK,
-                    pos,
-                    Direction.random(player.random)
-                )
-            )
         }
     }
 
@@ -351,7 +313,6 @@ class PacketMineModule : Module(
 
     private fun shouldSwing(): Boolean = swingHand.get() && Random.nextFloat() > 0.3f
     private fun shouldFakeSwing(): Boolean = fakeSwing.get() && Random.nextFloat() > 0.7f
-    private fun abortOnSwitch(): Boolean = Random.nextBoolean()
 
     private fun swingHand() {
         mc.player?.swingHand(if (Random.nextBoolean()) Hand.MAIN_HAND else Hand.OFF_HAND)
@@ -393,11 +354,6 @@ class PacketMineModule : Module(
         val bestSlot = findBestToolSlot(target.blockState)
 
         when (mineMode.get()) {
-            MineModeEnum.GhostHand -> {
-                ghostHandState = GhostHandState.STARTING
-                ghostHandTimer = calculateDelay()
-                ghostHandTargetSlot = bestSlot
-            }
             MineModeEnum.Immediate -> {
                 if (bestSlot != -1) InvUtils.swap(bestSlot, false)
                 sendStart(target)
@@ -424,11 +380,6 @@ class PacketMineModule : Module(
         } else {
             currentTarget?.abort()
             currentTarget = MineTarget(pos)
-
-            if (mineMode.get() == MineModeEnum.GhostHand) {
-                ghostHandState = GhostHandState.STARTING
-                ghostHandTimer = calculateDelay()
-            }
         }
     }
 
@@ -436,7 +387,6 @@ class PacketMineModule : Module(
         if (abort) currentTarget?.abort()
         currentTarget = null
         renderProgress = 0.0
-        if (mineMode.get() == MineModeEnum.GhostHand) ghostHandState = GhostHandState.IDLE
     }
 
     private fun findBestToolSlot(state: BlockState): Int {
@@ -459,5 +409,4 @@ class PacketMineModule : Module(
     }
 
     enum class MineModeEnum { Normal, GhostHand, Immediate, Civ }
-    private enum class GhostHandState { IDLE, STARTING, MINING, FINISHING }
 }
