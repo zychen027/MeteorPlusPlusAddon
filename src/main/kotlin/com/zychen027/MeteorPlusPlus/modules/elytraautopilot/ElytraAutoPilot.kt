@@ -257,12 +257,15 @@ class ElytraAutoPilot : Module(
         val world = mc.world ?: return
 
         // 更新 HUD 显示状态
-        calculateHud = player.isGliding
-
-        if (!calculateHud) {
+        if (player.isGliding) {
+            calculateHud = true
+        } else {
+            calculateHud = false
             autoFlight = false
             groundheight = -1.0
-        } else {
+        }
+
+        if (calculateHud) {
             groundheight = getGroundHeight(player)
         }
 
@@ -274,9 +277,9 @@ class ElytraAutoPilot : Module(
             }
         }
 
-        // 处理起飞状态
+        // 关键：如果 onTakeoff 为 true，每 tick 都调用起飞逻辑（参考原始模组）
         if (onTakeoff) {
-            handleTakeoff(player)
+            handleTakeoffLogic(player)
         }
 
         // 处理自动飞行状态
@@ -304,68 +307,54 @@ class ElytraAutoPilot : Module(
     }
 
     /**
-     * 处理起飞逻辑（参考原始模组）
+     * 起飞逻辑（完全参考原始模组，每 tick 调用）
      */
-    private fun handleTakeoff(player: net.minecraft.client.network.ClientPlayerEntity) {
-        val pitch = player.pitch
-
-        // 抬头到 -90 度（垂直向上）
-        if (pitch > -90f) {
-            player.pitch = (pitch - 10f).coerceAtLeast(-90f)
-            // 发送旋转数据包
-            mc.networkHandler?.sendPacket(
-                PlayerMoveC2SPacket.Full(
-                    player.x, player.y, player.z,
-                    player.yaw, player.pitch,
-                    player.isOnGround, player.horizontalCollision
-                )
-            )
+    private fun handleTakeoffLogic(player: net.minecraft.client.network.ClientPlayerEntity) {
+        // 抬头到 -90 度（垂直向上）- 参考原始模组 onScreenTick
+        if (player.pitch > -90f) {
+            player.pitch = (player.pitch - 10f).coerceAtLeast(-90f)
+        } else {
+            player.pitch = -90f
         }
 
-        // 达到 -90 度后，使用烟花加速
-        if (pitch <= -90f) {
-            player.pitch = -90f
+        // 检查是否达到起飞高度
+        if (groundheight >= minHeight.get()) {
+            onTakeoff = false
+            mc.options.useKey.isPressed = false
+            mc.options.jumpKey.isPressed = false
+            autoFlight = true
+            pitchMod = 3.0
 
-            // 检查是否有烟花
-            val itemMain = player.mainHandStack.item
-            val itemOff = player.offHandStack.item
-            val hasFirework = (itemMain == Items.FIREWORK_ROCKET || itemOff == Items.FIREWORK_ROCKET)
-
-            if (!hasFirework) {
-                // 尝试从背包补充烟花
-                if (!tryRestockFirework(player)) {
-                    mc.options.useKey.isPressed = false
-                    mc.options.jumpKey.isPressed = false
-                    mc.options.forwardKey.isPressed = false
-                    onTakeoff = false
-                    ChatUtils.info("§c 烟花不足，起飞取消")
-                    return
-                }
-            } else {
-                // 使用烟花
-                mc.options.useKey.isPressed = (currentVelocity < 0.75f)
+            if (isChained) {
+                isflytoActive = true
+                isChained = false
+                ChatUtils.info("§a 正在飞往：x=$argXpos, z=$argZpos")
             }
+            return
+        }
 
-            // 检查是否达到起飞高度
-            if (groundheight >= minHeight.get()) {
-                // 起飞成功，进入自动飞行模式
-                onTakeoff = false
+        // 双击空格逻辑：如果玩家没有滑翔，切换跳键状态（模拟双击空格）
+        if (!player.isGliding) {
+            mc.options.jumpKey.isPressed = !mc.options.jumpKey.isPressed
+        }
+
+        // 检查烟花
+        val itemMain = player.mainHandStack.item
+        val itemOff = player.offHandStack.item
+        val hasFirework = (itemMain == Items.FIREWORK_ROCKET || itemOff == Items.FIREWORK_ROCKET)
+
+        if (!hasFirework) {
+            if (!tryRestockFirework(player)) {
                 mc.options.useKey.isPressed = false
                 mc.options.jumpKey.isPressed = false
-                autoFlight = true
-                pitchMod = 3.0
-
-                if (isChained) {
-                    isflytoActive = true
-                    isChained = false
-                    ChatUtils.info("§a 正在飞往：x=$argXpos, z=$argZpos")
-                }
+                onTakeoff = false
+                ChatUtils.info("§c 烟花不足，起飞取消")
                 return
             }
+        } else {
+            // 使用烟花（速度低于 0.75 且抬头到 -90 度时）
+            mc.options.useKey.isPressed = (currentVelocity < 0.75f && player.pitch == -90f)
         }
-
-        // 起飞过程中按住前进键
-        mc.options.forwardKey.isPressed = true
     }
 
     /**
@@ -408,7 +397,7 @@ class ElytraAutoPilot : Module(
             }
         }
 
-        // 飞行高度控制（上升/下降循环）
+        // 飞行高度控制（上升/下降循环）- 参考原始模组的 onClientTick
         if (!isLanding && !forceLand) {
             if (isDescending) {
                 pullUp = false
@@ -437,7 +426,7 @@ class ElytraAutoPilot : Module(
                 }
             }
 
-            // 应用俯仰角控制
+            // 应用俯仰角控制 - 参考原始模组的 onScreenTick
             if (pullUp) {
                 player.pitch = (pitch - 2f).coerceAtLeast(-46.63f)
             }
@@ -595,7 +584,7 @@ class ElytraAutoPilot : Module(
                         argXpos = location.x
                         argZpos = location.z
                         isChained = true
-                        startTakeoff()
+                        startTakeoffLogic()
                         return true
                     }
                 } catch (e: InvalidLocationException) {
@@ -604,7 +593,7 @@ class ElytraAutoPilot : Module(
             }
             return false
         } else {
-            startTakeoff()
+            startTakeoffLogic()
             return true
         }
     }
@@ -612,7 +601,7 @@ class ElytraAutoPilot : Module(
     /**
      * 开始起飞流程（参考原始模组）
      */
-    private fun startTakeoff() {
+    private fun startTakeoffLogic() {
         val player = mc.player ?: return
 
         // 检查鞘翅
