@@ -15,7 +15,7 @@ import net.minecraft.screen.slot.SlotActionType
 
 /**
  * 鞘翅管理器 - 来自 ElytraAutoPilot
- * 处理鞘翅装备、交换和耐久检查
+ * 处理鞘翅装备、交换、耐久检查和烟花补充
  */
 object ElytraManager {
     private const val CHESTPLATE_INDEX = 6
@@ -198,5 +198,61 @@ object ElytraManager {
         for (i in 9 until 36) range[i] = 35 - (i - 9)
         range[36] = 40
         return range
+    }
+
+    /**
+     * 尝试补充烟花
+     */
+    fun tryRestockFirework(player: PlayerEntity): Boolean {
+        val module = ElytraAutoPilot.INSTANCE ?: return false
+
+        if (!module.fireworkHotswap.get()) return false
+
+        // 查找背包中的烟花（不包括快捷栏）
+        var newFirework: ItemStack? = null
+        var fireworkSlot = -1
+        for (i in 9 until 36) {
+            val stack = player.inventory.getStack(i)
+            if (stack.item == Items.FIREWORK_ROCKET) {
+                newFirework = stack
+                fireworkSlot = i
+                break
+            }
+        }
+
+        if (newFirework != null && fireworkSlot >= 0) {
+            // 优先补充到主手
+            val selectedSlot = player.inventory.selectedSlot
+            val interactionManager = MinecraftClient.getInstance().interactionManager
+            
+            // 使用 SWAP 操作将烟花交换到快捷栏
+            interactionManager?.clickSlot(
+                player.playerScreenHandler.syncId,
+                fireworkSlot,
+                selectedSlot,
+                SlotActionType.SWAP,
+                player
+            )
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 尝试补充鞘翅
+     */
+    fun tryRestockElytra(player: ClientPlayerEntity): Boolean {
+        val module = ElytraAutoPilot.INSTANCE ?: return false
+        
+        if (!module.elytraHotswap.get()) return false
+        
+        return equipElytra(player)
+    }
+
+    /**
+     * 检查是否可以补充鞘翅
+     */
+    fun canRestockElytra(player: ClientPlayerEntity): Boolean {
+        return getElytraIndex(player) != -100
     }
 }
