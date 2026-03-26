@@ -14,12 +14,20 @@ import meteordevelopment.orbit.EventHandler
 import net.minecraft.block.Blocks
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.item.Items
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
+import net.minecraft.screen.slot.SlotActionType
+import net.minecraft.sound.SoundEvent
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
+import net.minecraft.util.Identifier
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 
 /**
  * ElytraAutoPilot (鞘翅自动驾驶) - 移植自 ElytraAutoPilot mod
  * 自动鞘翅飞行、定点导航、自动降落
- * 
+ *
  * 命令：
  * - .eap flyto <x> <z> - 飞往坐标
  * - .eap flyto <名称> - 飞往命名位置
@@ -34,6 +42,9 @@ class ElytraAutoPilot : Module(
     "ElytraAutoPilot",
     "自动鞘翅飞行，支持定点导航和自动降落。使用 .eap 命令控制。"
 ) {
+    // 起飞冷却时间 (tick)
+    private val TAKEOFF_COOLDOWN_TICKS = 5
+    private var takeoffCooldown = 0
     private val sgGeneral = settings.getDefaultGroup()
     private val sgFlight = settings.createGroup("飞行配置")
     private val sgLanding = settings.createGroup("降落")
@@ -145,6 +156,14 @@ class ElytraAutoPilot : Module(
         .sliderMax(10.0)
         .build())
 
+    val turningSpeed = sgLanding.add(DoubleSetting.Builder()
+        .name("转向速度")
+        .description("飞行时的转向速度。")
+        .defaultValue(3.0)
+        .min(0.1)
+        .sliderMax(10.0)
+        .build())
+
     // ==================== 物品交换 ====================
     val elytraHotswap = sgSwap.add(BoolSetting.Builder()
         .name("鞘翅热交换")
@@ -237,35 +256,160 @@ class ElytraAutoPilot : Module(
         val player = mc.player ?: return
         val world = mc.world ?: return
 
-        // 检查是否在滑翔
+        // 更新 HUD 显示状态
         calculateHud = player.isGliding
 
         if (!calculateHud) {
             autoFlight = false
             groundheight = -1.0
         } else {
-            // 计算地面高度
             groundheight = getGroundHeight(player)
         }
 
-        val altitude = player.y
+        // 处理起飞冷却
+        if (takeoffCooldown > 0) {
+            takeoffCooldown--
+            if (takeoffCooldown == 0) {
+                onTakeoff = true
+            }
+        }
 
-        // 紧急降落检查
+        // 处理起飞状态
+        if (onTakeoff) {
+            handleTakeoff(player)
+        }
+
+        // 处理自动飞行状态
         if (autoFlight) {
-            val durability = ElytraManager.getElytraDurability(player)
-            if (emergencyLand.get() && durability < elytraReplaceDurability.get()) {
-                forceLand = true
+            handleAutoFlight(player)
+        } else {
+            resetFlightState()
+        }
+
+        // 计算速度
+        if (calculateHud) {
+            computeVelocity()
+        } else {
+            previousPosition = null
+        }
+
+        // 计算到目标的距离
+        if (isflytoActive) {
+            val playerPos = player.pos
+            val targetPos = Vec3d(argXpos.toDouble(), playerPos.y, argZpos.toDouble())
+            val dx = playerPos.x - targetPos.x
+            val dz = playerPos.z - targetPos.z
+            distance = kotlin.math.sqrt(dx * dx + dz * dz)
+        }
+    }
+
+    /**
+     * 处理起飞逻辑（参考原始模组）
+     */
+    private fun handleTakeoff(player: net.minecraft.client.network.ClientPlayerEntity) {
+        val pitch = player.pitch
+
+        // 抬头到 -90 度（垂直向上）
+        if (pitch > -90f) {
+            player.pitch = (pitch - 10f).coerceAtLeast(-90f)
+            // 发送旋转数据包
+            mc.networkHandler?.sendPacket(
+                PlayerMoveC2SPacket.Full(
+                    player.x, player.y, player.z,
+                    player.yaw, player.pitch,
+                    player.isOnGround, player.horizontalCollision
+                )
+            )
+        }
+
+        // 达到 -90 度后，使用烟花加速
+        if (pitch <= -90f) {
+            player.pitch = -90f
+
+            // 检查是否有烟花
+            val itemMain = player.mainHandStack.item
+            val itemOff = player.offHandStack.item
+            val hasFirework = (itemMain == Items.FIREWORK_ROCKET || itemOff == Items.FIREWORK_ROCKET)
+
+            if (!hasFirework) {
+                // 尝试从背包补充烟花
+                if (!tryRestockFirework(player)) {
+                    mc.options.useKey.isPressed = false
+                    mc.options.jumpKey.isPressed = false
+                    mc.options.forwardKey.isPressed = false
+                    onTakeoff = false
+                    ChatUtils.info("§c 烟花不足，起飞取消")
+                    return
+                }
+            } else {
+                // 使用烟花
+                mc.options.useKey.isPressed = (currentVelocity < 0.75f)
             }
 
-            // 水中或熔岩中停止
-            if (player.isTouchingWater || player.isInLava) {
-                isflytoActive = false
-                isLanding = false
-                autoFlight = false
+            // 检查是否达到起飞高度
+            if (groundheight >= minHeight.get()) {
+                // 起飞成功，进入自动飞行模式
+                onTakeoff = false
+                mc.options.useKey.isPressed = false
+                mc.options.jumpKey.isPressed = false
+                autoFlight = true
+                pitchMod = 3.0
+
+                if (isChained) {
+                    isflytoActive = true
+                    isChained = false
+                    ChatUtils.info("§a 正在飞往：x=$argXpos, z=$argZpos")
+                }
                 return
             }
+        }
 
-            // 下降/上升逻辑
+        // 起飞过程中按住前进键
+        mc.options.forwardKey.isPressed = true
+    }
+
+    /**
+     * 处理自动飞行逻辑（参考原始模组）
+     */
+    private fun handleAutoFlight(player: net.minecraft.client.network.ClientPlayerEntity) {
+        val altitude = player.y
+        val pitch = player.pitch
+
+        // 紧急降落检查
+        val durability = ElytraManager.getElytraDurability(player)
+        if (emergencyLand.get() && durability < elytraReplaceDurability.get()) {
+            forceLand = true
+        }
+
+        // 水中或熔岩中停止
+        if (player.isTouchingWater || player.isInLava) {
+            isflytoActive = false
+            isLanding = false
+            autoFlight = false
+            mc.options.forwardKey.isPressed = false
+            return
+        }
+
+        // 处理寻路/降落状态
+        if (isflytoActive || forceLand) {
+            if (isLanding || forceLand) {
+                // 降落逻辑
+                if (!forceLand && !autoLanding.get()) {
+                    isflytoActive = false
+                    isLanding = false
+                    mc.options.forwardKey.isPressed = false
+                    return
+                }
+                isDescending = true
+                handleLanding(player)
+            } else {
+                // 寻路转向逻辑
+                handleFlyTo(player)
+            }
+        }
+
+        // 飞行高度控制（上升/下降循环）
+        if (!isLanding && !forceLand) {
             if (isDescending) {
                 pullUp = false
                 pullDown = true
@@ -292,23 +436,85 @@ class ElytraAutoPilot : Module(
                     pullUp = false
                 }
             }
+
+            // 应用俯仰角控制
+            if (pullUp) {
+                player.pitch = (pitch - 2f).coerceAtLeast(-46.63f)
+            }
+            if (pullDown) {
+                player.pitch = (pitch + 2f * pitchMod.toFloat()).coerceAtMost(37.20f)
+            }
         }
 
-        // 计算速度
-        if (calculateHud) {
-            computeVelocity()
+        // 关键：按住前进键让玩家向前飞行
+        mc.options.forwardKey.isPressed = true
+    }
+
+    /**
+     * 处理寻路转向
+     */
+    private fun handleFlyTo(player: net.minecraft.client.network.ClientPlayerEntity) {
+        val playerPos = player.pos
+        val f = argXpos.toDouble() - playerPos.x
+        val d = argZpos.toDouble() - playerPos.z
+
+        // 计算目标朝向
+        val targetYaw = MathHelper.wrapDegrees((MathHelper.atan2(d, f) * 57.2957763671875).toFloat() - 90.0f)
+        var yaw = MathHelper.wrapDegrees(player.yaw)
+
+        // 平滑转向
+        val yawDiff = MathHelper.wrapDegrees(targetYaw - yaw)
+        val turningSpeedVal = turningSpeed.get().toFloat()
+        if (kotlin.math.abs(yawDiff) < turningSpeedVal * 2) {
+            player.yaw = targetYaw
         } else {
-            previousPosition = null
+            val clampedDiff = yawDiff.coerceIn(-turningSpeedVal, turningSpeedVal)
+            player.yaw = yaw + clampedDiff
         }
 
-        // 计算距离
-        if (isflytoActive) {
-            val playerPos = player.pos
-            val targetPos = Vec3d(argXpos.toDouble(), playerPos.y, argZpos.toDouble())
-            val dx = playerPos.x - targetPos.x
-            val dz = playerPos.z - targetPos.z
-            distance = kotlin.math.sqrt(dx * dx + dz * dz)
+        // 检查是否到达目的地
+        distance = kotlin.math.sqrt(f * f + d * d)
+        if (distance < 20) {
+            ChatUtils.info("§b 已到达目的地，开始降落")
+            player.playSound(
+                SoundEvent.of(Identifier.of("minecraft:block.note_block.pling")),
+                1.3f, 1f
+            )
+            isLanding = true
         }
+    }
+
+    /**
+     * 处理降落逻辑
+     */
+    private fun handleLanding(player: net.minecraft.client.network.ClientPlayerEntity) {
+        val pitch = player.pitch
+        val fallPitchMax = 50f
+        val fallPitchMin = 30f
+        val fallPitch: Float = when {
+            groundheight > 50 -> fallPitchMax
+            groundheight < 20 -> fallPitchMin
+            else -> ((groundheight - 20) / 30 * 20 + fallPitchMin).toFloat()
+        }
+
+        pitchMod = 3.0
+        player.yaw = (pitch + autoLandSpeed.get().toFloat()).coerceAtMost(360f)
+        player.pitch = (pitch + 2f * pitchMod.toFloat()).coerceAtMost(fallPitch)
+    }
+
+    /**
+     * 重置飞行状态
+     */
+    private fun resetFlightState() {
+        velHigh = 0.0
+        velLow = 0.0
+        isLanding = false
+        forceLand = false
+        isflytoActive = false
+        pullUp = false
+        pitchMod = 1.0
+        pullDown = false
+        mc.options.forwardKey.isPressed = false
     }
 
     @EventHandler
@@ -330,10 +536,10 @@ class ElytraAutoPilot : Module(
             ChatUtils.info("需要先鞘翅飞行！")
             return
         }
-        // 实时计算地面高度
-        val currentGroundHeight = getGroundHeight(player)
-        if (currentGroundHeight <= minHeight.get()) {
-            ChatUtils.info("高度不足，需要 ${minHeight.get()} 格以上")
+        // 检查玩家的海拔高度（Y 坐标）
+        val playerAltitude = player.y
+        if (playerAltitude < minHeight.get()) {
+            ChatUtils.info("高度不足，需要 ${minHeight.get()} 格以上 (当前 Y=${playerAltitude.toInt()})")
             return
         }
         autoFlight = true
@@ -353,14 +559,14 @@ class ElytraAutoPilot : Module(
             ChatUtils.info("需要先鞘翅飞行！")
             return false
         }
-        // 实时计算地面高度
-        val currentGroundHeight = getGroundHeight(player)
+        // 检查玩家的海拔高度（Y 坐标）
+        val playerAltitude = player.y
         for (loc in savedLocations.get()) {
             try {
                 val location = FlyToLocation.convertStringToLocation(loc)
                 if (location.name.equals(name, ignoreCase = true)) {
-                    if (currentGroundHeight <= minHeight.get()) {
-                        ChatUtils.info("高度不足，需要 ${minHeight.get()} 格以上")
+                    if (playerAltitude < minHeight.get()) {
+                        ChatUtils.info("高度不足，需要 ${minHeight.get()} 格以上 (当前 Y=${playerAltitude.toInt()})")
                         return false
                     }
                     flyTo(location.x, location.z)
@@ -403,60 +609,72 @@ class ElytraAutoPilot : Module(
         }
     }
 
+    /**
+     * 开始起飞流程（参考原始模组）
+     */
     private fun startTakeoff() {
         val player = mc.player ?: return
 
         // 检查鞘翅
         val chestplateSlot = ElytraManager.getChestplateSlot(player)
         if (chestplateSlot.item != Items.ELYTRA) {
-            ChatUtils.info("未装备鞘翅！")
+            ChatUtils.info("§c 未装备鞘翅！")
             return
         }
 
         val elytraDamage = chestplateSlot.maxDamage - chestplateSlot.damage
         if (elytraDamage <= 1) {
-            ChatUtils.info("鞘翅已损坏！")
+            ChatUtils.info("§c 鞘翅已损坏！")
             return
         }
 
-        // 检查烟花（使用更可靠的检查方式）
-        val hasFirework = hasFireworkInInventory(player)
+        // 检查烟花
+        val itemMain = player.mainHandStack.item
+        val itemOff = player.offHandStack.item
+        val hasFirework = (itemMain == Items.FIREWORK_ROCKET || itemOff == Items.FIREWORK_ROCKET)
+
         if (!hasFirework) {
-            ChatUtils.info("需要烟花！")
-            return
-        }
-
-        // 检查上方是否有方块
-        val world = player.world
-        val topY = world.topYInclusive
-        var n = 2
-        val c = player.blockPos.y
-        for (i in c..topY) {
-            val blockPos = player.blockPos.up(n)
-            if (!world.getBlockState(blockPos).isAir) {
-                ChatUtils.info("上方有方块阻挡！")
+            // 尝试从背包补充烟花到手中
+            if (!tryRestockFirework(player)) {
+                ChatUtils.info("§c 需要烟花！")
                 return
             }
-            n++
         }
 
-        onTakeoff = true
+        // 检查上方是否有方块（检查玩家头顶 2-10 格）
+        val world = player.world
+        for (y in 2..10) {
+            val blockPos = player.blockPos.up(y)
+            val state = world.getBlockState(blockPos)
+            if (!state.isAir && state.block != Blocks.VOID_AIR) {
+                ChatUtils.info("§c 上方有方块阻挡！")
+                return
+            }
+        }
+
+        // 设置起飞冷却，冷却结束后进入 onTakeoff 状态
+        takeoffCooldown = TAKEOFF_COOLDOWN_TICKS
         mc.options.jumpKey.isPressed = true
+        ChatUtils.info("§e 正在起飞...")
     }
 
     /**
-     * 检查玩家背包中是否有烟花
+     * 尝试从背包补充烟花到手中（参考原始模组）
      */
-    private fun hasFireworkInInventory(player: net.minecraft.entity.player.PlayerEntity): Boolean {
-        // 检查主手和副手
-        if (player.mainHandStack.item == Items.FIREWORK_ROCKET || 
-            player.offHandStack.item == Items.FIREWORK_ROCKET) {
-            return true
-        }
-        // 检查背包
+    private fun tryRestockFirework(player: net.minecraft.entity.player.PlayerEntity): Boolean {
+        // 在背包主手槽位中查找烟花
         for (i in 0 until player.inventory.size()) {
             val stack = player.inventory.getStack(i)
             if (stack.item == Items.FIREWORK_ROCKET) {
+                val handSlot = if (player.offHandStack.isEmpty) 45 else 36 + player.inventory.selectedSlot
+
+                mc.interactionManager?.clickSlot(
+                    player.playerScreenHandler.syncId,
+                    handSlot,
+                    i,
+                    SlotActionType.SWAP,
+                    player
+                )
                 return true
             }
         }
@@ -468,7 +686,7 @@ class ElytraAutoPilot : Module(
      */
     fun land() {
         if (autoFlight) {
-            ChatUtils.info("正在降落...")
+            ChatUtils.info("§b 正在降落...")
             forceLand = true
             mc.options.useKey.isPressed = false
         }
@@ -554,23 +772,37 @@ class ElytraAutoPilot : Module(
         mc.options.sneakKey.isPressed = false
     }
 
+    /**
+     * 计算玩家距离地面的高度
+     * @return 玩家脚下到地面的距离，如果无法计算返回 -1
+     */
     private fun getGroundHeight(player: net.minecraft.entity.player.PlayerEntity): Double {
         val world = player.world ?: return -1.0
         val pos = player.blockPos
+        val playerY = pos.y
 
-        for (y in pos.y downTo world.bottomY) {
+        // 从玩家脚下向下搜索，最多检查 500 格
+        for (y in playerY downTo maxOf(world.bottomY, playerY - 500)) {
             val checkPos = net.minecraft.util.math.BlockPos(pos.x, y, pos.z)
             val state = world.getBlockState(checkPos)
-            if (!state.isAir && state.block != Blocks.VOID_AIR &&
-                state.block != Blocks.LAVA && state.block != Blocks.WATER
-            ) {
-                if (world.getBlockState(checkPos.up()).isAir &&
-                    world.getBlockState(checkPos.up(2)).isAir
-                ) {
-                    return (y + 2).toDouble()
-                }
+            
+            // 跳过空气、虚空、熔岩和水
+            if (state.isAir || state.block == Blocks.VOID_AIR || 
+                state.block == Blocks.LAVA || state.block == Blocks.WATER) {
+                continue
+            }
+            
+            // 找到固体方块，检查上方是否有 2 格空间
+            val groundY = y
+            val spaceAbove1 = world.getBlockState(net.minecraft.util.math.BlockPos(pos.x, groundY + 1, pos.z))
+            val spaceAbove2 = world.getBlockState(net.minecraft.util.math.BlockPos(pos.x, groundY + 2, pos.z))
+            
+            if (spaceAbove1.isAir && spaceAbove2.isAir) {
+                return (groundY + 2 - playerY).toDouble()
             }
         }
+        
+        // 没找到地面，返回 -1
         return -1.0
     }
 

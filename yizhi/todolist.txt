@@ -1,1 +1,0 @@
-[waiting]根据/errorlogs/*.log解决导致mc崩溃的问题，修复模块.
