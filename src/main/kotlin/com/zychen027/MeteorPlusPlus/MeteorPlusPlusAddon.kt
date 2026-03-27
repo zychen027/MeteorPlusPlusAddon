@@ -35,6 +35,9 @@ class MeteorPlusPlusAddon : MeteorAddon() {
         modules.add(PacketMineModule())
         modules.add(Printer())
 
+        // ==================== 移动模块 ====================
+        modules.add(GrimFly())
+
         // ==================== 其他模块 ====================
         modules.add(PacketEat())
         modules.add(TNTTimer())

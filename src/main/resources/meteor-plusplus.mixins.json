@@ -3,7 +3,8 @@
   "package": "com.zychen027.meteorplusplus.asm.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "PlayerListHudMixin"
+    "PlayerListHudMixin",
+    "IEntityVelocityUpdateS2CPacket"
   ],
   "injectors": {
     "defaultRequire": 1
