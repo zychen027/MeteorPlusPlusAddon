@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "com.dev.leavesHack.asm",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "mixin.MixinClientPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "accessors.ILivingEntity",
+    "accessors.IPlayerMoveC2SPacket",
+    "accessors.SystemsAccessor",
+    "mixin.MineProcessMixin",
+    "mixin.SystemsMixin"
+  ]
+}

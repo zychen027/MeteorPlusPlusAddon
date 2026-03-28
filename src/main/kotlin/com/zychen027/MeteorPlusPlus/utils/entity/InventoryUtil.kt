@@ -4,54 +4,51 @@ import com.zychen027.meteorplusplus.utils.world.BlockUtil
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap
 import it.unimi.dsi.fastutil.objects.Object2IntMap
 import it.unimi.dsi.fastutil.objects.Object2IntMaps
-import meteordevelopment.meteorclient.MeteorClient
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.block.SlabBlock
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.ItemEnchantmentsComponent
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import net.minecraft.network.packet.Packet
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.screen.slot.SlotActionType
+import meteordevelopment.meteorclient.MeteorClient.mc
 
 /**
- * 背包物品管理工具类 - 来自 LeavesHack
+ * 背包工具类 - 移植自 LeavesHack
  */
 object InventoryUtil {
-    private var lastSlot: Int = -1
-    private var lastSelect: Int = -1
+    var lastSlot = -1
+    var lastSelect = -1
 
-    private val mc get() = MeteorClient.mc
-
-    /**
-     * 获取玩家装备中指定附魔的最高等级
-     */
     fun getEquipmentLevel(player: PlayerEntity, enchantmentKey: RegistryKey<Enchantment>): Int {
         var maxLevel = 0
-        val armorItems = listOf(
-            player.getEquippedStack(net.minecraft.entity.EquipmentSlot.FEET),
-            player.getEquippedStack(net.minecraft.entity.EquipmentSlot.LEGS),
-            player.getEquippedStack(net.minecraft.entity.EquipmentSlot.CHEST),
-            player.getEquippedStack(net.minecraft.entity.EquipmentSlot.HEAD)
+        // MC 1.21.8: 使用固定的护甲槽位
+        val armorSlots = listOf(
+            EquipmentSlot.HEAD,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.FEET
         )
-        for (stack in armorItems) {
-            if (stack.isEmpty) continue
-            val level = getEnchantmentLevel(stack, enchantmentKey)
-            if (level > maxLevel) maxLevel = level
+        for (slot in armorSlots) {
+            val stack = player.getEquippedStack(slot)
+            if (!stack.isEmpty) {
+                val level = getEnchantmentLevel(stack, enchantmentKey)
+                if (level > maxLevel) maxLevel = level
+            }
         }
         return maxLevel
     }
 
-    /**
-     * 获取物品指定附魔的等级
-     */
     fun getEnchantmentLevel(itemStack: ItemStack, enchantment: RegistryKey<Enchantment>): Int {
         if (itemStack.isEmpty) return 0
         val itemEnchantments: Object2IntMap<RegistryEntry<Enchantment>> = Object2IntArrayMap()
@@ -59,9 +56,6 @@ object InventoryUtil {
         return getEnchantmentLevel(itemEnchantments, enchantment)
     }
 
-    /**
-     * 从附魔映射中获取指定附魔的等级
-     */
     fun getEnchantmentLevel(itemEnchantments: Object2IntMap<RegistryEntry<Enchantment>>, enchantment: RegistryKey<Enchantment>): Int {
         for (entry in Object2IntMaps.fastIterable(itemEnchantments)) {
             if (entry.key.matchesKey(enchantment)) return entry.intValue
@@ -69,9 +63,6 @@ object InventoryUtil {
         return 0
     }
 
-    /**
-     * 获取物品的附魔信息
-     */
     fun getEnchantments(itemStack: ItemStack, enchantments: Object2IntMap<RegistryEntry<Enchantment>>) {
         enchantments.clear()
         if (!itemStack.isEmpty) {
@@ -86,9 +77,6 @@ object InventoryUtil {
         }
     }
 
-    /**
-     * 背包物品交换 (用于 InventorySwap 模式)
-     */
     fun inventorySwap(slot: Int, selectedSlot: Int) {
         if (slot == lastSlot) {
             switchToSlot(lastSelect)
@@ -103,18 +91,9 @@ object InventoryUtil {
             switchToSlot(slot - 36)
             return
         }
-        mc.interactionManager?.clickSlot(
-            mc.player!!.currentScreenHandler.syncId,
-            slot,
-            selectedSlot,
-            SlotActionType.SWAP,
-            mc.player!!
-        )
+        mc.interactionManager?.clickSlot(mc.player!!.currentScreenHandler.syncId, slot, selectedSlot, SlotActionType.SWAP, mc.player!!)
     }
 
-    /**
-     * 在背包中查找指定物品的槽位
-     */
     fun findItemInventorySlot(item: Item): Int {
         for (i in 0 until 45) {
             val stack = mc.player!!.inventory.getStack(i)
@@ -123,24 +102,19 @@ object InventoryUtil {
         return -1
     }
 
-    /**
-     * 在快捷栏中查找方块物品
-     */
     fun findBlock(): Int {
         for (i in 0..8) {
             val stack = getStackInSlot(i)
-            if (stack.item is BlockItem && 
-                !BlockUtil.shiftBlocks.contains(Block.getBlockFromItem(stack.item)) && 
-                ((stack.item as BlockItem).block != Blocks.COBWEB)) {
+            if (stack.item is BlockItem &&
+                !BlockUtil.shiftBlocks.contains(Block.getBlockFromItem(stack.item)) &&
+                (stack.item as BlockItem).block != Blocks.COBWEB
+            ) {
                 return i
             }
         }
         return -1
     }
 
-    /**
-     * 在快捷栏中查找半砖方块
-     */
     fun findSlabBlock(): Int {
         for (i in 0..8) {
             val stack = getStackInSlot(i)
@@ -152,24 +126,15 @@ object InventoryUtil {
         return -1
     }
 
-    /**
-     * 获取指定槽位的物品堆
-     */
     fun getStackInSlot(i: Int): ItemStack {
         return mc.player!!.inventory.getStack(i)
     }
 
-    /**
-     * 切换到指定槽位
-     */
     fun switchToSlot(slot: Int) {
         mc.player!!.inventory.selectedSlot = slot
-        mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(slot))
+        sendPacket(UpdateSelectedSlotC2SPacket(slot))
     }
 
-    /**
-     * 在快捷栏中查找指定物品
-     */
     fun findItem(input: Item): Int {
         for (i in 0..8) {
             val item = getStackInSlot(i).item
@@ -179,9 +144,6 @@ object InventoryUtil {
         return -1
     }
 
-    /**
-     * 在快捷栏中查找指定类型的物品
-     */
     fun findClass(clazz: Class<*>): Int {
         for (i in 0..8) {
             val stack = getStackInSlot(i)
@@ -193,13 +155,13 @@ object InventoryUtil {
         return -1
     }
 
-    /**
-     * 在快捷栏中查找指定方块
-     */
+    fun sendPacket(packet: Packet<*>) {
+        mc.networkHandler!!.sendPacket(packet)
+    }
+
     fun findBlock(block: Block): Int {
-        val player = mc.player ?: return -1
         for (i in 0..8) {
-            val stack = player.inventory.getStack(i)
+            val stack = getStackInSlot(i)
             if (stack.item is BlockItem) {
                 if ((stack.item as BlockItem).block == block) return i
             }
@@ -207,24 +169,13 @@ object InventoryUtil {
         return -1
     }
 
-    /**
-     * 在背包中查找指定方块 (包含背包所有槽位)
-     */
     fun findBlockInventory(block: Block): Int {
-        val player = mc.player ?: return -1
-        // 先检查快捷栏
-        for (i in 0..8) {
-            val stack = player.inventory.getStack(i)
-            if (stack.item is BlockItem && (stack.item as BlockItem).block == block) return i
+        for (i in 0 until 45) {
+            val stack = getStackInSlot(i)
+            if (stack.item is BlockItem) {
+                if ((stack.item as BlockItem).block == block) return if (i < 9) i + 36 else i
+            }
         }
-        // 再检查主背包
-        for (i in 9 until 36) {
-            val stack = player.inventory.getStack(i)
-            if (stack.item is BlockItem && (stack.item as BlockItem).block == block) return i
-        }
-        // 最后检查副手
-        val offHandStack = player.inventory.getStack(40)
-        if (offHandStack.item is BlockItem && (offHandStack.item as BlockItem).block == block) return 40
         return -1
     }
 }

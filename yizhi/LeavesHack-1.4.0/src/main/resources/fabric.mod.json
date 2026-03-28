@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "leaveshack",
+  "version": "${version}",
+  "name": "LeavesHack",
+  "description": "致力于改善无政府服务器生存体验的MeteorClient插件 dev：Leaves_awa",
+  "authors": [
+    "Leaves_awa"
+  ],
+  "accessWidener": "leavesHack.accesswidener",
+  "contact": {
+    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+  },
+  "icon": "assets/template/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "com.dev.leavesHack.LeavesHack"
+    ]
+  },
+  "mixins": [
+    "leavesHack.mixins.json"
+  ],
+  "custom": {
+    "meteor-client:color": "225,25,25"
+  },
+  "depends": {
+    "java": ">=21",
+    "minecraft": ["${mc_version}"],
+    "meteor-client": "*"
+  }
+}

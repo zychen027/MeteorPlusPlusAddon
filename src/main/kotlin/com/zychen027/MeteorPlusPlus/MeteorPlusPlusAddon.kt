@@ -29,7 +29,7 @@ class MeteorPlusPlusAddon : MeteorAddon() {
         modules.add(ElytraFly())
         modules.add(ElytraReplace())
         modules.add(ElytraAutoPilot())
-        modules.add(ElytraAndArmor()) // <--- 新增注册
+        modules.add(ElytraAndArmor())
 
         // ==================== 世界模块 ====================
         modules.add(PacketMineModule())
@@ -37,10 +37,12 @@ class MeteorPlusPlusAddon : MeteorAddon() {
 
         // ==================== 移动模块 ====================
         modules.add(GrimFly())
+        modules.add(GrimNoFall())
 
         // ==================== 其他模块 ====================
         modules.add(PacketEat())
         modules.add(TNTTimer())
+		modules.add(Help())
 
         // ==================== 新增模块 ====================
         modules.add(BetterTab())
