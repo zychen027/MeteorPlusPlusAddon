@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.io.FileWriter
 import java.io.IOException
 import java.util.*
 
@@ -14,22 +15,25 @@ import java.util.*
  * 用于管理好友列表，Follow 模块会忽略好友
  */
 object XaluFriends {
-    private const val FRIENDS_FILE = "alien/friends.txt"
+    private val mc = MinecraftClient.getInstance()
+    
+    // 好友文件路径：MC 版本目录/friends.txt
+    private val FRIENDS_FILE: File by lazy {
+        File(mc.runDirectory, "friends.txt")
+    }
+    
     private val friends: MutableList<Friend> = ArrayList()
     private var loaded = false
-    private val mc = MinecraftClient.getInstance()
 
     fun init() {
         load()
     }
 
     fun load() {
-        val file = File(FRIENDS_FILE)
-        if (!file.exists()) {
-            file.parentFile?.mkdirs()
+        if (!FRIENDS_FILE.exists()) {
+            FRIENDS_FILE.parentFile?.mkdirs()
             try {
-                file.createNewFile()
-                add("xianliu")
+                FRIENDS_FILE.createNewFile()
             } catch (e: IOException) {
                 LogUtils.getLogger().error("Failed to create friends file: " + e.message)
             }
@@ -37,7 +41,7 @@ object XaluFriends {
         }
         var reader: BufferedReader? = null
         try {
-            reader = BufferedReader(FileReader(file))
+            reader = BufferedReader(FileReader(FRIENDS_FILE))
             friends.clear()
             var line: String?
             while (reader.readLine().also { line = it } != null) {
@@ -59,19 +63,37 @@ object XaluFriends {
     }
 
     fun save() {
-        LogUtils.getLogger().info("Save functionality is disabled. Friends can only be added by editing friends.txt file directly.")
-    }
-
-    fun add(name: String?) {
-        if (!isFriend(name)) {
-            friends.add(Friend(name!!))
-            LogUtils.getLogger().info("Friend added to memory. To make it permanent, add it to friends.txt file directly.")
+        try {
+            FileWriter(FRIENDS_FILE).use { writer ->
+                for (friend in friends) {
+                    writer.write(friend.name)
+                    writer.write("\n")
+                }
+            }
+            LogUtils.getLogger().info("Friends list saved: " + friends.size + " friends")
+        } catch (e: IOException) {
+            LogUtils.getLogger().error("Failed to save friends: " + e.message)
         }
     }
 
-    fun remove(name: String?) {
-        friends.removeIf { friend: Friend -> friend.name.equals(name, ignoreCase = true) }
-        LogUtils.getLogger().info("Friend removed from memory. To make it permanent, remove it from friends.txt file directly.")
+    fun add(name: String?): Boolean {
+        if (name.isNullOrBlank()) return false
+        if (!isFriend(name)) {
+            friends.add(Friend(name))
+            save()
+            LogUtils.getLogger().info("Friend added: $name")
+            return true
+        }
+        return false
+    }
+
+    fun remove(name: String?): Boolean {
+        val removed = friends.removeIf { friend: Friend -> friend.name.equals(name, ignoreCase = true) }
+        if (removed) {
+            save()
+            LogUtils.getLogger().info("Friend removed: $name")
+        }
+        return removed
     }
 
     fun isFriend(name: String?): Boolean {
@@ -85,6 +107,10 @@ object XaluFriends {
     fun getFriends(): List<Friend> {
         return friends
     }
+    
+    fun getFriendCount(): Int {
+        return friends.size
+    }
 
     class Friend(val name: String) {
         override fun equals(other: Any?): Boolean {
@@ -96,6 +122,10 @@ object XaluFriends {
 
         override fun hashCode(): Int {
             return name.lowercase().hashCode()
+        }
+        
+        override fun toString(): String {
+            return name
         }
     }
 }

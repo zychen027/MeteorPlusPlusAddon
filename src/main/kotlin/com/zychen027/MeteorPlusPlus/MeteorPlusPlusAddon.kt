@@ -21,10 +21,10 @@ class MeteorPlusPlusAddon : MeteorAddon() {
 
     override fun onInitialize() {
         LOG.info("Initializing Meteor++ Addon")
-        
+
         // 初始化 XALU 好友系统
         XaluFriends.init()
-        
+
         val modules = Modules.get()
 
         // ==================== 战斗模块 ====================
@@ -38,17 +38,20 @@ class MeteorPlusPlusAddon : MeteorAddon() {
 
         // ==================== 世界模块 ====================
         modules.add(PacketMineModule())
+        modules.add(SpeedMinePlus())
         modules.add(Printer())
 
         // ==================== 移动模块 ====================
         modules.add(GrimFly())
         modules.add(GrimNoFall())
         modules.add(Follow())
+        modules.add(NoSlow())
 
         // ==================== 其他模块 ====================
         modules.add(PacketEat())
         modules.add(TNTTimer())
-		modules.add(Help())
+        modules.add(FriendsModule())
+        modules.add(Help())
 
         // ==================== 新增模块 ====================
         modules.add(BetterTab())
