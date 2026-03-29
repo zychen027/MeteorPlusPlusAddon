@@ -4,6 +4,7 @@ import com.zychen027.meteorplusplus.commands.BetterTabCommand
 import com.zychen027.meteorplusplus.commands.ElytraAutoPilotCommand
 import com.zychen027.meteorplusplus.modules.elytraautopilot.ElytraAutoPilot
 import com.zychen027.meteorplusplus.modules.*
+import com.zychen027.meteorplusplus.utils.xalu.XaluFriends
 import meteordevelopment.meteorclient.addons.MeteorAddon
 import meteordevelopment.meteorclient.commands.Commands
 import meteordevelopment.meteorclient.systems.modules.Category
@@ -20,6 +21,10 @@ class MeteorPlusPlusAddon : MeteorAddon() {
 
     override fun onInitialize() {
         LOG.info("Initializing Meteor++ Addon")
+        
+        // 初始化 XALU 好友系统
+        XaluFriends.init()
+        
         val modules = Modules.get()
 
         // ==================== 战斗模块 ====================
@@ -38,6 +43,7 @@ class MeteorPlusPlusAddon : MeteorAddon() {
         // ==================== 移动模块 ====================
         modules.add(GrimFly())
         modules.add(GrimNoFall())
+        modules.add(Follow())
 
         // ==================== 其他模块 ====================
         modules.add(PacketEat())

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.dev.xalu.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ClientPlayerEntityMixin",
+    "LivingEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "XALU Beta Version-refmap.json"
+}

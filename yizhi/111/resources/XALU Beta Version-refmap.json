@@ -1,0 +1,20 @@
+{
+  "mappings": {
+    "com/dev/xalu/mixins/ClientPlayerEntityMixin": {
+      "shouldSlowDown": "Lnet/minecraft/class_746;method_20303()Z"
+    },
+    "com/dev/xalu/mixins/LivingEntityMixin": {
+      "tickMovement": "Lnet/minecraft/class_1309;method_6007()V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/dev/xalu/mixins/ClientPlayerEntityMixin": {
+        "shouldSlowDown": "Lnet/minecraft/class_746;method_20303()Z"
+      },
+      "com/dev/xalu/mixins/LivingEntityMixin": {
+        "tickMovement": "Lnet/minecraft/class_1309;method_6007()V"
+      }
+    }
+  }
+}

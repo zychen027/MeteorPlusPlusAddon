@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "xalu",
+  "version": "1.2.1",
+  "name": "XALU",
+  "description": "Minecraft Meteor Client Addon",
+  "authors": [
+    "xianliu"
+  ],
+  "contact": {
+    "homepage": "https://github.com/",
+    "sources": "https://github.com/"
+  },
+  "license": "MIT",
+  "icon": "assets/xalu/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "com.dev.xalu.XALUAddon"
+    ]
+  },
+  "mixins": [
+    "xalu.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.21.1",
+    "meteor-client": "~0.5.8"
+  }
+}
