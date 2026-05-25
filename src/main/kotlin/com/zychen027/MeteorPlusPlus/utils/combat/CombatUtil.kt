@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity
  * 用于获取和验证敌人目标
  */
 object CombatUtil {
+
     private val mc get() = MeteorClient.mc
 
     /**
@@ -35,7 +36,9 @@ object CombatUtil {
         if (!entity.isAlive) return false
         if (entity == player) return false
         if (entity is PlayerEntity && Friends.get().isFriend(entity)) return false
-        if (player.pos.distanceTo(entity.pos) > range) return false
+        
+        // 修复：直接使用 Entity 自带的 distanceTo 方法，彻底避开 1.21.11 中 getPos() 映射变更问题
+        if (player.distanceTo(entity) > range) return false
         return true
     }
 
@@ -55,15 +58,16 @@ object CombatUtil {
      * 获取最近的敌人
      */
     fun getClosestEnemy(distance: Double): PlayerEntity? {
-        var closest: PlayerEntity? = null
         val player = mc.player ?: return null
+        val enemies = getEnemies(distance)
+        if (enemies.isEmpty()) return null
 
-        for (otherPlayer in getEnemies(distance)) {
-            if (closest == null) {
-                closest = otherPlayer
-                continue
-            }
-            if (player.squaredDistanceTo(otherPlayer.pos) < player.squaredDistanceTo(closest.pos)) {
+        // 修复：通过先获取首个敌人，保证 closest 不为空，避开编译器对可空类型的错误推断（消除 String.compareTo 报错）
+        var closest = enemies[0]
+        for (i in 1 until enemies.size) {
+            val otherPlayer = enemies[i]
+            // 修复：直接使用 Entity 自带的 squaredDistanceTo 方法
+            if (player.squaredDistanceTo(otherPlayer) < player.squaredDistanceTo(closest)) {
                 closest = otherPlayer
             }
         }

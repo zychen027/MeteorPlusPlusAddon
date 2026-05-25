@@ -1,10 +1,7 @@
 package com.zychen027.meteorplusplus
 
 import com.zychen027.meteorplusplus.commands.BetterTabCommand
-import com.zychen027.meteorplusplus.commands.ElytraAutoPilotCommand
-import com.zychen027.meteorplusplus.modules.elytraautopilot.ElytraAutoPilot
 import com.zychen027.meteorplusplus.modules.*
-import com.zychen027.meteorplusplus.utils.xalu.XaluFriends
 import meteordevelopment.meteorclient.addons.MeteorAddon
 import meteordevelopment.meteorclient.commands.Commands
 import meteordevelopment.meteorclient.systems.modules.Category
@@ -22,43 +19,31 @@ class MeteorPlusPlusAddon : MeteorAddon() {
     override fun onInitialize() {
         LOG.info("Initializing Meteor++ Addon")
 
-        // 初始化 XALU 好友系统
-        XaluFriends.init()
-
         val modules = Modules.get()
 
         // ==================== 战斗模块 ====================
         modules.add(KillAura())
 
-        // ==================== 鞘翅模块 ====================
-        modules.add(ElytraFly())
+        // ==================== 鞘翅模块 ====================)
         modules.add(ElytraReplace())
-        modules.add(ElytraAutoPilot())
         modules.add(ElytraAndArmor())
+        modules.add(InfiniteDura())
 
         // ==================== 世界模块 ====================
         modules.add(PacketMineModule())
-        modules.add(SpeedMinePlus())
         modules.add(Printer())
-
-        // ==================== 移动模块 ====================
-        modules.add(GrimFly())
-        modules.add(GrimNoFall())
-        modules.add(Follow())
-        modules.add(NoSlow())
 
         // ==================== 其他模块 ====================
         modules.add(PacketEat())
         modules.add(TNTTimer())
-        modules.add(FriendsModule())
         modules.add(Help())
+		modules.add(YLevelProtect())
 
         // ==================== 新增模块 ====================
         modules.add(BetterTab())
 
         // ==================== 注册命令 ====================
         Commands.add(BetterTabCommand())
-        Commands.add(ElytraAutoPilotCommand())
     }
 
     override fun onRegisterCategories() {

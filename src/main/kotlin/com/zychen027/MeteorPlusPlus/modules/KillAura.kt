@@ -34,6 +34,7 @@ class KillAura : Module(
     "KillAura",
     "自动攻击范围内的敌人"
 ) {
+
     private val sgGeneral = settings.getDefaultGroup()
 
     private val targetRange = sgGeneral.add(IntSetting.Builder()
@@ -138,7 +139,7 @@ class KillAura : Module(
         if (reset.get()) {
             val packet = event.packet
             if (packet is PlayerInteractEntityC2SPacket) {
-                // MC 1.21.8: 使用反射获取 InteractType
+                // MC 1.21.8+: 使用反射获取 InteractType
                 try {
                     val modeField = packet.javaClass.getDeclaredField("type")
                     modeField.isAccessible = true
@@ -169,7 +170,6 @@ class KillAura : Module(
 
     private fun doAura() {
         if (!check()) return
-
         var found = false
         var previousSlot = -1
 
@@ -179,13 +179,9 @@ class KillAura : Module(
                 Weapon.Sword -> { stack -> stack.isIn(net.minecraft.registry.tag.ItemTags.SWORDS) }
                 Weapon.Mace -> { stack -> stack.item is MaceItem }
                 Weapon.Trident -> { stack -> stack.item is TridentItem }
-                Weapon.All -> { stack ->
-                    stack.item is AxeItem || stack.isIn(net.minecraft.registry.tag.ItemTags.SWORDS) ||
-                    stack.item is MaceItem || stack.item is TridentItem
-                }
+                Weapon.All -> { stack -> stack.item is AxeItem || stack.isIn(net.minecraft.registry.tag.ItemTags.SWORDS) || stack.item is MaceItem || stack.item is TridentItem }
                 Weapon.Any -> { _ -> true }
             }
-
             val weaponResult: FindItemResult = InvUtils.findInHotbar(predicate)
             previousSlot = mc.player!!.inventory.selectedSlot
             if (weaponResult.found()) {
@@ -203,14 +199,22 @@ class KillAura : Module(
         }
 
         mc.networkHandler!!.sendPacket(PlayerInteractEntityC2SPacket.attack(target!!, mc.player!!.isSneaking))
-        mc.player!!.resetLastAttackedTicks()
+        
+        // 修复：MC 1.21.11 移除了 resetLastAttackedTicks，使用反射强制重置冷却
+        try {
+            val field = mc.player!!.javaClass.getDeclaredField("lastAttackedTicks")
+            field.isAccessible = true
+            field.setInt(mc.player!!, 0)
+        } catch (e: Exception) {
+            // 忽略反射错误
+        }
+
         mc.player!!.swingHand(Hand.MAIN_HAND)
         tick.reset()
 
         if (rotate.get()) {
             Rotation.snapBack()
         }
-
         if (autoSwitch.get() == SwitchMode.Silent && previousSlot != -1) {
             InventoryUtil.switchToSlot(previousSlot)
         }
@@ -223,8 +227,7 @@ class KillAura : Module(
             Weapon.Sword -> stack.isIn(net.minecraft.registry.tag.ItemTags.SWORDS)
             Weapon.Mace -> stack.item is MaceItem
             Weapon.Trident -> stack.item is TridentItem
-            Weapon.All -> stack.item is AxeItem || stack.isIn(net.minecraft.registry.tag.ItemTags.SWORDS) ||
-                         stack.item is MaceItem || stack.item is TridentItem
+            Weapon.All -> stack.item is AxeItem || stack.isIn(net.minecraft.registry.tag.ItemTags.SWORDS) || stack.item is MaceItem || stack.item is TridentItem
             Weapon.Any -> true
         }
     }
@@ -238,37 +241,31 @@ class KillAura : Module(
     private fun getTarget(range: Double): Entity? {
         var target: Entity? = null
         var distance = range
-
         for (entity in mc.world!!.entities) {
             if (!entities.get().contains(entity.type)) continue
             if (ignoreNamed.get() && entity.hasCustomName()) continue
-
             if (ignoreTamed.get()) {
-                if (entity is Tameable && entity.owner != null &&
-                    entity.owner!!.uuid == mc.player!!.uuid) continue
+                if (entity is Tameable && entity.owner != null && entity.owner!!.uuid == mc.player!!.uuid) continue
             }
-
             if (ignorePassive.get()) {
                 if (entity is EndermanEntity && !entity.isAngry) continue
                 if (entity is ZombifiedPiglinEntity && !entity.isAttacking) continue
                 if (entity is WolfEntity && !entity.isAttacking) continue
             }
-
             if (!mc.player!!.canSee(entity) && mc.player!!.distanceTo(entity) > wallRange.get()) continue
             if (!CombatUtil.isValid(entity, attackRange.get())) continue
-
             val dist = mc.player!!.distanceTo(entity).toDouble()
             if (target == null || dist < distance) {
                 target = entity
                 distance = dist
             }
         }
-
         return target
     }
 
     private fun getAttackVec(entity: Entity): Vec3d {
-        return BlockUtil.getClosestPointToBox(mc.player!!.eyePos, entity.boundingBox)
+        // 修复：MC 1.21.11 中 eyePos 也是私有字段，需使用 getEyePos()
+        return BlockUtil.getClosestPointToBox(mc.player!!.getEyePos(), entity.boundingBox)
     }
 
     enum class Weapon {

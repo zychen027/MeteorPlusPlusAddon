@@ -15,5 +15,6 @@ class Help : Module(
     private fun onTick(event: TickEvent.Post) {
         ChatUtils.info("§a 开始享受 Meteor++！如果觉得好用请赞助。")
 		ChatUtils.info("§a 插件免费，如果是付费的说明你被骗了~")
+		toggle()
     }
 }

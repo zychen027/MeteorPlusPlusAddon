@@ -1,8 +1,8 @@
 [versions]
-minecraft = "1.21.8"
+minecraft = "1.21.11"
 fabric-loader = "0.16.9"
-yarn = "1.21.8+build.1"
-meteor = "1.21.8-SNAPSHOT"
+yarn = "1.21.11+build.5"
+meteor = "1.21.11-SNAPSHOT"
 kotlin = "2.0.21"
 loom = "1.14.7"
 
