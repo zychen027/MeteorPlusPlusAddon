@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(.\\gradlew *)",
-      "Bash(gradlew.bat *)"
-    ]
-  },
-  "$version": 3
-}
