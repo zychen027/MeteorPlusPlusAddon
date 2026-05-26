@@ -8,7 +8,7 @@ import meteordevelopment.orbit.EventHandler
 
 class Help : Module(
 	MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
-    "A 帮助",
+    "A帮助",
     "使用前看我：1.本插件不保证 100% 靠谱。2.使用前请先去单人测试。3.插件在测试，坠机后果自负（虽然大概率不会）。"
 ) {
     @EventHandler

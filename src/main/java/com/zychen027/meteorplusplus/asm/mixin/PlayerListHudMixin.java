@@ -1,5 +1,6 @@
 package com.zychen027.meteorplusplus.asm.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,9 +24,8 @@ public abstract class PlayerListHudMixin {
      */
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 0)
     private List<PlayerListEntry> modifyPlayerList(List<PlayerListEntry> playerList) {
-        // 获取 BetterTab 模块实例
         meteordevelopment.meteorclient.systems.modules.Modules modules = meteordevelopment.meteorclient.systems.modules.Modules.get();
-        if (modules == null || playerList == null || playerList.isEmpty()) {
+        if (modules == null || playerList == null) {
             return playerList;
         }
         com.zychen027.meteorplusplus.modules.BetterTab module = modules.get(com.zychen027.meteorplusplus.modules.BetterTab.class);
@@ -41,19 +41,39 @@ public abstract class PlayerListHudMixin {
 
         // 创建排序后的列表
         List<PlayerListEntry> sortedList = new ArrayList<>(playerList);
+
+        // 修复：将不在当前 playerList 中但在线的置顶玩家添加到列表中
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.player != null && client.player.networkHandler != null) {
+            for (PlayerListEntry entry : client.player.networkHandler.getPlayerList()) {
+                String playerName = entry.getProfile().name();
+                if (playerName != null && pinnedPlayers.contains(playerName)) {
+                    // 检查该置顶玩家是否已在列表中
+                    boolean alreadyInList = false;
+                    for (PlayerListEntry existing : sortedList) {
+                        if (existing.getProfile().name().equals(playerName)) {
+                            alreadyInList = true;
+                            break;
+                        }
+                    }
+                    // 不在列表中则添加，确保置顶玩家一定会出现
+                    if (!alreadyInList) {
+                        sortedList.add(entry);
+                    }
+                }
+            }
+        }
+
+        // 排序：置顶玩家按配置顺序排在前面，非置顶玩家排在后面
         sortedList.sort(Comparator.comparingInt(entry -> {
-            // 修复：1.20.2+ 版本中 GameProfile 变为 Record，getName() 改为了 name()
             String playerName = entry.getProfile().name();
             if (playerName == null) {
                 return Integer.MAX_VALUE;
             }
-            // 检查是否在置顶列表中
             int pinIndex = pinnedPlayers.indexOf(playerName);
             if (pinIndex != -1) {
-                // 置顶玩家按配置顺序排在前面
                 return pinIndex;
             }
-            // 非置顶玩家排在后面
             return Integer.MAX_VALUE;
         }));
 

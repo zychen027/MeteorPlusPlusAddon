@@ -4,6 +4,7 @@ import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
 import meteordevelopment.meteorclient.events.world.TickEvent
 import meteordevelopment.meteorclient.settings.*
 import meteordevelopment.meteorclient.systems.modules.Module
+import meteordevelopment.meteorclient.systems.friends.Friends as MeteorFriends
 import meteordevelopment.meteorclient.utils.player.ChatUtils
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.client.network.PlayerListEntry
@@ -38,6 +39,13 @@ class BetterTab : Module(
         .description("要置顶到 Tab 顶部的玩家列表。")
         .build())
 
+    // 新增：置顶好友
+    private val pinFriends = sgPinned.add(BoolSetting.Builder()
+        .name("置顶好友")
+        .description("开启时置顶 MeteorClient 好友列表中的玩家。")
+        .defaultValue(false)
+        .build())
+
     // 运行时使用的可变列表
     @Volatile
     private var pinnedPlayers: MutableList<String> = mutableListOf()
@@ -64,7 +72,7 @@ class BetterTab : Module(
 
     @EventHandler
     private fun onTick(event: TickEvent.Pre) {
-        // 定期更新置顶玩家列表
+        // 定期更新置顶玩家列表（包括在线好友检测）
         updatePinnedPlayers()
     }
 
@@ -74,12 +82,29 @@ class BetterTab : Module(
     private fun updatePinnedPlayers() {
         try {
             val newList = ArrayList<String>()
+            
+            // 1. 添加手动指定的置顶玩家
             for (player in pinnedPlayersList.get()) {
                 val name = player.trim()
                 if (name.isNotEmpty()) {
                     newList.add(name)
                 }
             }
+
+            // 2. 自动添加在线的好友
+            if (pinFriends.get() && mc.player != null && mc.player!!.networkHandler != null) {
+                for (entry in mc.player!!.networkHandler.playerList) {
+                    val name = entry.profile.name
+                    // 确保不在列表中重复，且该玩家确实是好友
+                    if (name != null && !newList.contains(name)) {
+                        // 修复：使用 get(PlayerListEntry!) 方法判断是否为好友
+                        if (MeteorFriends.get().get(entry) != null) {
+                            newList.add(name)
+                        }
+                    }
+                }
+            }
+
             pinnedPlayers = newList
         } catch (e: Exception) {
             // 忽略异常
