@@ -27,12 +27,10 @@ class MeteorPlusPlusAddon : MeteorAddon() {
         // ==================== 鞘翅模块 ====================)
         modules.add(ElytraReplace())
         modules.add(ElytraAndArmor())
-        modules.add(InfiniteDura())
-		modules.add(FollowModule())
+		modules.add(FireworkElytraFly())
 
         // ==================== 世界模块 ====================
         modules.add(PacketMineModule())
-        modules.add(Printer())
 
         // ==================== 其他模块 ====================
         modules.add(PacketEat())
@@ -42,8 +40,8 @@ class MeteorPlusPlusAddon : MeteorAddon() {
 
         // ==================== 新增模块 ====================
         modules.add(BetterTab())
-		modules.add(ElytraGrimAccelerate())
 		modules.add(NoFall())
+		modules.add(PacketKickFix())
 
         // ==================== 注册命令 ====================
         Commands.add(BetterTabCommand())

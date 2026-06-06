@@ -2,14 +2,12 @@ package com.zychen027.meteorplusplus.modules
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
-import meteordevelopment.meteorclient.events.meteor.KeyEvent
 import meteordevelopment.meteorclient.events.world.TickEvent
 import meteordevelopment.meteorclient.settings.DoubleSetting
 import meteordevelopment.meteorclient.settings.Setting
 import meteordevelopment.meteorclient.settings.SettingGroup
 import meteordevelopment.meteorclient.systems.modules.Module
 import meteordevelopment.meteorclient.utils.Utils
-import meteordevelopment.meteorclient.utils.misc.input.KeyAction
 import meteordevelopment.meteorclient.utils.player.InvUtils
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.enchantment.Enchantment
@@ -21,14 +19,13 @@ import net.minecraft.registry.entry.RegistryEntry
 import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
 
 class ElytraAndArmor : Module(
-    MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, 
-    "鞘翅胸甲切换", 
+    MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY,
+    "鞘翅胸甲切换",
     "自动在鞘翅和胸甲之间切换。落地自动穿甲，双击空格穿鞘翅。"
 ) {
     private val sgGeneral: SettingGroup = settings.getDefaultGroup()
-    
     private val enchantments: Object2IntMap<RegistryEntry<Enchantment>> = Object2IntOpenHashMap()
-    
+
     private val delay: Setting<Double> = sgGeneral.add(DoubleSetting.Builder()
         .name("空格按压延迟")
         .description("双击空格切换鞘翅的有效时间窗口（秒）。")
@@ -43,9 +40,8 @@ class ElytraAndArmor : Module(
     @EventHandler
     private fun onTick(event: TickEvent.Pre) {
         val player = mc.player ?: return
-        
         val chestStack = player.getEquippedStack(EquipmentSlot.CHEST)
-        
+
         // 检查当前胸甲槽是否不是胸甲（使用 Items 比较）
         if (!isChestplate(chestStack)) {
             // 在地面且（槽位为空或为鞘翅）时，尝试装备最佳胸甲
@@ -53,6 +49,37 @@ class ElytraAndArmor : Module(
                 val bestSlot = getBestArmorSlot()
                 if (bestSlot != -1) {
                     InvUtils.move().from(bestSlot).toArmor(2)
+                }
+            }
+        }
+
+        // 双击跳跃键(空格)穿鞘翅逻辑
+        // 使用原生输入检测，避免 Meteor KeyEvent 更新导致的 NoSuchFieldError 崩溃
+        if (mc.options.jumpKey.wasPressed()) {
+            val now = System.currentTimeMillis()
+            if (lastPressTime == 0L) {
+                lastPressTime = now
+                return
+            }
+            val timeDiff = (now - lastPressTime).toDouble()
+            val threshold = delay.get() * 1000.0
+            if (timeDiff > threshold) {
+                lastPressTime = now
+                return
+            }
+
+            // 如果已经是鞘翅，重置时间但不切换
+            if (chestStack.isOf(Items.ELYTRA)) {
+                lastPressTime = now
+                return
+            }
+
+            // 如果胸甲槽为空或者是普通护甲，切换为鞘翅
+            if (chestStack.isEmpty || isChestplate(chestStack)) {
+                mc.currentScreen?.close()
+                val elytraSlot = InvUtils.find(Items.ELYTRA)
+                if (elytraSlot.found()) {
+                    InvUtils.move().from(elytraSlot.slot()).toArmor(2)
                 }
             }
         }
@@ -81,7 +108,6 @@ class ElytraAndArmor : Module(
         // 遍历背包槽位 (0-35)
         for (i in 0..35) {
             val stack = player.inventory.getStack(i)
-            
             if (isChestplate(stack)) {
                 val score = getScore(stack)
                 if (score > bestScore) {
@@ -98,9 +124,8 @@ class ElytraAndArmor : Module(
      */
     private fun getScore(stack: ItemStack): Int {
         if (!isChestplate(stack)) return -1
-        
         var score = 0
-        
+
         // 基础护甲值 (根据材质)
         score += when (stack.item) {
             Items.NETHERITE_CHESTPLATE -> 8
@@ -111,68 +136,28 @@ class ElytraAndArmor : Module(
             Items.LEATHER_CHESTPLATE -> 3
             else -> 0
         }
-        
+
         // 韧性加成
         score += when (stack.item) {
             Items.NETHERITE_CHESTPLATE -> 3
             Items.DIAMOND_CHESTPLATE -> 2
             else -> 0
         }
-        
+
         // 击退抗性
         if (stack.isOf(Items.NETHERITE_CHESTPLATE)) {
             score += 10 // 0.1 * 100
         }
-        
+
         // 获取附魔并计算加分
         Utils.getEnchantments(stack, enchantments)
-        
         score += Utils.getEnchantmentLevel(enchantments, Enchantments.PROTECTION)
         score += Utils.getEnchantmentLevel(enchantments, Enchantments.BLAST_PROTECTION)
         score += Utils.getEnchantmentLevel(enchantments, Enchantments.FIRE_PROTECTION)
         score += Utils.getEnchantmentLevel(enchantments, Enchantments.PROJECTILE_PROTECTION)
         score += Utils.getEnchantmentLevel(enchantments, Enchantments.UNBREAKING)
         score += 2 * Utils.getEnchantmentLevel(enchantments, Enchantments.MENDING)
-        
-        return score
-    }
 
-    @EventHandler
-    private fun onKey(event: KeyEvent) {
-        if (event.key == 32 && event.action == KeyAction.Press) {
-            val now = System.currentTimeMillis()
-            
-            if (lastPressTime == 0L) {
-                lastPressTime = now
-                return
-            }
-            
-            val timeDiff = (now - lastPressTime).toDouble()
-            val threshold = delay.get() * 1000.0
-            
-            if (timeDiff > threshold) {
-                lastPressTime = now
-                return
-            }
-            
-            val player = mc.player ?: return
-            val chestStack = player.getEquippedStack(EquipmentSlot.CHEST)
-            
-            // 如果已经是鞘翅，重置时间但不切换
-            if (chestStack.isOf(Items.ELYTRA)) {
-                lastPressTime = now
-                return
-            }
-            
-            // 如果胸甲槽为空或者是普通护甲，切换为鞘翅
-            if (chestStack.isEmpty || isChestplate(chestStack)) {
-                mc.currentScreen?.close()
-                
-                val elytraSlot = InvUtils.find(Items.ELYTRA)
-                if (elytraSlot.found()) {
-                    InvUtils.move().from(elytraSlot.slot()).toArmor(2)
-                }
-            }
-        }
+        return score
     }
 }
