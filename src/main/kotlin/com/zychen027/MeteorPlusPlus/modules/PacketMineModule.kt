@@ -16,6 +16,8 @@ import meteordevelopment.meteorclient.systems.modules.Module
 import meteordevelopment.meteorclient.utils.render.color.SettingColor
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.block.Blocks
+import net.minecraft.client.network.ClientPlayerInteractionManager
+import net.minecraft.client.world.ClientWorld
 import net.minecraft.enchantment.Enchantments
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.item.ItemStack
@@ -27,11 +29,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
-import net.minecraft.registry.entry.RegistryEntry
-import net.minecraft.enchantment.Enchantment
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.RegistryKeys
 import java.util.TimerTask
+import java.util.function.IntFunction
 
 /**
  * PacketMine (发包挖掘) - 移植自 LeavesHack
@@ -42,7 +41,6 @@ class PacketMineModule : Module(
     "PacketMine",
     "发包挖掘，针对 Grim 反作弊优化"
 ) {
-
     private val sgGeneral = settings.getDefaultGroup()
     private val sgBypass = settings.createGroup("Bypass")
     private val sgRender = settings.createGroup("Render")
@@ -105,7 +103,7 @@ class PacketMineModule : Module(
     private val mineDamage = sgBypass.add(DoubleSetting.Builder()
         .name("damage")
         .description("挖掘伤害倍率（Grim FastBreak 绕过）")
-        .defaultValue(1.38)
+        .defaultValue(0.9)
         .min(0.1).sliderMax(2.0)
         .build())
 
@@ -248,6 +246,29 @@ class PacketMineModule : Module(
     private val instantTimer = Timer()
     private val switchTimer = Timer()
 
+    // ==================== 反射工具 ====================
+    // 由于 Yarn 映射下 sendSequencedPacket 是 private，使用反射强制调用
+    private val sendSequencedPacketMethod by lazy {
+        try {
+            ClientPlayerInteractionManager::class.java.getDeclaredMethod(
+                "sendSequencedPacket",
+                ClientWorld::class.java,
+                IntFunction::class.java
+            )?.apply { isAccessible = true }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun sendSequencedPacket(creator: (Int) -> PlayerActionC2SPacket) {
+        if (sendSequencedPacketMethod != null && mc.world != null && mc.interactionManager != null) {
+            sendSequencedPacketMethod!!.invoke(mc.interactionManager, mc.world, IntFunction { creator(it) })
+        } else {
+            // 如果反射失败，回退到不带序列号的发包（可能会被Grim拦截，但至少不会崩溃）
+            InventoryUtil.sendPacket(creator(0))
+        }
+    }
+
     override fun onActivate() {
         resetState()
     }
@@ -365,6 +386,7 @@ class PacketMineModule : Module(
                 return
             }
         }
+
         if (secondPos != null && doubleBreak.get()) {
             val dist2 = mc.player!!.eyePos.squaredDistanceTo(secondPos!!.toCenterPos())
             if (farCancel.get() && Math.sqrt(dist2) > range.get()) {
@@ -395,6 +417,7 @@ class PacketMineModule : Module(
         if (publicProgress >= 100) {
             if (!instantMine.get()) targetPos = null
         }
+
         if (secondPublicProgress >= 100) {
             secondPos = null
         }
@@ -404,20 +427,16 @@ class PacketMineModule : Module(
             if (autoSwitch.get() == MineSwitchMode.Silent) InventoryUtil.sendPacket(UpdateSelectedSlotC2SPacket(oldSlot))
             hasSwitch = false
         }
+
         if (secondTimer.passedMs(switchTime.get().toLong()) && secondHasSwitch && autoSwitch.get() != MineSwitchMode.None) {
             if (autoSwitch.get() == MineSwitchMode.Delay) InventoryUtil.switchToSlot(oldSlot)
             if (autoSwitch.get() == MineSwitchMode.Silent) InventoryUtil.sendPacket(UpdateSelectedSlotC2SPacket(oldSlot))
             secondHasSwitch = false
         }
 
-        if (maxBreaksCount >= maxBreaks.get() * 10) {
-            maxBreaksCount = 0
-            targetPos = null
-        }
-
         // 第二目标挖掘（双挖）
         if (secondPos != null && doubleBreak.get()) {
-            val secondMax = getMineTicks2(getTool(secondPos!!))
+            val secondMax = getMineTicks(secondPos!!, getTool(secondPos!!))
             val secondDelta = (System.currentTimeMillis() - secondLastTime) / 1000.0
             secondPublicProgress = (secondProgress / (secondMax * mineDamage.get()) * 100).toInt()
             secondLastTime = System.currentTimeMillis()
@@ -446,9 +465,7 @@ class PacketMineModule : Module(
         // 双挖切换工具
         if (doubleBreak.get()) {
             if (!usingPause.get() || !checkPause(onlyMain.get())) {
-                if ((secondPublicProgress >= switchDamage.get() || publicProgress >= switchDamage.get())
-                    && !hasSwitch && secondPos != null
-                ) {
+                if ((secondPublicProgress >= switchDamage.get() || publicProgress >= switchDamage.get()) && !hasSwitch && secondPos != null) {
                     val bestSlot = getTool(secondPos!!)
                     if (!hasSwitch) oldSlot = mc.player!!.inventory.selectedSlot
                     if (autoSwitch.get() != MineSwitchMode.None && bestSlot != -1) {
@@ -463,16 +480,20 @@ class PacketMineModule : Module(
 
         // 主目标挖掘
         if (targetPos != null) {
-            val max = getMineTicks(getTool(targetPos!!))
+            val max = getMineTicks(targetPos!!, getTool(targetPos!!))
             publicProgress = (progress / (max * mineDamage.get()) * 100).toInt()
+
+            if (maxBreaksCount >= maxBreaks.get() * 10) {
+                maxBreaksCount = 0
+                targetPos = null
+                return
+            }
 
             if (progress >= max * mineDamage.get() && completed) {
                 if (isAir(targetPos!!) || mc.world!!.getBlockState(targetPos!!).isReplaceable) {
                     maxBreaksCount = 0
                 }
-                if (!isAir(targetPos!!) && !mc.world!!.getBlockState(targetPos!!).isReplaceable
-                    && !(usingPause.get() && checkPause(onlyMain.get()))
-                ) {
+                if (!isAir(targetPos!!) && !mc.world!!.getBlockState(targetPos!!).isReplaceable && !(usingPause.get() && checkPause(onlyMain.get()))) {
                     maxBreaksCount++
                 }
             }
@@ -481,9 +502,8 @@ class PacketMineModule : Module(
                 val side = getColor(sideStartColor.get(), sideEndColor.get(), 1.0)
                 val line = getColor(lineStartColor.get(), lineEndColor.get(), 1.0)
                 event.renderer.box(Box(targetPos!!), side, line, shapeMode.get(), 0)
-                if (!mc.world!!.isAir(targetPos!!) && !mc.world!!.getBlockState(targetPos!!).isReplaceable
-                    && instantTimer.passedMs(instantDelay.get().toLong())
-                ) {
+
+                if (!mc.world!!.isAir(targetPos!!) && !mc.world!!.getBlockState(targetPos!!).isReplaceable && instantTimer.passedMs(instantDelay.get().toLong())) {
                     sendStop()
                     instantTimer.reset()
                 }
@@ -516,23 +536,17 @@ class PacketMineModule : Module(
     }
 
     private fun sendStart(pos: BlockPos) {
-        InventoryUtil.sendPacket(
-            PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
-                pos,
-                BlockUtil.getClickSide(pos)
-            )
-        )
+        val direction = BlockUtil.getClickSide(pos)
+        // Grim 核心绕过：使用反射发送带序列号的包
+        sendSequencedPacket { sequence ->
+            PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, pos, direction, sequence)
+        }
 
         if (fastBypass.get()) {
             val bypassPos = BlockPosX(mc.player!!.x, 321.0, mc.player!!.z)
-            InventoryUtil.sendPacket(
-                PlayerActionC2SPacket(
-                    PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
-                    bypassPos,
-                    Direction.DOWN
-                )
-            )
+            sendSequencedPacket { sequence ->
+                PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, bypassPos, Direction.DOWN, sequence)
+            }
         }
 
         if (doubleBreak.get() && pos == targetPos) {
@@ -542,13 +556,9 @@ class PacketMineModule : Module(
                 timer.schedule(object : TimerTask() {
                     override fun run() {
                         mc.execute {
-                            InventoryUtil.sendPacket(
-                                PlayerActionC2SPacket(
-                                    PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK,
-                                    pos,
-                                    BlockUtil.getClickSide(pos)
-                                )
-                            )
+                            sendSequencedPacket { sequence ->
+                                PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, pos, direction, sequence)
+                            }
                         }
                         timer.cancel()
                     }
@@ -557,6 +567,7 @@ class PacketMineModule : Module(
         }
 
         if (swing.get()) EntityUtil.attackSwingHand()
+
         if (pos == targetPos) {
             started = true
             progress = 0f
@@ -582,57 +593,43 @@ class PacketMineModule : Module(
             }
         }
 
+        // Yarn 映射修正：使用 isGliding 而不是 isFallFlying
         if (bypassGround.get() && !mc.player!!.isGliding && targetPos != null && !isAir(targetPos!!) && !mc.player!!.isOnGround) {
             mc.networkHandler?.sendPacket(
                 PlayerMoveC2SPacket.Full(
-                    mc.player!!.x,
-                    mc.player!!.y + 1.0E-9,
-                    mc.player!!.z,
-                    mc.player!!.yaw,
-                    mc.player!!.pitch,
-                    true,
-                    mc.player!!.horizontalCollision
+                    mc.player!!.x, mc.player!!.y + 1.0E-9, mc.player!!.z,
+                    mc.player!!.yaw, mc.player!!.pitch, true, mc.player!!.horizontalCollision
                 )
             )
             mc.player!!.onLanding()
         }
 
         if (swing.get()) EntityUtil.attackSwingHand()
-        InventoryUtil.sendPacket(
-            PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK,
-                targetPos!!,
-                BlockUtil.getClickSide(targetPos!!)
-            )
-        )
+
+        val direction = BlockUtil.getClickSide(targetPos!!)
+        sendSequencedPacket { sequence ->
+            PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, targetPos!!, direction, sequence)
+        }
     }
 
     private fun sendStopSecond() {
-        if (bypassGround.get() && !mc.player!!.isGliding && secondPos != null
-            && !isAir(secondPos!!) && !mc.player!!.isOnGround
-        ) {
+        // Yarn 映射修正：使用 isGliding 而不是 isFallFlying
+        if (bypassGround.get() && !mc.player!!.isGliding && secondPos != null && !isAir(secondPos!!) && !mc.player!!.isOnGround) {
             mc.networkHandler?.sendPacket(
                 PlayerMoveC2SPacket.Full(
-                    mc.player!!.x,
-                    mc.player!!.y + 1.0E-9,
-                    mc.player!!.z,
-                    mc.player!!.yaw,
-                    mc.player!!.pitch,
-                    true,
-                    mc.player!!.horizontalCollision
+                    mc.player!!.x, mc.player!!.y + 1.0E-9, mc.player!!.z,
+                    mc.player!!.yaw, mc.player!!.pitch, true, mc.player!!.horizontalCollision
                 )
             )
             mc.player!!.onLanding()
         }
 
         if (swing.get()) EntityUtil.attackSwingHand()
-        InventoryUtil.sendPacket(
-            PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK,
-                secondPos!!,
-                BlockUtil.getClickSide(secondPos!!)
-            )
-        )
+
+        val direction = BlockUtil.getClickSide(secondPos!!)
+        sendSequencedPacket { sequence ->
+            PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, secondPos!!, direction, sequence)
+        }
     }
 
     private fun checkPause(onlyMain: Boolean): Boolean {
@@ -664,18 +661,19 @@ class PacketMineModule : Module(
         return index
     }
 
-    private fun getMineTicks(slot: Int): Float {
-        if (targetPos == null || mc.world == null || mc.player == null) return 20f
-        val state = mc.world!!.getBlockState(targetPos!!)
-        val hardness = state.getHardness(mc.world!!, targetPos!!)
+    private fun getMineTicks(pos: BlockPos, slot: Int): Float {
+        if (mc.world == null || mc.player == null) return 20f
+        val state = mc.world!!.getBlockState(pos)
+        val hardness = state.getHardness(mc.world!!, pos)
+
         if (hardness < 0f) return Float.MAX_VALUE
         if (hardness == 0f) return 1f
 
         val stack = if (slot == -1) ItemStack.EMPTY else mc.player!!.inventory.getStack(slot)
         val canHarvest = stack.isSuitableFor(state)
         var speed = stack.getMiningSpeedMultiplier(state)
-
         val efficiency = InventoryUtil.getEnchantmentLevel(stack, Enchantments.EFFICIENCY)
+
         if (efficiency > 0 && speed > 1f) {
             speed += (efficiency * efficiency + 1).toFloat()
         }
@@ -697,82 +695,47 @@ class PacketMineModule : Module(
 
         val damage = speed / hardness / (if (canHarvest) 30f else 100f)
         if (damage <= 0f) return Float.MAX_VALUE
-        return 1f / damage
-    }
 
-    private fun getMineTicks2(slot: Int): Float {
-        if (secondPos == null || mc.world == null || mc.player == null) return 20f
-        val state = mc.world!!.getBlockState(secondPos!!)
-        val hardness = state.getHardness(mc.world!!, secondPos!!)
-        if (hardness < 0f) return Float.MAX_VALUE
-        if (hardness == 0f) return 1f
-
-        val stack = if (slot == -1) ItemStack.EMPTY else mc.player!!.inventory.getStack(slot)
-        val canHarvest = stack.isSuitableFor(state)
-        var speed = stack.getMiningSpeedMultiplier(state)
-
-        val efficiency = InventoryUtil.getEnchantmentLevel(stack, Enchantments.EFFICIENCY)
-        if (efficiency > 0 && speed > 1f) {
-            speed += (efficiency * efficiency + 1).toFloat()
-        }
-
-        if (mc.player!!.hasStatusEffect(StatusEffects.HASTE)) {
-            val amp = mc.player!!.getStatusEffect(StatusEffects.HASTE)!!.amplifier
-            speed *= 1f + (amp + 1) * 0.2f
-        }
-
-        if (mc.player!!.hasStatusEffect(StatusEffects.MINING_FATIGUE)) {
-            val amp = mc.player!!.getStatusEffect(StatusEffects.MINING_FATIGUE)!!.amplifier
-            speed *= when (amp) {
-                0 -> 0.3f
-                1 -> 0.09f
-                2 -> 0.0027f
-                else -> 0.00081f
-            }
-        }
-
-        val damage = speed / hardness / (if (canHarvest) 30f else 100f)
-        if (damage <= 0f) return Float.MAX_VALUE
         return 1f / damage
     }
 
     private fun renderAnimation(event: Render3DEvent, delta: Double, damage: Double) {
         renderProgressVal = MathHelper.clamp(renderProgressVal + delta * 2, -2.0, 2.0)
-        val max = getMineTicks(getTool(targetPos!!)).toDouble()
+        val max = getMineTicks(targetPos!!, getTool(targetPos!!)).toDouble()
+
         var p = 1 - MathHelper.clamp(progress / (max * damage).toFloat(), 0f, 1f)
         p = Math.pow(p.toDouble(), animationExp.get()).toFloat()
         p = 1 - p
+
         val size = p / 2
         val box = Box(
-            targetPos!!.x + 0.5 - size,
-            targetPos!!.y + 0.5 - size,
-            targetPos!!.z + 0.5 - size,
-            targetPos!!.x + 0.5 + size,
-            targetPos!!.y + 0.5 + size,
-            targetPos!!.z + 0.5 + size
+            targetPos!!.x + 0.5 - size, targetPos!!.y + 0.5 - size, targetPos!!.z + 0.5 - size,
+            targetPos!!.x + 0.5 + size, targetPos!!.y + 0.5 + size, targetPos!!.z + 0.5 + size
         )
+
         val side = getColor(sideStartColor.get(), sideEndColor.get(), p.toDouble())
         val line = getColor(lineStartColor.get(), lineEndColor.get(), p.toDouble())
+
         event.renderer.box(box, side, line, shapeMode.get(), 0)
     }
 
     private fun renderSecondAnimation(event: Render3DEvent, delta: Double, damage: Double) {
         secondRender = MathHelper.clamp(secondRender + delta * 2, -2.0, 2.0)
-        val max = getMineTicks2(getTool(secondPos!!)).toDouble()
+        val max = getMineTicks(secondPos!!, getTool(secondPos!!)).toDouble()
+
         var p = 1 - MathHelper.clamp(secondProgress / (max * damage).toFloat(), 0f, 1f)
         p = Math.pow(p.toDouble(), animationExp.get()).toFloat()
         p = 1 - p
+
         val size = p / 2
         val box = Box(
-            secondPos!!.x + 0.5 - size,
-            secondPos!!.y + 0.5 - size,
-            secondPos!!.z + 0.5 - size,
-            secondPos!!.x + 0.5 + size,
-            secondPos!!.y + 0.5 + size,
-            secondPos!!.z + 0.5 + size
+            secondPos!!.x + 0.5 - size, secondPos!!.y + 0.5 - size, secondPos!!.z + 0.5 - size,
+            secondPos!!.x + 0.5 + size, secondPos!!.y + 0.5 + size, secondPos!!.z + 0.5 + size
         )
+
         val side = getColor(secondSideStartColor.get(), secondSideEndColor.get(), p.toDouble())
         val line = getColor(secondLineStartColor.get(), secondLineEndColor.get(), p.toDouble())
+
         event.renderer.box(box, side, line, shapeMode.get(), 0)
     }
 
@@ -791,7 +754,7 @@ class PacketMineModule : Module(
 
     override fun getInfoString(): String? {
         if (targetPos == null) return null
-        val max = getMineTicks(getTool(targetPos!!))
+        val max = getMineTicks(targetPos!!, getTool(targetPos!!))
         if (progress >= max * mineDamage.get()) return "§f[100%]"
         return "§f[$publicProgress%]"
     }

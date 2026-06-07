@@ -1,12 +1,14 @@
 package com.zychen027.meteorplusplus.modules
 
 import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
+import com.zychen027.meteorplusplus.utils.rotation.Rotation
 import meteordevelopment.meteorclient.events.packets.PacketEvent
 import meteordevelopment.meteorclient.events.render.Render3DEvent
 import meteordevelopment.meteorclient.events.world.TickEvent
 import meteordevelopment.meteorclient.settings.*
 import meteordevelopment.meteorclient.systems.modules.Module
 import meteordevelopment.meteorclient.systems.friends.Friends as MeteorFriends
+import meteordevelopment.meteorclient.utils.player.InvUtils
 import meteordevelopment.meteorclient.utils.render.color.SettingColor
 import meteordevelopment.orbit.EventHandler
 import net.minecraft.entity.Entity
@@ -21,22 +23,16 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.HitResult
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.RaycastContext
 import net.minecraft.registry.tag.ItemTags
-import java.util.function.Predicate
-import kotlin.math.*
 
 class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "杀戮光环") {
 
     companion object {
         lateinit var INSTANCE: KillAura
-        private const val ANGLE_THRESHOLD = 0.5f
-        private const val ROTATE_DUPLICATE_THRESHOLD = 0.1f
     }
 
     enum class Weapon(val title: String) {
@@ -89,26 +85,21 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private val tick = Timer()
     var target: Entity? = null
         private set
-
-    private var originalYaw = 0f
-    private var originalPitch = 0f
-    private var lastSentYaw = 0f
-    private var lastSentPitch = 0f
     private var hasRotated = false
 
-    init { INSTANCE = this }
+    init {
+        INSTANCE = this
+    }
 
     override fun onActivate() {
         tick.setMs(9999999)
         target = null
         hasRotated = false
-        lastSentYaw = 0f
-        lastSentPitch = 0f
     }
 
     override fun onDeactivate() {
         target = null
-        if (hasRotated) snapBack()
+        if (hasRotated) Rotation.snapBack()
     }
 
     override fun getInfoString(): String? {
@@ -117,18 +108,27 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
 
     private class Timer {
         private var time = -1L
-        init { reset() }
-        fun reset(): Timer { time = System.nanoTime(); return this }
+
+        init {
+            reset()
+        }
+
+        fun reset(): Timer {
+            time = System.nanoTime(); return this
+        }
+
         fun passedMs(ms: Double): Boolean = passedMs(ms.toLong())
         fun passedMs(ms: Long): Boolean = passedNS(ms * 1_000_000L)
         private fun passedNS(ns: Long): Boolean = System.nanoTime() - time >= ns
-        fun setMs(ms: Long) { time = System.nanoTime() - ms * 1_000_000L }
+        fun setMs(ms: Long) {
+            time = System.nanoTime() - ms * 1_000_000L
+        }
     }
 
     @EventHandler
     private fun onRender(event: Render3DEvent) {
         if (target != null && targetESP.get()) {
-            // ESP 渲染
+            // ESP 渲染逻辑
         }
     }
 
@@ -155,7 +155,7 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private fun onTick(event: TickEvent.Pre) {
         target = getTarget(targetRange.get().toDouble())
         if (target == null) {
-            if (rotate.get() && hasRotated) snapBack()
+            if (rotate.get() && hasRotated) Rotation.snapBack()
             return
         }
         doAura()
@@ -172,7 +172,8 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private fun canSeeEntity(entity: Entity): Boolean {
         val player = mc.player ?: return false
         val eyePos = player.eyePos
-        val attackVec = getAttackVec(entity)
+        // 使用 Rotation 类的最近点计算替代原 getAttackVec
+        val attackVec = Rotation.getClosestPointToEye(eyePos, entity.boundingBox)
         val result = mc.world?.raycast(
             RaycastContext(eyePos, attackVec, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, player)
         )
@@ -182,7 +183,6 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private fun getTarget(range: Double): Entity? {
         val player = mc.player ?: return null
         val world = mc.world ?: return null
-
         var closestTarget: Entity? = null
         var minDistance = range
 
@@ -196,176 +196,129 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
                 if (entity is ZombifiedPiglinEntity && !entity.isAttacking) continue
                 if (entity is WolfEntity && !entity.isAttacking) continue
             }
-
             val dist = player.distanceTo(entity)
             val canSee = canSeeEntity(entity)
             val effectiveRange = if (canSee) attackRange.get() else wallRange.get()
-
             if (dist <= effectiveRange && dist < minDistance) {
                 closestTarget = entity
                 minDistance = dist.toDouble()
             }
         }
-
         return closestTarget
     }
 
     private fun doAura() {
         val player = mc.player ?: return
         val currentTarget = target ?: return
+        if (!check()) return
+
+        var found = false
+        var previousSlot = -1
+
+        // 自动切换武器
+        if (autoSwitch.get() != SwitchMode.None && !itemInHand()) {
+            val predicate: java.util.function.Predicate<ItemStack> = when (weapon.get()) {
+                Weapon.Axe -> java.util.function.Predicate { it.isIn(ItemTags.AXES) }
+                Weapon.Sword -> java.util.function.Predicate { it.isIn(ItemTags.SWORDS) }
+                Weapon.Mace -> java.util.function.Predicate { it.isOf(Items.MACE) }
+                Weapon.Trident -> java.util.function.Predicate { it.isOf(Items.TRIDENT) }
+                Weapon.All -> java.util.function.Predicate { it.isIn(ItemTags.AXES) || it.isIn(ItemTags.SWORDS) || it.isOf(Items.MACE) || it.isOf(Items.TRIDENT) }
+                else -> java.util.function.Predicate { true }
+            }
+            val weaponResult = InvUtils.findInHotbar(predicate)
+            previousSlot = player.inventory.selectedSlot
+            if (weaponResult.found()) {
+                player.inventory.selectedSlot = weaponResult.slot
+                mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(weaponResult.slot))
+                found = true
+            }
+        }
+
+        if (autoSwitch.get() != SwitchMode.None && !itemInHand() && !found) return
+
         val networkHandler = mc.networkHandler ?: return
 
-        // ── 1. 武器切换逻辑 ──
-        var previousSlot = player.inventory.selectedSlot
-        var switched = false
-
-        if (autoSwitch.get() != SwitchMode.None && !itemInHand()) {
-            val predicate: Predicate<ItemStack> = when (weapon.get()) {
-                Weapon.Axe     -> Predicate { it.isIn(ItemTags.AXES) }
-                Weapon.Sword   -> Predicate { it.isIn(ItemTags.SWORDS) }
-                Weapon.Mace    -> Predicate { it.isOf(Items.MACE) }
-                Weapon.Trident -> Predicate { it.isOf(Items.TRIDENT) }
-                Weapon.All     -> Predicate { it.isIn(ItemTags.AXES) || it.isIn(ItemTags.SWORDS) || it.isOf(Items.MACE) || it.isOf(Items.TRIDENT) }
-                else           -> Predicate { true }
-            }
-
-            var weaponSlot = -1
-            for (i in 0..8) {
-                if (predicate.test(player.inventory.getStack(i))) {
-                    weaponSlot = i
-                    break
-                }
-            }
-
-            if (weaponSlot != -1) {
-                previousSlot = player.inventory.selectedSlot
-                player.inventory.selectedSlot = weaponSlot
-                networkHandler.sendPacket(UpdateSelectedSlotC2SPacket(weaponSlot))
-                switched = true
-            }
-        }
-
-        if (autoSwitch.get() != SwitchMode.None && !itemInHand() && !switched) return
-
-        // ── 2. 攻击条件检查 ──
-        if (!check()) {
-            if (switched && autoSwitch.get() == SwitchMode.Silent) {
-                player.inventory.selectedSlot = previousSlot
-                networkHandler.sendPacket(UpdateSelectedSlotC2SPacket(previousSlot))
-            }
-            return
-        }
-
-        // ── 3. 旋转逻辑 ──
+        // 旋转：使用 Rotation 工具类对齐 LeavesHack 逻辑
         if (rotate.get()) {
-            val (yaw, pitch) = getRotation(getAttackVec(currentTarget))
-            if (abs(yaw - player.yaw) > ANGLE_THRESHOLD || abs(pitch - player.pitch) > ANGLE_THRESHOLD) {
-                if (abs(yaw - lastSentYaw) > ROTATE_DUPLICATE_THRESHOLD || abs(pitch - lastSentPitch) > ROTATE_DUPLICATE_THRESHOLD) {
-                    if (!hasRotated) {
-                        originalYaw = player.yaw
-                        originalPitch = player.pitch
-                    }
-                    
-                    // 临时修改客户端视角，确保 GrimAC 视线校验通过
-                    player.yaw = yaw
-                    player.pitch = pitch
-                    
-                    lastSentYaw = yaw
-                    lastSentPitch = pitch
-                    hasRotated = true
-
-                    // 发送视角包，补全 1.21.11 的 horizontalCollision 参数
-                    networkHandler.sendPacket(
-                        PlayerMoveC2SPacket.LookAndOnGround(
-                            yaw, pitch,
-                            player.isOnGround, player.horizontalCollision
-                        )
-                    )
-                }
-            }
+            Rotation.snapAt(currentTarget.boundingBox)
+            hasRotated = true
         }
 
-        // ── 4. 攻击 ──
+        // 发送攻击包
         networkHandler.sendPacket(PlayerInteractEntityC2SPacket.attack(currentTarget, player.isSneaking))
 
-        // ── 5. 挥手 ──
+        // 重置攻击冷却：使用反射修改 lastAttackedTicks
+        if (reset.get()) {
+            resetAttackTick(player)
+        }
+
+        // 双发 HandSwing：swingHand 自动发包 + 手动再发一次
         player.swingHand(Hand.MAIN_HAND)
+        networkHandler.sendPacket(HandSwingC2SPacket(Hand.MAIN_HAND))
 
         tick.reset()
 
-        // ── 6. 恢复视角（关键修复：绝不用 Full 包，只用 LookAndOnGround，防止位置预测误差导致拉回）──
-        if (hasRotated) snapBack()
+        // 恢复视角：使用 Rotation 工具类
+        if (rotate.get() && hasRotated) {
+            Rotation.snapBack()
+            hasRotated = false
+        }
 
-        // ── 7. 静默切换恢复 ──
-        if (switched && autoSwitch.get() == SwitchMode.Silent) {
+        // 静默切换恢复
+        if (autoSwitch.get() == SwitchMode.Silent && previousSlot != -1) {
             player.inventory.selectedSlot = previousSlot
-            networkHandler.sendPacket(UpdateSelectedSlotC2SPacket(previousSlot))
+            mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(previousSlot))
         }
     }
 
+    // check()：仅3项检查（冷却/伤害时间/使用物品），距离和视线由 getTarget 负责
     private fun check(): Boolean {
         val player = mc.player ?: return false
         val currentTarget = target ?: return false
 
+        // 1. 冷却检查
         if (!tick.passedMs(cooldown.get() * 1000.0)) return false
+
+        // 2. 受伤时间检查
         if (currentTarget is LivingEntity && (currentTarget as LivingEntity).hurtTime > hurtTime.get()) return false
+
+        // 3. 使用物品暂停
         if (usingPause.get() && player.isUsingItem) return false
 
         return true
     }
 
-    private fun snapBack() {
-        val player = mc.player ?: return
-        if (!hasRotated) return
-
-        // 恢复客户端视角
-        player.yaw = originalYaw
-        player.pitch = originalPitch
-
-        // 只发 LookAndOnGround 恢复服务端视角，避免 Full 包的位置同步引起拉回
-        if (abs(lastSentYaw - originalYaw) > ANGLE_THRESHOLD || abs(lastSentPitch - originalPitch) > ANGLE_THRESHOLD) {
-            mc.networkHandler?.sendPacket(
-                PlayerMoveC2SPacket.LookAndOnGround(
-                    originalYaw, originalPitch,
-                    player.isOnGround, player.horizontalCollision
-                )
-            )
-        }
-        hasRotated = false
-    }
-
     private fun itemInHand(): Boolean {
         val stack = mc.player?.mainHandStack ?: return false
         return when (weapon.get()) {
-            Weapon.Axe     -> stack.isIn(ItemTags.AXES)
-            Weapon.Sword   -> stack.isIn(ItemTags.SWORDS)
-            Weapon.Mace    -> stack.isOf(Items.MACE)
+            Weapon.Axe -> stack.isIn(ItemTags.AXES)
+            Weapon.Sword -> stack.isIn(ItemTags.SWORDS)
+            Weapon.Mace -> stack.isOf(Items.MACE)
             Weapon.Trident -> stack.isOf(Items.TRIDENT)
-            Weapon.All     -> stack.isIn(ItemTags.AXES) || stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.MACE) || stack.isOf(Items.TRIDENT)
-            else           -> true
+            Weapon.All -> stack.isIn(ItemTags.AXES) || stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.MACE) || stack.isOf(Items.TRIDENT)
+            else -> true
         }
     }
 
-    private fun getAttackVec(entity: Entity): Vec3d {
-        val player = mc.player ?: return Vec3d.ZERO
-        val eyePos = player.eyePos
-        val box = entity.boundingBox
-        return Vec3d(
-            box.minX.coerceAtLeast(eyePos.x.coerceAtMost(box.maxX)),
-            box.minY.coerceAtLeast(eyePos.y.coerceAtMost(box.maxY)),
-            box.minZ.coerceAtLeast(eyePos.z.coerceAtMost(box.maxZ))
-        )
-    }
-
-    private fun getRotation(vec: Vec3d): Pair<Float, Float> {
-        val player = mc.player ?: return 0f to 0f
-        val eyePos = player.eyePos
-        val deltaX = vec.x - eyePos.x
-        val deltaY = vec.y - eyePos.y
-        val deltaZ = vec.z - eyePos.z
-        val distance = sqrt(deltaX * deltaX + deltaZ * deltaZ)
-        val yaw = Math.toDegrees(atan2(-deltaX, deltaZ)).toFloat()
-        val pitch = (-Math.toDegrees(atan2(deltaY, distance))).toFloat()
-        return yaw to pitch
+    /**
+     * 使用反射重置客户端的攻击冷却。
+     * 对齐 LeavesHack 逻辑，修改 LivingEntity 中的 lastAttackedTicks 为 0
+     */
+    private fun resetAttackTick(player: PlayerEntity) {
+        try {
+            val field = LivingEntity::class.java.getDeclaredField("lastAttackedTicks")
+            field.isAccessible = true
+            field.setInt(player, 0)
+        } catch (e: NoSuchFieldException) {
+            try {
+                val fallbackField = LivingEntity::class.java.getDeclaredField("field_6156")
+                fallbackField.isAccessible = true
+                fallbackField.setInt(player, 0)
+            } catch (e2: Exception) {
+                e2.printStackTrace()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

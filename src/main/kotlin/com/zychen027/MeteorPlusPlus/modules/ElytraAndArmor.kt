@@ -36,6 +36,13 @@ class ElytraAndArmor : Module(
     )
 
     private var lastPressTime: Long = 0L
+    private var wasJumpPressed = false // 记录上一 Tick 的空格按压状态
+
+    override fun onDeactivate() {
+        lastPressTime = 0L
+        wasJumpPressed = false
+        super.onDeactivate()
+    }
 
     @EventHandler
     private fun onTick(event: TickEvent.Pre) {
@@ -55,34 +62,37 @@ class ElytraAndArmor : Module(
 
         // 双击跳跃键(空格)穿鞘翅逻辑
         // 使用原生输入检测，避免 Meteor KeyEvent 更新导致的 NoSuchFieldError 崩溃
-        if (mc.options.jumpKey.wasPressed()) {
+        val isJumpPressed = mc.options.jumpKey.isPressed
+        
+        // 检测按键的上升沿（从松开到按下），只有松开后再次按下才算作一次有效点击，避免长按触发
+        if (isJumpPressed && !wasJumpPressed) {
             val now = System.currentTimeMillis()
-            if (lastPressTime == 0L) {
-                lastPressTime = now
-                return
-            }
             val timeDiff = (now - lastPressTime).toDouble()
             val threshold = delay.get() * 1000.0
-            if (timeDiff > threshold) {
-                lastPressTime = now
-                return
-            }
 
-            // 如果已经是鞘翅，重置时间但不切换
-            if (chestStack.isOf(Items.ELYTRA)) {
-                lastPressTime = now
-                return
-            }
-
-            // 如果胸甲槽为空或者是普通护甲，切换为鞘翅
-            if (chestStack.isEmpty || isChestplate(chestStack)) {
-                mc.currentScreen?.close()
-                val elytraSlot = InvUtils.find(Items.ELYTRA)
-                if (elytraSlot.found()) {
-                    InvUtils.move().from(elytraSlot.slot()).toArmor(2)
+            if (lastPressTime != 0L && timeDiff <= threshold) {
+                // 在延迟窗口内触发了第二次有效点击，判定为双击
+                
+                // 如果已经是鞘翅，重置时间但不切换
+                if (!chestStack.isOf(Items.ELYTRA)) {
+                    // 如果胸甲槽为空或者是普通护甲，切换为鞘翅
+                    if (chestStack.isEmpty || isChestplate(chestStack)) {
+                        mc.currentScreen?.close()
+                        val elytraSlot = InvUtils.find(Items.ELYTRA)
+                        if (elytraSlot.found()) {
+                            InvUtils.move().from(elytraSlot.slot()).toArmor(2)
+                        }
+                    }
                 }
+                lastPressTime = 0L // 双击触发后重置时间，防止连续多次点击被误判为多次双击
+            } else {
+                // 第一次点击，或者超时后的点击，记录时间
+                lastPressTime = now
             }
         }
+        
+        // 更新上一 Tick 的按键状态
+        wasJumpPressed = isJumpPressed
     }
 
     /**
@@ -116,6 +126,7 @@ class ElytraAndArmor : Module(
                 }
             }
         }
+
         return bestSlot
     }
 
@@ -124,6 +135,7 @@ class ElytraAndArmor : Module(
      */
     private fun getScore(stack: ItemStack): Int {
         if (!isChestplate(stack)) return -1
+
         var score = 0
 
         // 基础护甲值 (根据材质)
