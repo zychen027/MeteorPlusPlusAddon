@@ -35,3 +35,11 @@ run/
 #kotlin
 
 .kotlin/
+
+#logs
+
+*.log
+
+#errors
+
+*err*

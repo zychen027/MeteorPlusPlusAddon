@@ -6,11 +6,14 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 object Rotation {
     var rotationYaw: Float = 0f
     var rotationPitch: Float = 0f
+
     private val mc get() = MeteorClient.mc
 
     fun snapAt(yaw: Float, pitch: Float, overlay: Boolean = true) {
@@ -21,9 +24,13 @@ object Rotation {
         }
         sendPacket(
             PlayerMoveC2SPacket.Full(
-                player.x, player.y, player.z,
-                yaw, pitch,
-                player.isOnGround, player.horizontalCollision
+                player.x,
+                player.y,
+                player.z,
+                yaw,
+                pitch,
+                player.isOnGround,
+                player.horizontalCollision
             )
         )
     }
@@ -32,9 +39,13 @@ object Rotation {
         val player = mc.player ?: return
         sendPacket(
             PlayerMoveC2SPacket.Full(
-                player.x, player.y, player.z,
-                rotationYaw, rotationPitch,
-                player.isOnGround, player.horizontalCollision
+                player.x,
+                player.y,
+                player.z,
+                rotationYaw,
+                rotationPitch,
+                player.isOnGround,
+                player.horizontalCollision
             )
         )
         if (overlay) {
@@ -77,5 +88,16 @@ object Rotation {
     fun getRotation(vec: Vec3d): FloatArray {
         val player = mc.player ?: return floatArrayOf(0f, 0f)
         return getRotation(player.eyePos, vec)
+    }
+
+    /**
+     * LeavesHack MoveFixUtil 核心算法
+     * 修复旋转时的移动向量，确保移动方向与强制发送的新视角匹配
+     */
+    fun fixMovement(movement: Vec3d, oldYaw: Float, newYaw: Float): Vec3d {
+        val yawDiff = Math.toRadians((newYaw - oldYaw).toDouble())
+        val x = movement.x * cos(yawDiff) + movement.z * sin(yawDiff)
+        val z = -movement.x * sin(yawDiff) + movement.z * cos(yawDiff)
+        return Vec3d(x, movement.y, z)
     }
 }

@@ -9,10 +9,10 @@
     "Benjamin"
   ],
   "contact": {
-    "homepage": "https://github.com/zychen027/MeteorPlusPlus",
-    "sources": "https://github.com/zychen027/MeteorPlusPlus"
+    "homepage": "https://github.com/zychen027/MeteorPlusPlusAddon",
+    "sources": "https://github.com/zychen027/MeteorPlusPlusAddon"
   },
-  "license": "MIT",
+  "license": "GPL",
   "environment": "*",
   "entrypoints": {
     "meteor": [

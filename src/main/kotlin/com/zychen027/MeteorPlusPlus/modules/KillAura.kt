@@ -29,7 +29,7 @@ import net.minecraft.util.hit.HitResult
 import net.minecraft.world.RaycastContext
 import net.minecraft.registry.tag.ItemTags
 
-class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "杀戮光环") {
+class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "ZT-KillAura", "杀戮光环") {
 
     companion object {
         lateinit var INSTANCE: KillAura
@@ -70,6 +70,11 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
         .name("entities").description("攻击目标").onlyAttackable().defaultValue(EntityType.PLAYER).build())
     private val rotate = sgGeneral.add(BoolSetting.Builder()
         .name("Rotate").description("转头").defaultValue(true).build())
+    
+    // 移植 GlobalSetting 的 MoveFix 设置，常开
+    val moveFix = sgGeneral.add(BoolSetting.Builder()
+        .name("MoveFix").description("修复旋转时的移动以绕过GrimAC").defaultValue(true).build())
+
     private val ignoreNamed = sgGeneral.add(BoolSetting.Builder()
         .name("ignore-named").description("忽略带有命名的生物").defaultValue(true).build())
     private val ignorePassive = sgGeneral.add(BoolSetting.Builder()
@@ -85,7 +90,12 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private val tick = Timer()
     var target: Entity? = null
         private set
-    private var hasRotated = false
+    
+    // 暴露给 Mixin 的旋转状态
+    var isRotating = false
+        private set
+    var targetYaw = 0f
+        private set
 
     init {
         INSTANCE = this
@@ -94,12 +104,13 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     override fun onActivate() {
         tick.setMs(9999999)
         target = null
-        hasRotated = false
+        isRotating = false
     }
 
     override fun onDeactivate() {
         target = null
-        if (hasRotated) Rotation.snapBack()
+        if (isRotating) Rotation.snapBack()
+        isRotating = false
     }
 
     override fun getInfoString(): String? {
@@ -108,21 +119,12 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
 
     private class Timer {
         private var time = -1L
-
-        init {
-            reset()
-        }
-
-        fun reset(): Timer {
-            time = System.nanoTime(); return this
-        }
-
+        init { reset() }
+        fun reset(): Timer { time = System.nanoTime(); return this }
         fun passedMs(ms: Double): Boolean = passedMs(ms.toLong())
         fun passedMs(ms: Long): Boolean = passedNS(ms * 1_000_000L)
         private fun passedNS(ns: Long): Boolean = System.nanoTime() - time >= ns
-        fun setMs(ms: Long) {
-            time = System.nanoTime() - ms * 1_000_000L
-        }
+        fun setMs(ms: Long) { time = System.nanoTime() - ms * 1_000_000L }
     }
 
     @EventHandler
@@ -134,6 +136,7 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
 
     @EventHandler
     private fun onPacket(event: PacketEvent.Send) {
+        // 原有的冷却重置逻辑
         if (!reset.get()) return
         val packet = event.packet
         if (packet is PlayerInteractEntityC2SPacket) {
@@ -155,7 +158,10 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private fun onTick(event: TickEvent.Pre) {
         target = getTarget(targetRange.get().toDouble())
         if (target == null) {
-            if (rotate.get() && hasRotated) Rotation.snapBack()
+            if (rotate.get() && isRotating) {
+                Rotation.snapBack()
+                isRotating = false
+            }
             return
         }
         doAura()
@@ -172,7 +178,6 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
     private fun canSeeEntity(entity: Entity): Boolean {
         val player = mc.player ?: return false
         val eyePos = player.eyePos
-        // 使用 Rotation 类的最近点计算替代原 getAttackVec
         val attackVec = Rotation.getClosestPointToEye(eyePos, entity.boundingBox)
         val result = mc.world?.raycast(
             RaycastContext(eyePos, attackVec, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, player)
@@ -215,7 +220,6 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
         var found = false
         var previousSlot = -1
 
-        // 自动切换武器
         if (autoSwitch.get() != SwitchMode.None && !itemInHand()) {
             val predicate: java.util.function.Predicate<ItemStack> = when (weapon.get()) {
                 Weapon.Axe -> java.util.function.Predicate { it.isIn(ItemTags.AXES) }
@@ -238,53 +242,41 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
 
         val networkHandler = mc.networkHandler ?: return
 
-        // 旋转：使用 Rotation 工具类对齐 LeavesHack 逻辑
         if (rotate.get()) {
+            val rotation = Rotation.getRotation(Rotation.getClosestPointToEye(player.eyePos, currentTarget.boundingBox))
+            targetYaw = rotation[0]
             Rotation.snapAt(currentTarget.boundingBox)
-            hasRotated = true
+            isRotating = true
         }
 
-        // 发送攻击包
         networkHandler.sendPacket(PlayerInteractEntityC2SPacket.attack(currentTarget, player.isSneaking))
 
-        // 重置攻击冷却：使用反射修改 lastAttackedTicks
         if (reset.get()) {
             resetAttackTick(player)
         }
 
-        // 双发 HandSwing：swingHand 自动发包 + 手动再发一次
         player.swingHand(Hand.MAIN_HAND)
         networkHandler.sendPacket(HandSwingC2SPacket(Hand.MAIN_HAND))
 
         tick.reset()
 
-        // 恢复视角：使用 Rotation 工具类
-        if (rotate.get() && hasRotated) {
+        if (rotate.get() && isRotating) {
             Rotation.snapBack()
-            hasRotated = false
+            isRotating = false
         }
 
-        // 静默切换恢复
         if (autoSwitch.get() == SwitchMode.Silent && previousSlot != -1) {
             player.inventory.selectedSlot = previousSlot
             mc.networkHandler?.sendPacket(UpdateSelectedSlotC2SPacket(previousSlot))
         }
     }
 
-    // check()：仅3项检查（冷却/伤害时间/使用物品），距离和视线由 getTarget 负责
     private fun check(): Boolean {
         val player = mc.player ?: return false
         val currentTarget = target ?: return false
-
-        // 1. 冷却检查
         if (!tick.passedMs(cooldown.get() * 1000.0)) return false
-
-        // 2. 受伤时间检查
         if (currentTarget is LivingEntity && (currentTarget as LivingEntity).hurtTime > hurtTime.get()) return false
-
-        // 3. 使用物品暂停
         if (usingPause.get() && player.isUsingItem) return false
-
         return true
     }
 
@@ -300,10 +292,6 @@ class KillAura : Module(MeteorPlusPlusAddon.METEORPLUSPLUS_CATEGORY, "Aura", "�
         }
     }
 
-    /**
-     * 使用反射重置客户端的攻击冷却。
-     * 对齐 LeavesHack 逻辑，修改 LivingEntity 中的 lastAttackedTicks 为 0
-     */
     private fun resetAttackTick(player: PlayerEntity) {
         try {
             val field = LivingEntity::class.java.getDeclaredField("lastAttackedTicks")

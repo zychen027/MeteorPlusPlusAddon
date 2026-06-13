@@ -3,7 +3,8 @@
   "package": "com.zychen027.meteorplusplus.asm.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "PlayerListHudMixin", "LivingEntityAccessor", "MixinDecoderHandler", "IClientWorldAccessor", "IPendingUpdateManagerAccessor", "IPlayerMoveC2SPacketAccessor"
+    "PlayerListHudMixin", 
+	"MixinDecoderHandler", 
   ],
   "injectors": {
     "defaultRequire": 1

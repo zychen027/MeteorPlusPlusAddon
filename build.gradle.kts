@@ -40,7 +40,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     // [新增] Baritone API 依赖
-    modImplementation("cabaletta:baritone-api:1.9")
+    //modImplementation("cabaletta:baritone-api:1.9")
 
     // [可选] Litematica 依赖 (Printer 模块需要，可选安装)
     // modImplementation("fi.dy.masa.litematica:litematica-fabric-1.21.8:0.22.0")
