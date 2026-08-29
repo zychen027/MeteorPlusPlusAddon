@@ -4,7 +4,10 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "PlayerListHudMixin", 
-	"MixinDecoderHandler", 
+	"MixinDecoderHandler",
+	"MixinClientConnection",
+	"MixinItemSpearFix",
+	"MixinLancingSpearFix"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,48 +1,95 @@
 package com.zychen027.meteorplusplus.asm.mixin;
 
 import com.zychen027.meteorplusplus.modules.PacketKickFix;
-import io.netty.buffer.ByteBuf;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.netty.handler.codec.DecoderException;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.handler.DecoderHandler;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(DecoderHandler.class)
-@SuppressWarnings("unchecked") // 消除泛型类型擦除带来的编译器警告
 public class MixinDecoderHandler {
 
-    // 1. 拦截解码，吞掉异常，返回 null 标记
-    @Redirect(
-            method = "decode",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/network/codec/PacketCodec;decode(Ljava/lang/Object;)Ljava/lang/Object;")
-    )
-    private Object onDecodeException(PacketCodec instance, Object o) {
+    @WrapOperation(method = "decode", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/codec/PacketCodec;decode(Ljava/lang/Object;)Ljava/lang/Object;"))
+    private Object onDecode(PacketCodec instance, Object object, Operation<Object> original) {
+        if (!PacketKickFix.isFixEnabled || !(object instanceof PacketByteBuf buf)) {
+            return original.call(instance, object);
+        }
+
+        int readerIndex = buf.readerIndex();
         try {
-            return instance.decode(o);
+            return original.call(instance, object);
         } catch (DecoderException e) {
-            if (PacketKickFix.isFixEnabled && o instanceof ByteBuf buf) {
-                // 跳过损坏的剩余字节，防止 Netty 卡死
-                buf.skipBytes(buf.readableBytes());
+            buf.readerIndex(readerIndex);
+
+            try {
+                NbtCompound nbt = buf.readNbt();
+                if (nbt != null && buf.isReadable(1)) {
+                    Text content = buildFallbackComponent(nbt);
+                    boolean overlay = buf.readBoolean();
+                    return createSystemChatPacket(content, overlay);
+                }
+            } catch (Exception ignored) {
             }
-            // 【防踢关键1】：不抛出异常，返回 null。
-            return null; 
+
+            buf.readerIndex(readerIndex);
+            buf.skipBytes(buf.readableBytes());
+            return null;
         }
     }
 
-    // 2. 拦截列表添加，过滤 null，防止 NPE
-    @Redirect(
-            method = "decode",
-            at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", remap = false)
-    )
-    private boolean filterNullPackets(List<Object> list, Object packet) {
-        // 【防踢关键2】：阻止 null 加入 out 列表，彻底杜绝 NPE 导致的断连！
-        if (packet == null) {
-            return false; 
+    private Text buildFallbackComponent(NbtCompound nbt) {
+        String translate = nbt.getString("translate", "");
+        if (!translate.isEmpty()) {
+            if (nbt.contains("with")) {
+                NbtList withList = nbt.getList("with").orElse(new NbtList());
+                List<Object> args = new ArrayList<>();
+                for (int i = 0; i < withList.size(); i++) {
+                    args.add(extractComponent(withList.getCompound(i).orElse(new NbtCompound())));
+                }
+                return Text.translatable(translate, args.toArray());
+            }
+            return Text.translatable(translate);
         }
-        return list.add(packet);
+        String text = nbt.getString("text", "");
+        if (!text.isEmpty()) {
+            return Text.literal(text);
+        }
+        return Text.literal(nbt.toString());
+    }
+
+    private Text extractComponent(NbtCompound compound) {
+        String translate = compound.getString("translate", "");
+        if (!translate.isEmpty()) {
+            return Text.translatable(translate);
+        }
+        String text = compound.getString("text", "");
+        if (!text.isEmpty()) {
+            return Text.literal(text);
+        }
+        if (compound.contains("extra")) {
+            NbtList extra = compound.getList("extra").orElse(new NbtList());
+            if (!extra.isEmpty()) {
+                return extractComponent(extra.getCompound(0).orElse(new NbtCompound()));
+            }
+        }
+        return Text.literal(compound.toString());
+    }
+
+    private Object createSystemChatPacket(Text content, boolean overlay) throws Exception {
+        Class<?> clazz = Class.forName("net.minecraft.network.packet.s2c.play.SystemChatS2CPacket");
+        var ctor = clazz.getDeclaredConstructors()[0];
+        ctor.setAccessible(true);
+        return ctor.newInstance(content, overlay);
     }
 }

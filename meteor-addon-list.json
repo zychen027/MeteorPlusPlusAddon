@@ -1,0 +1,8 @@
+{
+  "description": "Improve MeteorClient With Many Features~",
+  "tags": ["Utility"],
+  "supported_versions": [
+    "1.21.8",
+	"1.21.11"
+  ]
+}

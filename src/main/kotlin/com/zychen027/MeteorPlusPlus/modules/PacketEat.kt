@@ -1,7 +1,6 @@
 package com.zychen027.meteorplusplus.modules
 
 import com.zychen027.meteorplusplus.MeteorPlusPlusAddon
-import com.zychen027.meteorplusplus.utils.entity.InventoryUtil
 import meteordevelopment.meteorclient.events.packets.PacketEvent
 import meteordevelopment.meteorclient.events.world.TickEvent
 import meteordevelopment.meteorclient.settings.BoolSetting

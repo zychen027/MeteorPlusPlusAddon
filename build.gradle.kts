@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("fabric-loom") version "1.14-SNAPSHOT"
+    id("fabric-loom") version "1.14.10"
     id("org.jetbrains.kotlin.jvm") version "2.2.21"
     `java-library`
     `maven-publish`
@@ -33,7 +33,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:0.19.2")
 
     // Meteor Client
-    modImplementation("meteordevelopment:meteor-client:1.21.8-SNAPSHOT")
+    modImplementation("meteordevelopment:meteor-client:1.21.11-SNAPSHOT")
 
     // Kotlin
     modImplementation("net.fabricmc:fabric-language-kotlin:1.13.7+kotlin.2.2.21")
